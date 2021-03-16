@@ -1,5 +1,6 @@
 # from https://www.tutorialspoint.com/python3/python_xml_processing.htm
 import xml.sax
+import json
 
 class MovieHandler( xml.sax.ContentHandler ):
     def __init__(self):
@@ -84,4 +85,8 @@ if ( __name__ == "__main__"):
     parser.setContentHandler( Handler )
 
     parser.parse("edmonton-OSM-data.xml")
-    print(len(list(filter(lambda x: x != None, Handler.parsed["way"]))))
+    #print(len(list(filter(lambda x: x != None, Handler.parsed["way"]))))
+
+    print("json dump parsed")
+    with open("extracted/extracted.json", 'w') as f:
+        json.dump(Handler.parsed, f)
