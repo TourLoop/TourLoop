@@ -38,6 +38,10 @@ class MovieHandler( xml.sax.ContentHandler ):
             if tag == "nd":
                 self.curr["way"]["path"].append(attributes["ref"])
 
+            # construct tags dictionary for way
+            if tag == "tag":
+                self.curr["way"]["tags"][attributes['k']] = attributes['v']
+
         return
 
     # Call when an elements ends
@@ -52,6 +56,7 @@ class MovieHandler( xml.sax.ContentHandler ):
         way = dict()
         way["id"] = attributes["id"]
         way["path"] = []
+        way["tags"] = dict()
         way["path-type"] = "?"
         self.curr["way"] = way
 
@@ -71,7 +76,6 @@ class MovieHandler( xml.sax.ContentHandler ):
         if self.curr_tag == tag:
             self.curr_tag = None
             self.parsed[tag].append(self.curr[tag])
-
 
 
 if ( __name__ == "__main__"):
