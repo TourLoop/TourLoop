@@ -1,8 +1,13 @@
-import '../styles/App.css';
 import Map from './Map';
+import Sidebar from './Sidebar';
 
 function App() {
-  return <Map />;
+  return (
+    <div className='app'>
+      <Map />
+      <Sidebar />
+    </div>
+  );
 }
 
 export default App;
