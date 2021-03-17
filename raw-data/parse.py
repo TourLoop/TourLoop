@@ -2,11 +2,18 @@
 import xml.sax
 import json
 import os
+from osm_csv_helper import *
 
 class MovieHandler( xml.sax.ContentHandler ):
     def __init__(self):
         self.CurrentData = ""
         self.curr_tag = None
+
+        self.way_f = open("osm-ways.csv", 'w')
+        self.node_f = open("osm-nodes.csv", 'w')
+        self.way_f.write("id,type,distance,a,b\n")
+        self.node_f.write("id,lat,lon\n")
+
 
         self.curr = dict()
         self.curr["node"] = None
@@ -46,6 +53,12 @@ class MovieHandler( xml.sax.ContentHandler ):
 
     # Call when an elements ends
     def endElement(self, tag):
+        # close csv files
+        if tag == "osm":
+            self.way_f.close()
+            self.node_f.close()
+
+        # handle finish node or way
         if self.isItem(tag):
             self.endItem(tag)
         return
@@ -73,9 +86,18 @@ class MovieHandler( xml.sax.ContentHandler ):
         self.curr[tag] = dict()
 
     def endItem(self, tag):
+        # finished a node or a way
         if self.curr_tag == tag:
             self.curr_tag = None
-            self.parsed[tag].append(self.curr[tag])
+            #self.parsed[tag].append(self.curr[tag])
+            self.writeToCsv(tag)
+
+    def writeToCsv(self, tag):
+        if tag == "way":
+            write_way_csv(self.curr[tag], self.way_f)
+        if tag == "node":
+            write_node_csv(self.curr[tag], self.node_f)
+
 
 
 if ( __name__ == "__main__"):
@@ -92,7 +114,7 @@ if ( __name__ == "__main__"):
     parser.parse("edmonton-OSM-data.xml")
     #print(len(list(filter(lambda x: x != None, Handler.parsed["way"]))))
 
-    print("json dump parsed")
-    os.mkdir("extracted")
-    with open("extracted/extracted.json", 'w') as f:
-        json.dump(Handler.parsed, f)
+#    print("json dump parsed")
+#    os.mkdir("extracted")
+#    with open("extracted/extracted.json", 'w') as f:
+#        json.dump(Handler.parsed, f)
