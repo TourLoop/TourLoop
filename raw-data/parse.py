@@ -11,8 +11,8 @@ class MovieHandler( xml.sax.ContentHandler ):
 
         self.way_f = open("osm-ways.csv", 'w')
         self.node_f = open("osm-nodes.csv", 'w')
-        self.way_f.write("id,type,distance,a,b\n")
-        self.node_f.write("id,lat,lon\n")
+#        self.way_f.write("id,type,distance,a,b\n")
+#        self.node_f.write("id,lat,lon\n")
 
 
         self.curr = dict()
