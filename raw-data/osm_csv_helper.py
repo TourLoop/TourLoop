@@ -5,14 +5,16 @@ import json
 
 def path_type(w):
     # from a way, reduce to TourLoop path type
-    return "?"
+    return "bike"
 
 def distance(a, b):
     # calc distance between node a and b
     return 1.0
 
 def write_node_csv(n, f):
-    f.write("{},{},{}\n".format(n['id'], float(n['lat']), float(n['lon'])))
+    point_fmt = '"{' + "latitude:{}, longitude:{}".format(n['lat'], n['lon']) + '}"'
+    line = "Node,{},{},".format(n['id'],n['id']) + point_fmt
+    f.write(line +"\n")
 
 def write_way_csv(w, f):
     for i in range(len(w['path']) -1):
@@ -20,11 +22,11 @@ def write_way_csv(w, f):
         a = w['path'][i]
         b = w['path'][j]
         f.write("{},{},{},{},{}\n".format(\
-            w['id'],\
-            path_type(w),\
-            distance(a, b),\
+            "Way",\
             a,\
-            b))
+            b,\
+            '"{}"'.format(path_type(w)),\
+            distance(a,b)))
 
 
 if __name__ == "__main__":
