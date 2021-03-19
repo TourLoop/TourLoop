@@ -1,7 +1,7 @@
 FROM neo4j:latest
 
 # copy over CSV files
-COPY ./big-data/* /var/lib/neo4j/import
+COPY ./csv-files/* /var/lib/neo4j/import
 
 WORKDIR /var/lib/neo4j/import
 RUN neo4j-admin import --nodes ./node-headers.csv,./osm-nodes.csv --relationships ./way-headers.csv,./osm-ways.csv
