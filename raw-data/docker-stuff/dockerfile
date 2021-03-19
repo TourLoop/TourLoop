@@ -1,0 +1,21 @@
+FROM neo4j:latest
+
+# copy over CSV files
+COPY ./csv-files/* /var/lib/neo4j/import
+
+WORKDIR /var/lib/neo4j/import
+RUN neo4j-admin import --nodes ./node-headers.csv,./osm-nodes.csv --relationships ./way-headers.csv,./osm-ways.csv
+WORKDIR /var/lib/neo4j
+
+# from the official neo4j container
+EXPOSE 7474 7473 7687
+ENTRYPOINT ["/sbin/tini", "-g", "--", "/docker-entrypoint.sh"]
+CMD ["neo4j"]
+
+
+
+
+
+
+
+
