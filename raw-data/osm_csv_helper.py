@@ -13,7 +13,7 @@ def distance(a, b):
 
 def write_node_csv(n, f):
     point_fmt = '"{' + "latitude:{}, longitude:{}".format(n['lat'], n['lon']) + '}"'
-    line = "Node,{},{},".format(n['id'],n['id']) + point_fmt
+    line = "Node,{},{},{},{},".format(n['id'],n['id'],n['lat'],n['lon']) + point_fmt
     f.write(line +"\n")
 
 def write_way_csv(w, f):
