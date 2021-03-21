@@ -1,2 +1,4 @@
 *.swp
 __pycache__
+docker-stuff/csv-files/osm-nodes.csv
+docker-stuff/csv-files/osm-ways.csv
