@@ -1,1 +1,1 @@
-:LABEL,nodeId:ID,id,location:point{crs:WGS-84}
+:LABEL,nodeId:ID,id,lat:double,lon:double,location:point{crs:WGS-84}

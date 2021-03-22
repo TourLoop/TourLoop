@@ -5,7 +5,38 @@ import json
 
 def path_type(w):
     # from a way, reduce to TourLoop path type
-    return "bike"
+    # bike paths, dirt trials, and paved roads
+    # assume bike, dirt, and paved are DISJOINT paths
+    if set(w['tags'].values()).intersection({'dirt', 'gravel'}):
+        return "dirt"
+    elif bike_cond(w):
+        return "bike"
+    else:
+        return "paved"
+
+def bike_cond(w):
+    tags = w['tags']
+    tags_k = tags.keys()
+    tags_v = tags.values()
+    bike_keys = {'cycleway', 'cycleway:left', 'cycleway:right'}
+
+    # specifically not a cycleway
+    if 'cycleway' in tags_k:
+        if tags['cycleway'] == "no":
+            return False
+
+    # highway = cycleway, probably a bike path
+    if 'highway' in tags_k:
+        if tags['highway'] == "cycleway":
+            return True
+
+    # got a cycleway tag key
+    # TODO: this is an approximation
+    if set(tags_k).intersection(bike_keys):
+        return True
+
+    # assume not a bike path
+    return False
 
 def distance(a, b):
     # calc distance between node a and b
@@ -13,7 +44,7 @@ def distance(a, b):
 
 def write_node_csv(n, f):
     point_fmt = '"{' + "latitude:{}, longitude:{}".format(n['lat'], n['lon']) + '}"'
-    line = "Node,{},{},".format(n['id'],n['id']) + point_fmt
+    line = "Node,{},{},{},{},".format(n['id'],n['id'],n['lat'],n['lon']) + point_fmt
     f.write(line +"\n")
 
 def write_way_csv(w, f):
