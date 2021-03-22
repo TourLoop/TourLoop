@@ -1,5 +1,8 @@
+
+import { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import { Polyline } from '@react-google-maps/api';
+import { decode } from '@googlemaps/polyline-codec';
 
 const containerStyle = {
   width: '70vw',
@@ -10,19 +13,6 @@ const center = {
   lat: 53.5461,
   lng: -113.4938,
 };
-
-const polylines = [
-  [
-    { lat: 53.5414128, lng: -113.7135328 },
-    { lat: 53.5414266, lng: -113.7201359 },
-    { lat: 53.5414309, lng: -113.7270416 },
-    { lat: 53.5414371, lng: -113.7370375 },
-  ],
-  [
-    { lat: 53.552995, lng: -113.5085157 },
-    { lat: 53.5514151, lng: -113.5084944 },
-  ],
-];
 
 const options = {
   strokeColor: '#FF0000',
@@ -38,6 +28,28 @@ const options = {
 };
 
 const Map = props => {
+  const [polylines, setPolylines] = useState([]);
+
+  useEffect(() => {
+    fetch("/api")
+      .then(res => res.json())
+      .then((line) => {
+        let latLngs = [];
+        for (var i = 0; i < line.paths.length; i++) {
+          latLngs.push([])
+          var p = decode(line.paths[i], 6)
+          for (let j = 0; j < p.length; j++) {
+            latLngs[i].push({ lat: p[j][0], lng: p[j][1] });
+          }
+        }
+        setPolylines(latLngs)
+      },
+        (error) => {
+          console.log(error)
+        }
+      )
+  }, []);
+
   return (
     <LoadScript googleMapsApiKey=''>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={11}>
