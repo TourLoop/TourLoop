@@ -13,7 +13,7 @@ In the server folder run the following commands:
 python3 -m venv venv
 . venv/bin/activate
 python3 -m pip install -r requirements.txt
-export FLASK_APP=flaskr
+export FLASK_APP=flask_api
 flask run
 ```
 
