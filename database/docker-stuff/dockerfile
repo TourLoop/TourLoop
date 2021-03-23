@@ -3,6 +3,8 @@ FROM neo4j:latest
 # copy over CSV files
 COPY ./csv-files/* /var/lib/neo4j/import
 
+# TOURLOOP FR18 : Rebuild Database
+# follow: https://neo4j.com/docs/operations-manual/current/tools/neo4j-admin-import/
 WORKDIR /var/lib/neo4j/import
 RUN neo4j-admin import --nodes ./node-headers.csv,./osm-nodes.csv --relationships ./way-headers.csv,./osm-ways.csv
 WORKDIR /var/lib/neo4j
