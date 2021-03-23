@@ -111,7 +111,7 @@ if ( __name__ == "__main__"):
     Handler = MovieHandler()
     parser.setContentHandler( Handler )
 
-    parser.parse("edmonton-OSM-data.xml")
+    parser.parse("../raw-data/edmonton-OSM-data.xml")
     #print(len(list(filter(lambda x: x != None, Handler.parsed["way"]))))
 
 #    print("json dump parsed")

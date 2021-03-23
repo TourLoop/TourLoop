@@ -4,7 +4,7 @@
 set -e
 
 echo "parsing xml file (~1 min?)"
-time python3 parse.py
+time python3 osm_xml_to_csv.py
 
 echo "starting container construction"
 mv osm-ways.csv docker-stuff/csv-files/
