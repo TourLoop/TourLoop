@@ -4,7 +4,7 @@ import json
 import os
 from osm_csv_helper import *
 
-class MovieHandler( xml.sax.ContentHandler ):
+class OsmHandler( xml.sax.ContentHandler ):
     def __init__(self):
         self.CurrentData = ""
         self.curr_tag = None
@@ -100,7 +100,10 @@ class MovieHandler( xml.sax.ContentHandler ):
 
 
 
-if ( __name__ == "__main__"):
+# TOURLOOP FR17 : Clean OpenStreetMap data
+def main():
+    # code largely from turotial
+    # from https://www.tutorialspoint.com/python3/python_xml_processing.htm
 
     # create an XMLReader
     parser = xml.sax.make_parser()
@@ -108,13 +111,11 @@ if ( __name__ == "__main__"):
     parser.setFeature(xml.sax.handler.feature_namespaces, 0)
 
     # override the default ContextHandler
-    Handler = MovieHandler()
+    Handler = OsmHandler()
     parser.setContentHandler( Handler )
 
     parser.parse("../raw-data/edmonton-OSM-data.xml")
-    #print(len(list(filter(lambda x: x != None, Handler.parsed["way"]))))
 
-#    print("json dump parsed")
-#    os.mkdir("extracted")
-#    with open("extracted/extracted.json", 'w') as f:
-#        json.dump(Handler.parsed, f)
+
+if __name__ == "__main__":
+    main()
