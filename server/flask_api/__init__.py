@@ -22,6 +22,9 @@ def create_app():
     from flask_api import all_paths
     app.register_blueprint(all_paths.bp)
 
+    from flask_api import db_export
+    app.register_blueprint(db_export.bp)
+
     # Serves the single page react app from the build folder
     @app.route('/')
     def index():
