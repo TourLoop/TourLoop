@@ -1,7 +1,7 @@
 FROM neo4j:latest
 
 # copy over CSV files
-COPY ./csv-files/* /var/lib/neo4j/import
+COPY ./database-files/* /var/lib/neo4j/import
 
 # TOURLOOP FR18 : Rebuild Database
 # follow: https://neo4j.com/docs/operations-manual/current/tools/neo4j-admin-import/

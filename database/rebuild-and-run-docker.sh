@@ -9,8 +9,8 @@ echo "parsing xml file (~1 min?)"
 time python3 osm_xml_to_csv.py
 
 echo "starting container construction"
-mv osm-ways.csv docker-stuff/csv-files/
-mv osm-nodes.csv docker-stuff/csv-files/
+mv osm-ways.csv docker-stuff/database-files/
+mv osm-nodes.csv docker-stuff/database-files/
 
 echo "Stop any existing db containers and reubild one (~3 min?)"
 cd docker-stuff
@@ -19,7 +19,7 @@ docker-compose up --build -d
 
 echo "compress csv files for server export"
 mkdir -p ../server/instance || true
-tar -cvzf tourloop-database.tar.gz csv-files/*.csv
+tar -cvzf tourloop-database.tar.gz database-files/*
 mv tourloop-database.tar.gz ../../server/instance
 
 echo "container should be running..."
