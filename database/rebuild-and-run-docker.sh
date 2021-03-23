@@ -14,6 +14,11 @@ cd docker-stuff
 echo "building container (~3 min?)"
 time ./build.sh
 
+echo "compress csv files for server export"
+mkdir -p ../server/instance || true
+tar -cvzf tourloop-database.tar.gz csv-files/*.csv
+mv tourloop-database.tar.gz ../../server/instance
+
 echo "container built! starting container"
 ./run.sh
 
