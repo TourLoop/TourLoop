@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TOURLOOP FR18 : Rebuild database
+
 # fail if one command fails
 set -e
 
