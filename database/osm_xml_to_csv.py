@@ -19,6 +19,8 @@ class OsmHandler( xml.sax.ContentHandler ):
         self.curr["node"] = None
         self.curr["way"] = None
 
+        self.id_to_coords = dict()
+
         self.parsed = dict()
         self.parsed["node"] = []
         self.parsed["way"] = []
@@ -94,8 +96,9 @@ class OsmHandler( xml.sax.ContentHandler ):
 
     def writeToCsv(self, tag):
         if tag == "way":
-            write_way_csv(self.curr[tag], self.way_f)
+            write_way_csv(self.curr[tag], self.id_to_coords, self.way_f)
         if tag == "node":
+            self.id_to_coords[self.curr[tag]['id']] = (self.curr[tag]['lat'],self.curr[tag]['lon'])
             write_node_csv(self.curr[tag], self.node_f)
 
 
