@@ -1,6 +1,6 @@
 import polyline
 from flask import Blueprint, request
-from flask_api import query_helpers
+import query_helpers
 
 
 from flask_api.db import get_db
