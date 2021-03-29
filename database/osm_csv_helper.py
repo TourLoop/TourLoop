@@ -1,4 +1,5 @@
 import json
+from vincenty_distance import vincenty_inverse as d
 
 #print(len(ways))
 #print(len(nodes))
@@ -39,25 +40,33 @@ def bike_cond(w):
     return False
 
 def distance(a, b):
-    # calc distance between node a and b
-    return 1.0
+    # calculate distance between ("", "") lat-long points
+    a = (float(a[0]), float(a[1]))
+    b = (float(b[0]), float(b[1]))
+    dist = d(a, b)
+    if dist == None:
+        return 1.0
+    else:
+        return dist
 
 def write_node_csv(n, f):
     point_fmt = '"{' + "latitude:{}, longitude:{}".format(n['lat'], n['lon']) + '}"'
     line = "Node,{},{},{},{},".format(n['id'],n['id'],n['lat'],n['lon']) + point_fmt
     f.write(line +"\n")
 
-def write_way_csv(w, f):
+def write_way_csv(w, id_to_coord, f):
     for i in range(len(w['path']) -1):
         j = i+1
         a = w['path'][i]
         b = w['path'][j]
+        dist = distance(id_to_coord[a],id_to_coord[b])
+        p_type = path_type(w)
         f.write("{},{},{},{},{}\n".format(\
             "Way",\
             a,\
             b,\
             '"{}"'.format(path_type(w)),\
-            distance(a,b)))
+            dist))
 
 
 if __name__ == "__main__":
