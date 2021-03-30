@@ -26,7 +26,8 @@ def all_paths():
 @bp.route('', methods=['GET'])
 def demo_pins():
     pinsSearch  = ReturnPins(None, DBWrapper())
-    return pinsSearch.generateRoutes()
+    pinsSearch.generateRoutes()
+    return pinsSearch.getRoutesJson()
 
 
 # http://localhost:5000/api/closest_point?lat=%2253.509905%22&lon=%22-113.541233%22

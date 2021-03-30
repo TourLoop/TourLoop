@@ -6,12 +6,13 @@ from db_wrapper import DBWrapper
 class ReturnPins(SearchAlgorithm):
 
     def generateRoutes(self):
-        routes = self.db_wrapper.getPinsExampleRoutes()
-        return routes_to_json(routes)
-
+        self.routes = self.db_wrapper.getPinsExampleRoutes()
+        return
 
 if __name__ == "__main__":
     search = ReturnPins(None, DBWrapper())
-    res = search.generateRoutes()
+    search.generateRoutes()
+    res = search.getRoutesJson()
+    print(len(res['paths']))
     print(search.getElapsedTime())
     #print(res)
