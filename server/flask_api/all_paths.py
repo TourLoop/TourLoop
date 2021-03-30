@@ -1,6 +1,5 @@
 import polyline
 from flask import Blueprint, request
-import query_helpers
 
 from pins_algo import ReturnPins
 
@@ -36,7 +35,7 @@ def get_closest_point():
     db = get_db()
     lat = request.args.get('lat')
     lon = request.args.get('lon')
-    return query_helpers.closest_point(db, lat, lon)
+    return db.getClosestPoint(lat, lon)
 
 @bp.route('closest_point_to_path', methods=['GET'])
 def get_closest_point_path():
@@ -44,4 +43,4 @@ def get_closest_point_path():
     lat = request.args.get('lat')
     lon = request.args.get('lon')
     pathtype = request.args.get('pathtype')
-    return query_helpers.closest_point_to_pathtype(db, pathtype, lat, lon)
+    return db.getClosestPointToPathtype(pathyype, lat, lon)

@@ -16,6 +16,10 @@ class DBWrapper:
         with self.getSession() as session:
             return closest_point(self.getSession(), lat_string, lon_string)
 
+    def getClosestPointToPathtype(self, path_string, lat_string, lon_string):
+        with self.getSession() as session:
+            return closest_point_to_pathtype(self.getSession(), path_string, lat_string, lon_string)
+
     def getPinsExampleRoutes(self):
         pins_query = """
         match (start:Node {id: "2815578994"}) // pick a point on keilor
