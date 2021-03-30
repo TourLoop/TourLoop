@@ -9,10 +9,3 @@ class ReturnPins(SearchAlgorithm):
         self.routes = self.db_wrapper.getPinsExampleRoutes()
         return
 
-if __name__ == "__main__":
-    search = ReturnPins(None, DBWrapper())
-    search.generateRoutes()
-    res = search.getRoutesJson()
-    print(len(res['paths']))
-    print(search.getElapsedTime())
-    #print(res)
