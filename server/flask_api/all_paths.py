@@ -2,7 +2,6 @@ import polyline
 from flask import Blueprint, request
 import query_helpers
 
-from db_wrapper import DBWrapper
 from pins_algo import ReturnPins
 
 from flask_api.db import get_db
@@ -25,7 +24,7 @@ def all_paths():
 
 @bp.route('', methods=['GET'])
 def demo_pins():
-    pinsSearch  = ReturnPins(None, DBWrapper())
+    pinsSearch  = ReturnPins(None, get_db())
     pinsSearch.generateRoutes()
     return pinsSearch.getRoutesJson()
 
