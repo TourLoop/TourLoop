@@ -16,6 +16,19 @@ class DBWrapper:
         with self.getSession() as session:
             return closest_point(self.getSession(), lat_string, lon_string)
 
+    def getNeighbours(self, currentId, max_path_length):
+        neigh_q = """
+        match (start:Node {id: $currentId})
+        match (start:Node)-[w:Way]-(nxt:Node)
+        where w.dist < $maxD
+        return nxt, w
+        order by w.pathType
+        """
+        with self.getSession() as session:
+            res = session.run(neigh_q, currentId=currentId, maxD=max_path_length)
+            # r in res is dict('nxt', 'pathtype')
+            return res
+
     def getClosestPointToPathtype(self, path_string, lat_string, lon_string):
         with self.getSession() as session:
             return closest_point_to_pathtype(self.getSession(), path_string, lat_string, lon_string)
