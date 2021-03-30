@@ -9,7 +9,8 @@ class DBWrapper:
         return self.driver.session()
 
     def getClosestPoint(self, lat_string, lon_string):
-        return closest_point(self.getSession(), lat_string, lon_string)
+        with self.getSession() as session:
+            return closest_point(self.getSession(), lat_string, lon_string)
 
     def getPinsExampleRoutes(self):
         pins_query = """
@@ -34,12 +35,14 @@ class DBWrapper:
         return c, d, nodes, ways
         order by d
         """
-        res = self.getSession().run(pins_query)
-        # res has many rows
-        # res.data() returns a list of these rows
-        # each row has keys : ['c', 'd', 'nodes', 'ways']
+        routes = []
+        with self.getSession() as session:
+            res = self.getSession().run(pins_query)
+            # res has many rows
+            # res.data() returns a list of these rows
+            # each row has keys : ['c', 'd', 'nodes', 'ways']
 
-        # one route is a list of node json objects
-        routes = [row['nodes'] for row in res]
+            # one route is a list of node json objects
+            routes = [row['nodes'] for row in res]
         return routes
 
