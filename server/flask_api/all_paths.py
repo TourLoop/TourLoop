@@ -2,13 +2,15 @@ import polyline
 from flask import Blueprint, request
 import query_helpers
 
+from db_wrapper import DBWrapper
+from pins_algo import ReturnPins
 
 from flask_api.db import get_db
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 
-@bp.route('', methods=['GET'])
+@bp.route('testroutes', methods=['GET'])
 def all_paths():
     db = get_db()
 
@@ -19,6 +21,12 @@ def all_paths():
     paths["paths"].append(polyline.encode(
         [(53.522907, -113.620026), (53.534730, -113.589917), (53.558614, -113.584600)], 6))
     return paths
+
+
+@bp.route('', methods=['GET'])
+def demo_pins():
+    pinsSearch  = ReturnPins(None, DBWrapper())
+    return pinsSearch.generateRoutes()
 
 
 # http://localhost:5000/api/closest_point?lat=%2253.509905%22&lon=%22-113.541233%22
