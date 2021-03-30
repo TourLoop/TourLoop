@@ -1,13 +1,12 @@
 from flask import current_app, g
-from neo4j import GraphDatabase, basic_auth
-
+from db_wrapper import DBWrapper
 
 def get_db():
     if not hasattr(g, 'db'):
-        driver = GraphDatabase.driver(
-            current_app.config['DATABASE_URL'],
-            auth=basic_auth(current_app.config['DATABASE_USERNAME'], current_app.config['DATABASE_SECRET_KEY']))
-        g.db = driver.session()
+        g.db = DBWrapper(\
+            current_app.config['DATABASE_URL'],\
+            current_app.config['DATABASE_USERNAME'],\
+            current_app.config['DATABASE_SECRET_KEY'])
     return g.db
 
 
