@@ -2,7 +2,8 @@ from query_helpers import get_neo4j_driver, closest_point
 from neo4j import GraphDatabase, basic_auth
 
 class DBWrapper:
-    def __init__(self, driver=get_neo4j_driver()):
+    def __init__(self, uri, username, password):
+        driver = GraphDatabase.driver(uri, auth=basic_auth(username, password))
         self.driver = driver
 
     def close(self):
