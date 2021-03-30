@@ -5,6 +5,9 @@ class DBWrapper:
     def __init__(self, driver=get_neo4j_driver()):
         self.driver = driver
 
+    def close(self):
+        self.driver.close()
+
     def getSession(self):
         return self.driver.session()
 
