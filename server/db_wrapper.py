@@ -18,7 +18,7 @@ class DBWrapper:
 
     def getNeighbours(self, currentId, max_path_length):
         neigh_q = """
-        match (start:Node {id: $currentId})
+        match (start:Node {id: '$currentId'})
         match (start:Node)-[w:Way]-(nxt:Node)
         where w.dist < $maxD
         return nxt, w
