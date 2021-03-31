@@ -2,6 +2,7 @@ from search_algos import *
 from db_wrapper import DBWrapper
 from heapq import heappush, heappop
 import copy
+from functools import total_ordering
 
 
 # this is a fake search algorithm which demos how to return routes
@@ -23,11 +24,14 @@ class BFS(SearchAlgorithm):
 
         # add start point to frontiner
         mock_row = start_row
-        self.frontier = [(0,Path(mock_row,\
+        self.frontier = [Path(mock_row,\
                 self.options.getPathType(),\
                 self.options.getTargetDistance(),\
-                goal_node['id']))]
+                goal_node['id'])]
 
+
+        print(goal_node['id'])
+        print(start_node['id'])
         # ----- itterative BFS ------
         count = 0
         while True:
@@ -38,7 +42,7 @@ class BFS(SearchAlgorithm):
                 print("didn't find solution")
                 return
 
-            _, curr = heappop(self.frontier) # let curr: Path, ignore weight
+            curr = heappop(self.frontier) # let curr: Path, ignore weight
 
             # bad path, skip
             if curr.isInvalid():
@@ -62,15 +66,15 @@ class BFS(SearchAlgorithm):
                     print("found a solution")
                     return
                 # push path to frontiner
-                weight = new_path.getWeight()
-                # TODO: <bug> can't break when there are equal weights
-                heappush(self.frontier, (weight,new_path))
+                heappush(self.frontier, new_path)
 
 
 
 def mockRow(node_id, dist, path_type="bike"):
     return {'node':{'id':node_id}, 'p_type':path_type, 'dist':dist}
 
+
+@total_ordering
 class Path:
     """
 >>> p1 = Path(mockRow(1, 0), "", 10.0, 10)
@@ -141,12 +145,20 @@ class Path:
     def getWeight(self):
         return self.total_d
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.getWeight() == other.getWeight()
+
+    def __lt__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.getWeight() < other.getWeight()
+
 
 if __name__ == "__main__":
     from path_options import *
     from db_wrapper import *
     db = DBWrapper('bolt://localhost:7687', 'neo4j', 'test')
-    ops = PathOptions((53.509905, -113.541233),(53.509905, -113.541233), None, 4.0, "")
+    ops = PathOptions((53.509905, -113.541233),(53.508098, -113.545846), None, 4.0, "")
     search = BFS(ops, db)
     search.generateRoutes()
     print(search.getElapsedTime())
