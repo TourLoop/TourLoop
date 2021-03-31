@@ -49,9 +49,10 @@ class BFS(SearchAlgorithm):
                 continue
 
             # not solution, keep searching
-            rows = self.db_wrapper.getNeighbours(\
-                        curr.getCurrentId(),\
-                        curr.getRemainingD())
+            rows = self.db_wrapper.getNeighbours(
+                        curr.getCurrentId(),
+                        curr.getRemainingD(),
+                        None)
 
             # insert neighbours into frontier
             print("iter: {}, new_nodes: {}".format(count, len(rows)))
@@ -117,6 +118,10 @@ class Path:
         for n in row['nodes']:
             # TODO: <bug> solution may no longer be at end
             self.node_list.append(n)
+            if n['id'] == self.goal_id:
+                # goal found within n-hops neighbours
+                # TODO: <bug> rollback diatance and pathcount
+                break
         self.updateD(row)
         self.updatePathCount(row)
         self.backtrackSafeCheck(old_index)
