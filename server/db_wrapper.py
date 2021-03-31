@@ -18,16 +18,17 @@ class DBWrapper:
 
     def getNeighbours(self, currentId, max_path_length):
         neigh_q = """
-        match (start:Node {id: '$currentId'})
+        match (start:Node {id: '""" + str(currentId) + """'})
         match (start:Node)-[w:Way]-(nxt:Node)
-        where w.dist < $maxD
-        return nxt, w
+        where w.dist < """ + str(max_path_length) + """
+        with *, w.pathType as p_type
+        with *, w.dist as dist
+        return node, dist, p_type
         order by w.pathType
         """
         with self.getSession() as session:
-            res = session.run(neigh_q, currentId=currentId, maxD=max_path_length)
-            # r in res is dict('nxt', 'pathtype')
-            return res.data()
+            res = session.run(neigh_q)
+            return [ r.data() for r in res]
 
     def getClosestPointToPathtype(self, path_string, lat_string, lon_string):
         with self.getSession() as session:
