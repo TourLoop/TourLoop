@@ -146,7 +146,7 @@ if __name__ == "__main__":
     from path_options import *
     from db_wrapper import *
     db = DBWrapper('bolt://localhost:7687', 'neo4j', 'test')
-    ops = PathOptions((53.509905, -113.541233),(53.509905, -113.541233), None, 1.0, "")
+    ops = PathOptions((53.509905, -113.541233),(53.509905, -113.541233), None, 4.0, "")
     search = BFS(ops, db)
     search.generateRoutes()
     print(search.getElapsedTime())
