@@ -4,7 +4,8 @@ import json
 import os
 from osm_csv_helper import *
 
-class OsmHandler( xml.sax.ContentHandler ):
+
+class OsmHandler(xml.sax.ContentHandler):
     def __init__(self):
         self.CurrentData = ""
         self.curr_tag = None
@@ -14,6 +15,8 @@ class OsmHandler( xml.sax.ContentHandler ):
 #        self.way_f.write("id,type,distance,a,b\n")
 #        self.node_f.write("id,lat,lon\n")
 
+        self.all_paths_f = open("all_paths.txt", 'w')
+        self.all_bike_paths_f = open("all_bike_paths.txt", 'w')
 
         self.curr = dict()
         self.curr["node"] = None
@@ -91,16 +94,17 @@ class OsmHandler( xml.sax.ContentHandler ):
         # finished a node or a way
         if self.curr_tag == tag:
             self.curr_tag = None
-            #self.parsed[tag].append(self.curr[tag])
+            # self.parsed[tag].append(self.curr[tag])
             self.writeToCsv(tag)
 
     def writeToCsv(self, tag):
         if tag == "way":
-            write_way_csv(self.curr[tag], self.id_to_coords, self.way_f)
+            write_way_csv(self.curr[tag], self.id_to_coords,
+                          self.way_f, self.all_paths_f, self.all_bike_paths_f)
         if tag == "node":
-            self.id_to_coords[self.curr[tag]['id']] = (self.curr[tag]['lat'],self.curr[tag]['lon'])
+            self.id_to_coords[self.curr[tag]['id']] = (
+                self.curr[tag]['lat'], self.curr[tag]['lon'])
             write_node_csv(self.curr[tag], self.node_f)
-
 
 
 # TOURLOOP FR17 : Clean OpenStreetMap data
@@ -115,7 +119,7 @@ def main():
 
     # override the default ContextHandler
     Handler = OsmHandler()
-    parser.setContentHandler( Handler )
+    parser.setContentHandler(Handler)
 
     parser.parse("../raw-data/edmonton-OSM-data.xml")
 
