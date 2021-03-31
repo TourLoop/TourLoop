@@ -19,8 +19,7 @@ class BFS(SearchAlgorithm):
             str(self.options.getEnd()[0]),\
             str(self.options.getEnd()[1]))
 
-        zero_way = {'dist': 0.0, 'pathType': "fake"}
-        start_row = {'nxt': start_node, 'w': zero_way}
+        start_row = {'node': start_node, 'p_type': 'fake', 'dist': 0.0}
 
         # add start point to frontiner
         mock_row = start_row
@@ -33,7 +32,7 @@ class BFS(SearchAlgorithm):
         count = 0
         while True:
             count += 1
-            print(count, end='\r')
+            print(count)
 
             # no more paths
             if len(self.frontier) == 0:
@@ -52,9 +51,8 @@ class BFS(SearchAlgorithm):
                         curr.getRemainingD())
 
             # insert neighbours into frontier
-            n_count = 0
             for row in rows:
-                n_count += 1
+                #print(row)
                 new_path = copy.deepcopy(curr)
                 new_path.addRow(row)
                 # TODO: <bug> if multiple goals are in neighs...
@@ -68,8 +66,30 @@ class BFS(SearchAlgorithm):
 
 
 
+def mockRow(node_id, dist, path_type="bike"):
+    return {'node':{'id':node_id}, 'p_type':path_type, 'dist':dist}
+
 class Path:
     # TODO: unit tests
+    """
+>>> p1 = Path(mockRow(1, 0), "", 10.0, 10)
+>>> p1.addRow(mockRow(2, 0.1))
+>>> assert len(p1.node_list) == 2
+>>> assert p1.isGoal() == False
+>>> assert p1.isInvalid() == False
+>>> p1.addRow(mockRow(3, 0.1))
+>>> assert len(p1.node_list) == 3
+>>> assert p1.isGoal() == False
+>>> assert p1.isInvalid() == False
+>>> p1.addRow(mockRow(4, 0.1))
+>>> assert len(p1.node_list) == 4
+>>> assert p1.isGoal() == False
+>>> assert p1.isInvalid() == False
+>>> p1.addRow(mockRow(10, 0.1))
+>>> assert len(p1.node_list) == 5
+>>> assert p1.isInvalid() == False
+>>> assert p1.isGoal() == True
+    """
     def __init__(self, start_row, path_pref, max_d, goal_id):
         self.node_list = []
         self.pref_path_count = 0
@@ -82,18 +102,18 @@ class Path:
         self.addRow(start_row)
 
     def addRow(self, row):
-        self.node_list.append(row['nxt'])
+        self.node_list.append(row['node'])
         self.updateD(row)
         self.updatePathCount(row)
         self.backtrackSafeCheck()
 
     def updateD(self, row):
-        self.total_d += row['w']['dist']
+        self.total_d += row['dist']
         if self.total_d >= self.max_d:
             self.over_d = True
 
     def updatePathCount(self, row):
-        if row['w']['pathType'] == self.pref_path:
+        if row['p_type'] == self.pref_path:
             self.pref_path_count += 1
 
     def isGoal(self):
