@@ -20,7 +20,7 @@ class BFS(SearchAlgorithm):
             str(self.options.getEnd()[0]),\
             str(self.options.getEnd()[1]))
 
-        start_row = mockRow(start_node['id'], 0, 0):
+        start_row = mockRow(start_node['id'], 0, 0)
 
         # add start point to frontiner
         mock_row = start_row
@@ -94,6 +94,12 @@ class Path:
 >>> assert len(p1.node_list) == 5
 >>> assert p1.isInvalid() == False
 >>> assert p1.isGoal() == True
+>>> back = Path(mockRow(1, 0, 0), "", 10, 10)
+>>> assert not back.isInvalid()
+>>> back.addRow(mockRow(2, 0.1, 1))
+>>> assert not back.isInvalid()
+>>> back.addRow(mockRow(1, 0.1, 1))
+>>> assert back.isInvalid()
     """
     def __init__(self, start_row, path_pref, max_d, goal_id):
         self.node_list = []
@@ -107,11 +113,13 @@ class Path:
         self.addRow(start_row)
 
     def addRow(self, row):
+        old_index = len(self.node_list)
         for n in row['nodes']:
+            # TODO: <bug> solution may no longer be at end
             self.node_list.append(n)
         self.updateD(row)
         self.updatePathCount(row)
-        self.backtrackSafeCheck()
+        self.backtrackSafeCheck(old_index)
 
     def updateD(self, row):
         self.total_d += row['path_d']
@@ -127,14 +135,16 @@ class Path:
     def isInvalid(self):
         return self.over_d or not self.backtrack_valid
 
-    def backtrackSafeCheck(self):
+    def backtrackSafeCheck(self, start_index):
         if len(self.node_list) < 3:
-            self.backtrack_valid = True
+            self.backtrac_valid = True
             return
-        a = self.node_list[-1]['id']
-        b = self.node_list[-2]['id']
-        c = self.node_list[-3]['id']
-        self.backtrack_valid = a != c
+        for i in range(start_index, len(self.node_list)):
+            a = self.node_list[i]['id']
+            c = self.node_list[i-2]['id']
+            if a == c:
+                self.backtrack_valid = False
+                return
 
     def getCurrentId(self):
         return self.node_list[-1]['id']
