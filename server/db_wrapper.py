@@ -27,7 +27,7 @@ class DBWrapper:
         with self.getSession() as session:
             res = session.run(neigh_q, currentId=currentId, maxD=max_path_length)
             # r in res is dict('nxt', 'pathtype')
-            return res
+            return res.data()
 
     def getClosestPointToPathtype(self, path_string, lat_string, lon_string):
         with self.getSession() as session:
