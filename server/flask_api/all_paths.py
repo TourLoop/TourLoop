@@ -1,6 +1,5 @@
 import polyline
-from flask import Blueprint, request
-
+from flask import Blueprint, request, send_file
 from pins_algo import ReturnPins
 
 from flask_api.db import get_db
@@ -8,9 +7,8 @@ from flask_api.db import get_db
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 
-@bp.route('testroutes', methods=['GET'])
-def all_paths():
-    db = get_db()
+@bp.route('sample', methods=['GET'])
+def sample():
 
     paths = {"paths": []}
     paths["paths"].append(polyline.encode([(53.513998, -113.523167), (53.523108, -113.501408),
@@ -20,6 +18,15 @@ def all_paths():
         [(53.522907, -113.620026), (53.534730, -113.589917), (53.558614, -113.584600)], 6))
     return paths
 
+
+@bp.route('allpaths', methods=['GET'])
+def all_paths():
+    return send_file("../instance/all_paths.txt")
+
+
+@bp.route('allbikepaths', methods=['GET'])
+def all_bike_paths():
+    return send_file("../instance/all_bike_paths.txt")
 
 @bp.route('', methods=['GET'])
 def demo_pins():
@@ -36,6 +43,7 @@ def get_closest_point():
     lat = request.args.get('lat')
     lon = request.args.get('lon')
     return db.getClosestPoint(lat, lon)
+
 
 @bp.route('closest_point_to_path', methods=['GET'])
 def get_closest_point_path():
