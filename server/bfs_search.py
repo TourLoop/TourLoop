@@ -70,27 +70,27 @@ class BFS(SearchAlgorithm):
 
 
 
-def mockRow(node_id, dist, path_type="bike"):
-    return {'node':{'id':node_id}, 'p_type':path_type, 'dist':dist}
+def mockRow(node_id, dist, path_count):
+    return {'nodes':[{'id':node_id}], 'c':path_count, 'path_d':dist}
 
 
 @total_ordering
 class Path:
     """
->>> p1 = Path(mockRow(1, 0), "", 10.0, 10)
->>> p1.addRow(mockRow(2, 0.1))
+>>> p1 = Path(mockRow(1, 0, 0), "", 10.0, 10)
+>>> p1.addRow(mockRow(2, 0.1, 1))
 >>> assert len(p1.node_list) == 2
 >>> assert p1.isGoal() == False
 >>> assert p1.isInvalid() == False
->>> p1.addRow(mockRow(3, 0.1))
+>>> p1.addRow(mockRow(3, 0.1, 1))
 >>> assert len(p1.node_list) == 3
 >>> assert p1.isGoal() == False
 >>> assert p1.isInvalid() == False
->>> p1.addRow(mockRow(4, 0.1))
+>>> p1.addRow(mockRow(4, 0.1, 2))
 >>> assert len(p1.node_list) == 4
 >>> assert p1.isGoal() == False
 >>> assert p1.isInvalid() == False
->>> p1.addRow(mockRow(10, 0.1))
+>>> p1.addRow(mockRow(10, 0.1, 1))
 >>> assert len(p1.node_list) == 5
 >>> assert p1.isInvalid() == False
 >>> assert p1.isGoal() == True
@@ -107,19 +107,19 @@ class Path:
         self.addRow(start_row)
 
     def addRow(self, row):
-        self.node_list.append(row['node'])
+        for n in row['nodes']:
+            self.node_list.append(n)
         self.updateD(row)
         self.updatePathCount(row)
         self.backtrackSafeCheck()
 
     def updateD(self, row):
-        self.total_d += row['dist']
+        self.total_d += row['path_d']
         if self.total_d >= self.max_d:
             self.over_d = True
 
     def updatePathCount(self, row):
-        if row['p_type'] == self.pref_path:
-            self.pref_path_count += 1
+        self.pref_path_count += row['c']
 
     def isGoal(self):
         return len(self.node_list) >= 3 and self.goal_id == self.node_list[-1]['id'] and not self.isInvalid()
