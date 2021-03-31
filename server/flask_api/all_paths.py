@@ -1,5 +1,6 @@
 import polyline
-from flask import Blueprint, request
+
+from flask import Blueprint, request, send_file
 import query_helpers
 
 
@@ -9,8 +10,7 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 
 
 @bp.route('', methods=['GET'])
-def all_paths():
-    db = get_db()
+def sample():
 
     paths = {"paths": []}
     paths["paths"].append(polyline.encode([(53.513998, -113.523167), (53.523108, -113.501408),
@@ -21,6 +21,16 @@ def all_paths():
     return paths
 
 
+@bp.route('allpaths', methods=['GET'])
+def all_paths():
+    return send_file("../instance/all_paths.txt")
+
+
+@bp.route('allbikepaths', methods=['GET'])
+def all_bike_paths():
+    return send_file("../instance/all_bike_paths.txt")
+
+
 # http://localhost:5000/api/closest_point?lat=%2253.509905%22&lon=%22-113.541233%22
 # return {"lat":53.5714699,"lon":-113.6278968}
 @bp.route('closest_point', methods=['GET'])
@@ -29,6 +39,7 @@ def get_closest_point():
     lat = request.args.get('lat')
     lon = request.args.get('lon')
     return query_helpers.closest_point(db, lat, lon)
+
 
 @bp.route('closest_point_to_path', methods=['GET'])
 def get_closest_point_path():
