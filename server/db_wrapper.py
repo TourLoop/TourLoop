@@ -16,15 +16,28 @@ class DBWrapper:
         with self.getSession() as session:
             return closest_point(self.getSession(), lat_string, lon_string)
 
-    def getNeighbours(self, currentId, max_path_length):
+    def getNeighbours(self, currentId, max_path_length, path_pref, hop_count=20):
         neigh_q = """
-        match (start:Node {id: '""" + str(currentId) + """'})
-        match (start:Node)-[w:Way]-(node:Node)
-        where w.dist < """ + str(max_path_length) + """
-        with *, w.pathType as p_type
-        with *, w.dist as dist
-        return node, dist, p_type
-        order by w.pathType
+        match (start:Node {id: '""" + str(currentId) + """'}) // pick a point on keilor
+        match p = (start)-[:Way*""" + str(hop_count) + """]-(:Node) // get a path
+        CALL { // calculate distnace of p
+            with p
+            UNWIND relationships(p) as w
+            with sum(w.dist) as d
+            return d
+        }
+        with p, d as path_d
+        WHERE path_d < """ +str(max_path_length) + """  // sift out over distance paths
+        CALL { // calculate # of bike segments in path
+            with p
+            UNWIND relationships(p) as w
+            with w as W
+            where W.pathType = '""" + str(path_pref) + """'
+            with count(W) as c
+            return c
+        }
+        with path_d, c, nodes(p) AS nodes
+        return path_d, c, nodes
         """
         with self.getSession() as session:
             res = session.run(neigh_q)
