@@ -1,6 +1,8 @@
 import polyline
 from flask import Blueprint, request, send_file
 from pins_algo import ReturnPins
+from path_options import PathOptions
+from bfs_search import BFS
 
 from flask_api.db import get_db
 
@@ -28,7 +30,7 @@ def all_paths():
 def all_bike_paths():
     return send_file("../instance/all_bike_paths.txt")
 
-@bp.route('', methods=['GET'])
+@bp.route('pins', methods=['GET'])
 def demo_pins():
     pinsSearch  = ReturnPins(None, get_db())
     pinsSearch.generateRoutes()
@@ -52,3 +54,13 @@ def get_closest_point_path():
     lon = request.args.get('lon')
     pathtype = request.args.get('pathtype')
     return db.getClosestPointToPathtype(pathyype, lat, lon)
+
+
+@bp.route('', methods=['GET'])
+def bfs_demo():
+    db = get_db()
+    ops = PathOptions((53.509905, -113.541233),(53.508098, -113.545846), None, 4.0, "")
+    search = BFS(ops, db)
+    search.generateRoutes()
+    print(search.getElapsedTime())
+    return search.getRoutesJson()
