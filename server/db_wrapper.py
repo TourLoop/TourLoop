@@ -19,7 +19,7 @@ class DBWrapper:
     def getNeighbours(self, currentId, max_path_length):
         neigh_q = """
         match (start:Node {id: '""" + str(currentId) + """'})
-        match (start:Node)-[w:Way]-(nxt:Node)
+        match (start:Node)-[w:Way]-(node:Node)
         where w.dist < """ + str(max_path_length) + """
         with *, w.pathType as p_type
         with *, w.dist as dist
