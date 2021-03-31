@@ -20,7 +20,7 @@ class BFS(SearchAlgorithm):
             str(self.options.getEnd()[0]),\
             str(self.options.getEnd()[1]))
 
-        start_row = {'node': start_node, 'p_type': 'fake', 'dist': 0.0}
+        start_row = mockRow(start_node['id'], 0, 0):
 
         # add start point to frontiner
         mock_row = start_row
