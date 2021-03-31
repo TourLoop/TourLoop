@@ -33,7 +33,14 @@ def closest_point(session, lat_string, lon_string):
     {'lat': 53.5714699, 'lon': -113.6278968}
     """
     #print("finding closest point...")
-    res = session.run(closest_point_query, lat=lat_string, lon=lon_string)
+    q = """
+    MATCH (n:Node)
+    WITH n, abs(""" + lat_string + """ - n.lat) + abs(""" +lon_string + """ - n.lon) AS d
+    ORDER BY d
+    limit 1
+    RETURN n
+    """
+    res = session.run(q, lat=lat_string, lon=lon_string)
     return res.single().data()['n']
 
 # TOURLOOP FR3 : Closest Node point
