@@ -32,14 +32,13 @@ class BFS(SearchAlgorithm):
         count = 0
         while True:
             count += 1
-            print(count)
 
             # no more paths
             if len(self.frontier) == 0:
+                print("didn't find solution")
                 return
 
             _, curr = heappop(self.frontier) # let curr: Path, ignore weight
-
 
             # bad path, skip
             if curr.isInvalid():
@@ -51,17 +50,20 @@ class BFS(SearchAlgorithm):
                         curr.getRemainingD())
 
             # insert neighbours into frontier
+            print("iter: {}, new_nodes: {}".format(count, len(rows)))
             for row in rows:
                 #print(row)
                 new_path = copy.deepcopy(curr)
                 new_path.addRow(row)
                 # TODO: <bug> if multiple goals are in neighs...
                 # found sol
-                if p.isGoal():
-                    self.routes.append(p.node_list)
+                if new_path.isGoal():
+                    self.routes.append(new_path.node_list)
+                    print("found a solution")
                     return
                 # push path to frontiner
                 weight = new_path.getWeight()
+                # TODO: <bug> can't break when there are equal weights
                 heappush(self.frontier, (weight,new_path))
 
 
@@ -70,7 +72,6 @@ def mockRow(node_id, dist, path_type="bike"):
     return {'node':{'id':node_id}, 'p_type':path_type, 'dist':dist}
 
 class Path:
-    # TODO: unit tests
     """
 >>> p1 = Path(mockRow(1, 0), "", 10.0, 10)
 >>> p1.addRow(mockRow(2, 0.1))
