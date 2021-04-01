@@ -3,6 +3,8 @@ from db_wrapper import DBWrapper
 from heapq import heappush, heappop
 import copy
 from functools import total_ordering
+from time import time
+from vincenty_distance import vincenty
 
 
 # this is a fake search algorithm which demos how to return routes
@@ -13,10 +15,10 @@ class BFS(SearchAlgorithm):
         # since getStart() != start_node
         # since getEnd() != end_node
 
-        goal_node = self.db_wrapper.getClosestPoint(\
+        start_node = self.db_wrapper.getClosestPoint(\
             str(self.options.getStart()[0]),\
             str(self.options.getStart()[1]))
-        start_node = self.db_wrapper.getClosestPoint(\
+        goal_node = self.db_wrapper.getClosestPoint(\
             str(self.options.getEnd()[0]),\
             str(self.options.getEnd()[1]))
 
@@ -27,11 +29,12 @@ class BFS(SearchAlgorithm):
         self.frontier = [Path(mock_row,\
                 self.options.getPathType(),\
                 self.options.getTargetDistance(),\
-                goal_node['id'])]
+                goal_node['id'],
+                (goal_node['lat'],goal_node['lon']) )]
 
 
-        print(goal_node['id'])
         print(start_node['id'])
+        print(goal_node['id'])
         # ----- itterative BFS ------
         count = 0
         while True:
@@ -48,14 +51,20 @@ class BFS(SearchAlgorithm):
             if curr.isInvalid():
                 continue
 
+            print("{}, {}".format(curr.node_list[-1]['lat'],curr.node_list[-1]['lon']))
+
             # not solution, keep searching
+            q_s = time()
             rows = self.db_wrapper.getNeighbours(
                         curr.getCurrentId(),
                         curr.getRemainingD(),
-                        None)
+                        None,
+                        10)
+            q_t = time() - q_s
 
             # insert neighbours into frontier
-            print("iter: {}, new_nodes: {}".format(count, len(rows)))
+            print("iter: {}, row_#: {}, front: {}".format(count, len(rows), len(self.frontier)))
+            p_s = time()
             for row in rows:
                 #print(row)
                 new_path = copy.deepcopy(curr)
@@ -68,17 +77,20 @@ class BFS(SearchAlgorithm):
                     return
                 # push path to frontiner
                 heappush(self.frontier, new_path)
+            p_t = time() - p_s
+            print("q: {}, p: {}".format(q_t, p_t))
+            print("")
 
 
 
 def mockRow(node_id, dist, path_count):
-    return {'nodes':[{'id':node_id}], 'c':path_count, 'path_d':dist}
+    return {'nodes':[{'id':node_id, 'lat':0, 'lon':0}], 'c':path_count, 'path_d':dist}
 
 
 @total_ordering
 class Path:
     """
->>> p1 = Path(mockRow(1, 0, 0), "", 10.0, 10)
+>>> p1 = Path(mockRow(1, 0, 0), "", 10.0, 10, (0,0))
 >>> p1.addRow(mockRow(2, 0.1, 1))
 >>> assert len(p1.node_list) == 2
 >>> assert p1.isGoal() == False
@@ -95,14 +107,14 @@ class Path:
 >>> assert len(p1.node_list) == 5
 >>> assert p1.isInvalid() == False
 >>> assert p1.isGoal() == True
->>> back = Path(mockRow(1, 0, 0), "", 10, 10)
+>>> back = Path(mockRow(1, 0, 0), "", 10, 10, (0,0))
 >>> assert not back.isInvalid()
 >>> back.addRow(mockRow(2, 0.1, 1))
 >>> assert not back.isInvalid()
 >>> back.addRow(mockRow(1, 0.1, 1))
 >>> assert back.isInvalid()
     """
-    def __init__(self, start_row, path_pref, max_d, goal_id):
+    def __init__(self, start_row, path_pref, max_d, goal_id, goal_point):
         self.node_list = []
         self.pref_path_count = 0
         self.pref_path = path_pref
@@ -111,6 +123,7 @@ class Path:
         self.over_d = False
         self.backtrack_valid = True
         self.goal_id = goal_id
+        self.goal_point = goal_point
         self.addRow(start_row)
 
     def addRow(self, row):
@@ -158,7 +171,8 @@ class Path:
         return self.max_d - self.total_d
 
     def getWeight(self):
-        return self.total_d
+        d_approx = vincenty((self.node_list[-1]['lat'], self.node_list[-1]['lon']), self.goal_point)
+        return self.total_d + d_approx
 
     def __eq__(self, other):
         if not isinstance(other, type(self)): return NotImplemented
@@ -173,7 +187,7 @@ if __name__ == "__main__":
     from path_options import *
     from db_wrapper import *
     db = DBWrapper('bolt://localhost:7687', 'neo4j', 'test')
-    ops = PathOptions((53.509905, -113.541233),(53.508098, -113.545846), None, 4.0, "")
+    ops = PathOptions((53.509905, -113.541233),(53.504764, -113.560748), None, 4.0, "")
     search = BFS(ops, db)
     search.generateRoutes()
     print(search.getElapsedTime())
