@@ -9,6 +9,10 @@ WORKDIR /var/lib/neo4j/import
 RUN neo4j-admin import --nodes ./node-headers.csv,./osm-nodes.csv --relationships ./way-headers.csv,./osm-ways.csv
 WORKDIR /var/lib/neo4j
 
+# following: https://neo4j.com/labs/apoc/4.0/installation/#docker
+# could do: wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/4.0.0.18/apoc-4.0.0.18-all.jar
+COPY ./apoc-*.jar /var/lib/neo4j/plugins
+
 # from the official neo4j container
 EXPOSE 7474 7473 7687
 ENTRYPOINT ["/sbin/tini", "-g", "--", "/docker-entrypoint.sh"]
