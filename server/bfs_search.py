@@ -31,6 +31,7 @@ class BFS(SearchAlgorithm):
                 self.options.getTargetDistance(),\
                 goal_node['id'],
                 (goal_node['lat'],goal_node['lon']) )]
+        last_id = None
 
 
         print(start_node['id'])
@@ -46,6 +47,12 @@ class BFS(SearchAlgorithm):
                 return
 
             curr = heappop(self.frontier) # let curr: Path, ignore weight
+
+            # popuntil we're starting from somewhere new
+            while curr.node_list[-1]['id'] == last_id:
+                curr = heappop(self.frontier)
+            last_id = curr.node_list[-1]['id']
+
 
             # bad path, skip
             if curr.isInvalid():
