@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 
 const ALLPATHS = "ALLPATHS";
 const ALLBIKEPATHS = "ALLBIKEPATHS";
+const ALGO2 = "ALGO2";
 
 function App() {
   // polylines is of type
@@ -55,6 +56,24 @@ function App() {
         )
     }
   }
+
+  useEffect(() => {
+    fetch("/api")
+      .then(res => res.json())
+      .then((line) => {
+        let latLngs = [{ "path": [], display: true, id: ALGO2, color: "#FF6347" }];
+        var p = decode(line.path, 6)
+        for (let j = 0; j < p.length; j++) {
+          latLngs[0].path.push({ lat: p[j][0], lng: p[j][1] });
+        }
+        console.log(latLngs)
+        setPolylines(latLngs)
+      },
+        (error) => {
+          console.log(error)
+        }
+      )
+  }, []);
 
   return (
     <div className='app'>
