@@ -101,8 +101,3 @@ class DBWrapper:
 def record_to_lat_lon_dict(record):
     # TODO: handle record keys len!=1 and name != 'n'
     return {'lat': record.data()['n']['lat'], 'lon': record.data()['n']['lon']}
-
-
-if __name__ == "__main__":
-    d = DBWrapper("bolt://localhost:7687", "neo4j", "test")
-    print(d.getClosestPoint('53.509905', '-113.541233'))
