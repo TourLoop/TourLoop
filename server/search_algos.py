@@ -1,6 +1,7 @@
 from time import time
 import polyline
 
+
 def node_list_to_polyline(node_list, accuracy=6):
     return polyline.encode([(float(n['lat']), float(n['lon'])) for n in node_list], accuracy)
 
@@ -8,7 +9,7 @@ def node_list_to_polyline(node_list, accuracy=6):
 class SearchAlgorithm:
 
     def __init__(self, options, db):
-        self.start_time = time()
+        self.start_time = None
         self.elapsed_time = None
         self.options = options
         self.frontier = []
@@ -26,5 +27,4 @@ class SearchAlgorithm:
         return
 
     def getRoutesJson(self):
-        return {"paths": [node_list_to_polyline(r) for r in self.routes] }
-
+        return {"paths": [node_list_to_polyline(r) for r in self.routes]}
