@@ -81,10 +81,13 @@ const Sidebar = props => {
           className='rounded text-blue-500 mb-4'
         />
 
-        <label htmlFor='startLoction'>Start Location</label>
+        <label htmlFor='startLocation'>Start Location</label>
         <input
-          {...register('startLoction', { required: true, valueAsNumber: true })}
-          id='startLoction'
+          {...register('startLocation', {
+            required: true,
+            valueAsNumber: true,
+          })}
+          id='startLocation'
           type='text'
           className='input'
         />
