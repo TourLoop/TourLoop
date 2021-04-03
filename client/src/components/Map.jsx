@@ -29,7 +29,10 @@ const Map = props => {
               visible: polyline.display,
               zIndex: 1,
             };
-            return < Polyline key={i} path={polyline.path} options={opt} />
+            return polyline.paths.map((path, j) => {
+              return < Polyline key={j} path={path} options={opt} />;
+            });
+
           })
         }
         {/* Child components, such as markers, info windows, etc. */}
