@@ -4,9 +4,9 @@ import { decode } from '@googlemaps/polyline-codec';
 import Map from './Map';
 import Sidebar from './Sidebar';
 
-const ALLPATHS = "ALLPATHS";
-const ALLBIKEPATHS = "ALLBIKEPATHS";
-const ALGO2 = "ALGO2";
+const ALLPATHS = 'ALLPATHS';
+const ALLBIKEPATHS = 'ALLBIKEPATHS';
+const ALGO2 = 'ALGO2';
 
 function App() {
   // polylines is of type
@@ -21,64 +21,75 @@ function App() {
   const [polylines, setPolylines] = useState([]);
 
   const fetchAllPaths = (bikesOnly = false) => {
-    let id = ALLPATHS
-    let url = "/api/allpaths"
-    let pathColor = "#577590"
+    let id = ALLPATHS;
+    let url = '/api/allpaths';
+    let pathColor = '#577590';
     if (bikesOnly) {
-      id = ALLBIKEPATHS
-      url = "/api/allbikepaths"
-      pathColor = "#4BA973"
+      id = ALLBIKEPATHS;
+      url = '/api/allbikepaths';
+      pathColor = '#4BA973';
     }
 
-
-    let ind = polylines.findIndex(p => p.id === id)
+    let ind = polylines.findIndex(p => p.id === id);
 
     if (ind !== -1) {
       // We have already fetched all paths. Turn display on or off.
-      polylines[ind].display = !polylines[ind].display
+      polylines[ind].display = !polylines[ind].display;
     } else {
       fetch(url)
         .then(res => res.text())
-        .then((f) => {
-          let latLngs = [];
-          f.split('\n').forEach(function (path) {
-            latLngs.push({ "path": [], display: true, id: id, color: pathColor })
-            var p = decode(path, 6)
-            for (let j = 0; j < p.length; j++) {
-              latLngs[latLngs.length - 1].path.push({ lat: p[j][0], lng: p[j][1] });
-            }
-          })
-          setPolylines(latLngs)
-        },
-          (error) => {
-            console.log(error)
+        .then(
+          f => {
+            let latLngs = [];
+            f.split('\n').forEach(function (path) {
+              latLngs.push({
+                path: [],
+                display: true,
+                id: id,
+                color: pathColor,
+              });
+              var p = decode(path, 6);
+              for (let j = 0; j < p.length; j++) {
+                latLngs[latLngs.length - 1].path.push({
+                  lat: p[j][0],
+                  lng: p[j][1],
+                });
+              }
+            });
+            setPolylines(latLngs);
+          },
+          error => {
+            console.log(error);
           }
-        )
+        );
     }
-  }
+  };
 
-  useEffect(() => {
-    fetch("/api")
-      .then(res => res.json())
-      .then((line) => {
-        let latLngs = [{ "path": [], display: true, id: ALGO2, color: "#FF6347" }];
-        var p = decode(line.path, 6)
-        for (let j = 0; j < p.length; j++) {
-          latLngs[0].path.push({ lat: p[j][0], lng: p[j][1] });
-        }
-        console.log(latLngs)
-        setPolylines(latLngs)
-      },
-        (error) => {
-          console.log(error)
-        }
-      )
-  }, []);
+  // useEffect(() => {
+  //   fetch('/api')
+  //     .then(res => res.json())
+  //     .then(
+  //       line => {
+  //         let latLngs = [
+  //           { path: [], display: true, id: ALGO2, color: '#FF6347' },
+  //         ];
+  //         var p = decode(line.path, 6);
+  //         for (let j = 0; j < p.length; j++) {
+  //           latLngs[0].path.push({ lat: p[j][0], lng: p[j][1] });
+  //         }
+  //         console.log(latLngs);
+  //         setPolylines(latLngs);
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       }
+  //     );
+  // }, []);
 
   return (
     <div className='app'>
       <Map polylines={polylines} />
-      <Sidebar fetchAllPaths={fetchAllPaths} />
+      <Sidebar fetchAllPaths={fetchAllPaths} setPolylines={setPolylines} />
     </div>
   );
 }

@@ -35,6 +35,12 @@ def demo_pins():
     algo.generateRoutes()
     return algo.getRoutesJson()
 
+@bp.route('', methods=['POST'])
+def run_algorithm():
+    algo = Algo2(None, get_db())
+    algo.generateRoutes()
+    return algo.getRoutesJson()
+
 
 # http://localhost:5000/api/closest_point?lat=%2253.509905%22&lon=%22-113.541233%22
 # return {"lat":53.5714699,"lon":-113.6278968}
