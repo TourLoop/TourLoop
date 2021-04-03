@@ -1,4 +1,5 @@
 from neo4j import GraphDatabase, basic_auth
+from node import *
 
 
 class DBWrapper:
@@ -14,15 +15,14 @@ class DBWrapper:
         """find closest lat long point in db given a lat long string
 
         >>> d=DBWrapper("bolt://localhost:7687", "neo4j", "test")
-        >>> d.getClosestPoint('53.509905', '-113.541233')
-        {'lat': 53.5098266, 'lon': -113.5411793}
+        >>> n = d.getClosestPoint('53.509905', '-113.541233')
+        >>> n == Node(None, '2815578994', '53.5098266', '-113.5411793')
+        True
         """
 
         with self.driver.session() as session:
-            res = session.read_transaction(self._getClosestPoint,
-                                           lat_string, lon_string)
-
-        return record_to_lat_lon_dict(res)
+            return session.read_transaction(self._getClosestPoint,
+                                            lat_string, lon_string)
 
     @staticmethod
     def _getClosestPoint(tx, lat_string, lon_string):
@@ -34,21 +34,22 @@ class DBWrapper:
         limit 1
         """
         res = tx.run(closest_point_query, lat=lat_string, lon=lon_string)
-        return res.single()
+        r = res.single()
+        return Node(None, r.data()['n']['nodeId'], r.data()['n']['lat'], r.data()['n']['lon'])
 
     # TOURLOOP FR3 : Closest Node point
     def getClosestPointToPathtype(self, path_string, lat_string, lon_string):
         """find closest lat long point in db given a lat long string
 
         >>> d=DBWrapper("bolt://localhost:7687", "neo4j", "test")
-        >>> d.getClosestPointToPathtype("bike", '53.509905', '-113.541233')
-        {'lat': 53.5098266, 'lon': -113.5411793}
+        >>> n = d.getClosestPointToPathtype("bike", '53.509905', '-113.541233')
+        >>> n == Node(None, '2815578994', '53.5098266', '-113.5411793')
+        True
         """
 
         with self.driver.session() as session:
-            res = session.read_transaction(
+            return session.read_transaction(
                 self._getClosestPointToPathtype, path_string, lat_string, lon_string)
-        return record_to_lat_lon_dict(res)
 
     @staticmethod
     def _getClosestPointToPathtype(tx, path_string, lat_string, lon_string):
@@ -61,7 +62,37 @@ class DBWrapper:
         """
         res = tx.run(closest_point_to_pathtype_query,
                      pathtype=path_string, lat=lat_string, lon=lon_string)
-        return res.single()
+        r = res.single()
+        return Node(None, r.data()['n']['nodeId'], r.data()['n']['lat'], r.data()['n']['lon'])
+
+    def getNeighbours(self, prev_node):
+        """returns the node_id of the neighbouring nodes connected by a way
+
+        >>> d=DBWrapper("bolt://localhost:7687", "neo4j", "test")
+        >>> prev_node = Node(None, "2815578994", "53.5098266", "-113.5411793")
+        >>> n = d.getNeighbours(prev_node)
+        >>> n == [Node(prev_node, "2815578992", "53.5098175", "-113.5411438"), Node(prev_node, "2815578985", "53.5098175", "-113.5412035")]
+        True
+        """
+
+        with self.driver.session() as session:
+            return session.read_transaction(
+                self._getNeighbours, prev_node)
+
+    @staticmethod
+    def _getNeighbours(tx, prev_node):
+        closest_point_to_pathtype_query = """
+        Match(n:Node {nodeId: $id})-[:Way]-(n1:Node)
+        Return n1
+        """
+        res = tx.run(closest_point_to_pathtype_query,
+                     id=prev_node.node_id)
+        nodes = []
+        for r in res:
+            nodes.append(Node(prev_node, r.data()['n1']['nodeId'], r.data()[
+                         'n1']['lat'], r.data()['n1']['lon']))
+
+        return nodes
 
     def getPinsExampleRoutes(self):
         pins_query = """

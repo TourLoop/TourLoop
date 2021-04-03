@@ -1,6 +1,6 @@
 import polyline
 from flask import Blueprint, request, send_file
-from pins_algo import ReturnPins
+from algo_2 import Algo2
 
 from flask_api.db import get_db
 
@@ -28,11 +28,12 @@ def all_paths():
 def all_bike_paths():
     return send_file("../instance/all_bike_paths.txt")
 
+
 @bp.route('', methods=['GET'])
 def demo_pins():
-    pinsSearch  = ReturnPins(None, get_db())
-    pinsSearch.generateRoutes()
-    return pinsSearch.getRoutesJson()
+    algo = Algo2(None, get_db())
+    algo.generateRoutes()
+    return algo.getRoutesJson()
 
 
 # http://localhost:5000/api/closest_point?lat=%2253.509905%22&lon=%22-113.541233%22
