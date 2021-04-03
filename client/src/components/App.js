@@ -11,7 +11,7 @@ const ALGO2 = "ALGO2";
 function App() {
   // polylines is of type
   // [{
-  //    path: [{lat: float, lng: float}, ...],
+  //    paths: [[{lat: float, lng: float}, ...]...],
   //    displayName: string,
   //    id: string,
   //    display: bool,
@@ -40,12 +40,12 @@ function App() {
       fetch(url)
         .then(res => res.text())
         .then((f) => {
-          let latLngs = [];
+          let latLngs = [{ "paths": [], display: true, id: id, color: pathColor }];
           f.split('\n').forEach(function (path) {
-            latLngs.push({ "path": [], display: true, id: id, color: pathColor })
             var p = decode(path, 6)
+            latLngs[0].paths.push([])
             for (let j = 0; j < p.length; j++) {
-              latLngs[latLngs.length - 1].path.push({ lat: p[j][0], lng: p[j][1] });
+              latLngs[0].paths[latLngs[0].paths.length - 1].push({ lat: p[j][0], lng: p[j][1] });
             }
           })
           setPolylines(latLngs)
