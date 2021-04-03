@@ -1,8 +1,8 @@
 import polyline
 from flask import Blueprint, request, send_file
+from algo_2 import Algo2
 from pins_algo import ReturnPins
 from path_options import PathOptions
-from bfs_search import BFS
 
 from flask_api.db import get_db
 
@@ -30,11 +30,49 @@ def all_paths():
 def all_bike_paths():
     return send_file("../instance/all_bike_paths.txt")
 
-@bp.route('pins', methods=['GET'])
+@bp.route('', methods=['GET', 'POST'])
 def demo_pins():
-    pinsSearch  = ReturnPins(None, get_db())
-    pinsSearch.generateRoutes()
-    return pinsSearch.getRoutesJson()
+    if request.method == 'POST':
+        point_to_point = request.json['pointToPoint']
+        start_location = request.json['startLocation']
+        end_location = request.json['endLocation']
+        target_distance = request.json['targetRouteDistance']
+        path_type = request.json['pathType']
+        algorithm = request.json['algorithm']
+
+        start_lat_lng = tuple(float(coord) for coord in start_location.split(','))
+        end_lat_lng = tuple(float(coord) for coord in end_location.split(','))
+
+        if len(start_lat_lng) != 2:
+            return { "message": "Error parsing start location" }
+
+        if len(end_lat_lng) != 2:
+            return { "message": "Error parsing end location" }
+
+        path_options = PathOptions(start_lat_lng, end_lat_lng, path_type, target_distance, algorithm)
+
+        if algorithm == 'pins':
+            print('Running Pins')
+            algo = Algo2(path_options, get_db())
+        elif algorithm == 'algo1':
+            print('Running Algorithm 1')
+            algo = Algo2(path_options, get_db())
+        elif algorithm == 'algo2':
+            print('Running Algorithm 2')
+            algo = Algo2(path_options, get_db())
+        elif algorithm == 'algo3':
+            print('Running Algorithm 3')
+            algo = Algo2(path_options, get_db())
+        else:
+            return { "message": "Error in algorithm selection" }
+
+        algo.generateRoutes()
+        return algo.getRoutesJson()
+
+    print('Running Algorithm 2 (default)')
+    algo = Algo2(None, get_db())
+    algo.generateRoutes()
+    return algo.getRoutesJson()
 
 
 # http://localhost:5000/api/closest_point?lat=%2253.509905%22&lon=%22-113.541233%22
