@@ -11,7 +11,7 @@ const ALGO2 = 'ALGO2';
 function App() {
   // polylines is of type
   // [{
-  //    path: [{lat: float, lng: float}, ...],
+  //    paths: [[{lat: float, lng: float}, ...]...],
   //    displayName: string,
   //    id: string,
   //    display: bool,

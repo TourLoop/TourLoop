@@ -15,8 +15,9 @@ class DBWrapper:
         """find closest lat long point in db given a lat long string
 
         >>> d=DBWrapper("bolt://localhost:7687", "neo4j", "test")
-        >>> d.getClosestPoint('53.509905', '-113.541233')
-        {'lat': 53.5098266, 'lon': -113.5411793}
+        >>> n = d.getClosestPoint('53.509905', '-113.541233')
+        >>> n == Node(None, '2815578994', '53.5098266', '-113.5411793')
+        True
         """
 
         with self.driver.session() as session:
@@ -41,8 +42,9 @@ class DBWrapper:
         """find closest lat long point in db given a lat long string
 
         >>> d=DBWrapper("bolt://localhost:7687", "neo4j", "test")
-        >>> d.getClosestPointToPathtype("bike", '53.509905', '-113.541233')
-        {'lat': 53.5098266, 'lon': -113.5411793}
+        >>> n = d.getClosestPointToPathtype("bike", '53.509905', '-113.541233')
+        >>> n == Node(None, '2815578994', '53.5098266', '-113.5411793')
+        True
         """
 
         with self.driver.session() as session:
@@ -67,8 +69,10 @@ class DBWrapper:
         """returns the node_id of the neighbouring nodes connected by a way
 
         >>> d=DBWrapper("bolt://localhost:7687", "neo4j", "test")
-        >>> d.getNeighbours("2815578994")
-        ['2815578992', '2815578985']
+        >>> prev_node = Node(None, "2815578994", "53.5098266", "-113.5411793")
+        >>> n = d.getNeighbours(prev_node)
+        >>> n == [Node(prev_node, "2815578992", "53.5098175", "-113.5411438"), Node(prev_node, "2815578985", "53.5098175", "-113.5412035")]
+        True
         """
 
         with self.driver.session() as session:
