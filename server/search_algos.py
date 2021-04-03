@@ -12,6 +12,8 @@ class SearchAlgorithm:
     def __init__(self, options, db):
         self.start_time = None
         self.elapsed_time = None
+        self.distance = None
+        self.percent_path_type = None
         self.options = PathOptions()
         self.frontier = []
         self.db_wrapper = db
@@ -28,4 +30,4 @@ class SearchAlgorithm:
         return
 
     def getRoutesJson(self):
-        return {"path": polyline.encode(self.route, 6), "time": self.elapsed_time}
+        return {"path": polyline.encode(self.route, 6), "time": self.elapsed_time, "distance": self.distance, "percentpathtype": self.percent_path_type}
