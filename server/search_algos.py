@@ -12,9 +12,9 @@ class SearchAlgorithm:
     def __init__(self, options, db):
         self.start_time = None
         self.elapsed_time = None
+        self.options = options
         self.distance = None
         self.percent_path_type = None
-        self.options = PathOptions()
         self.frontier = []
         self.db_wrapper = db
         self.route = []

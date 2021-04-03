@@ -8,14 +8,10 @@ class Algo2(SearchAlgorithm):
     def generateRoutes(self):
         self.start_time = time()
 
-        self.options.setOptions((53.626489, -113.321961),
-                                (53.604000, -113.314345), "bike", 10.0,  "ALGO2")
-
         Node.target = self.options.getEnd()
         Node.target_distance = self.options.getTargetDistance()
 
-        n = self.db_wrapper.getClosestPoint(self.options.getStart()[
-            0], self.options.getStart()[1])
+        n = self.db_wrapper.getClosestPoint(self.options.getStart()[0], self.options.getStart()[1])
 
         visited = set(n.node_id)
         frontier = [n]
