@@ -61,13 +61,13 @@ function App() {
     fetch("/api")
       .then(res => res.json())
       .then((line) => {
-        let latLngs = [{ "path": [], display: true, id: ALGO2, color: "#FF6347" }];
+        let latLngs = [{ "paths": [[]], display: true, id: ALGO2, color: "#FF6347" }];
         var p = decode(line.path, 6)
         for (let j = 0; j < p.length; j++) {
-          latLngs[0].path.push({ lat: p[j][0], lng: p[j][1] });
+          latLngs[0].paths[0].push({ lat: p[j][0], lng: p[j][1] });
         }
-        console.log(latLngs)
         setPolylines(latLngs)
+        alert(`Time: ${line.time}, Distance: ${line.distance}, Percent Path Type: ${line.percentpathtype}`)
       },
         (error) => {
           console.log(error)
