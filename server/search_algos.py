@@ -12,7 +12,7 @@ class SearchAlgorithm:
     def __init__(self, options, db):
         self.start_time = None
         self.elapsed_time = None
-        self.options = PathOptions()
+        self.options = options
         self.frontier = []
         self.db_wrapper = db
         self.route = []

@@ -8,9 +8,6 @@ class Algo2(SearchAlgorithm):
     def generateRoutes(self):
         self.start_time = time()
 
-        self.options.setOptions((53.626489, -113.321961),
-                                (53.604000, -113.314345), "bike", 5.0,  "ALGO2")
-
         s = self.db_wrapper.getClosestPoint(self.options.getStart()[
             0], self.options.getStart()[1])
         frontier = deque([s])

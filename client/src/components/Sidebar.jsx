@@ -85,7 +85,6 @@ const Sidebar = props => {
         <input
           {...register('startLocation', {
             required: true,
-            valueAsNumber: true,
           })}
           id='startLocation'
           type='text'
@@ -94,7 +93,7 @@ const Sidebar = props => {
 
         <label htmlFor='endLocation'>End Location</label>
         <input
-          {...register('endLocation', { valueAsNumber: true })}
+          {...register('endLocation')}
           id='endLocation'
           type='text'
           className='input'
