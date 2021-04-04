@@ -27,8 +27,9 @@ class Algo1(SearchAlgorithm):
                 0,
                 self.options.getPathType(),
                 self.options.getTargetDistance(),
-                goal_node)
-        start_path.addRow(([start_node], 0))
+                goal_node,
+                0,
+                ([start_node], 0))
 
         self.frontier = [start_path]
 
@@ -69,6 +70,7 @@ class Algo1(SearchAlgorithm):
 
             # insert neighbours into frontier
             print("iter: {}, row_#: {}, front: {}".format(count, len(rows), len(self.frontier)))
+            # TODO: don't add all paths to frontier
             for row in rows:
                 new_path = Path(
                     curr,
@@ -76,8 +78,8 @@ class Algo1(SearchAlgorithm):
                     self.options.getPathType(),
                     self.options.getTargetDistance(),
                     goal_node,
-                    curr.total_d)
-                new_path.addRow(row)
+                    curr.total_d,
+                    row)
 
                 # found sol
                 if new_path.isGoal():
@@ -108,8 +110,7 @@ def mockSimpleNode(node_id):
 @total_ordering
 class Path:
     """
->>> p1 = Path(None, 0, "", 10.0, SimpleNode(None, 10, 1.0, 1.0))
->>> p1.addRow(mockRow(2, 1))
+>>> p1 = Path(None, 0, "", 10.0, SimpleNode(None, 10, 1.0, 1.0), 0, mockRow(2,1))
 >>> assert len(p1.node_list) == 1
 >>> assert p1.isGoal() == False
 >>> assert p1.isInvalid() == False
@@ -125,9 +126,7 @@ class Path:
 >>> assert len(p1.node_list) == 4
 >>> assert p1.isInvalid() == False
 >>> assert p1.isGoal() == True
->>> back = Path(None, 0, "", 10.0, SimpleNode(None, 10, 1.0, 1.0))
->>> assert not back.isInvalid()
->>> back.addRow(mockRow(2, 1))
+>>> back = Path(None, 0, "", 10.0, SimpleNode(None, 10, 1.0, 1.0), 0, mockRow(2,1))
 >>> assert not back.isInvalid()
 >>> back.addRow(mockRow(1, 1))
 >>> assert not back.isInvalid()
@@ -135,7 +134,7 @@ class Path:
 >>> assert back.isInvalid()
     """
 
-    def __init__(self, prev_path, start_count, path_pref, target_d, goal_node, traveled_d=0):
+    def __init__(self, prev_path, start_count, path_pref, target_d, goal_node, traveled_d, row):
         self.pref_path_count = start_count
         self.prev_path = prev_path
 
@@ -148,6 +147,7 @@ class Path:
         self.pref_path = path_pref
 
         self.goal_node = goal_node # TODO: make this a path global
+        self.addRow(row)
 
 
     def addRow(self, row):
