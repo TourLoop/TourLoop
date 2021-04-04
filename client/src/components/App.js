@@ -34,29 +34,26 @@ function App() {
 
     if (ind !== -1) {
       // We have already fetched all paths. Turn display on or off.
-      polylines[ind].display = !polylines[ind].display;
+      let plines = [...polylines]
+      let pline = { ...plines[ind] }
+      pline.display = !pline.display
+      plines[ind] = pline
+      setPolylines(plines)
     } else {
       fetch(url)
         .then(res => res.text())
         .then(
           f => {
-            let latLngs = [];
+            let latLngs = { "paths": [], display: true, id: id, color: pathColor };
             f.split('\n').forEach(function (path) {
-              latLngs.push({
-                path: [],
-                display: true,
-                id: id,
-                color: pathColor,
-              });
               var p = decode(path, 6);
-              for (let j = 0; j < p.length; j++) {
-                latLngs[latLngs.length - 1].path.push({
-                  lat: p[j][0],
-                  lng: p[j][1],
-                });
-              }
+              let pline = p.map(p => ({
+                lat: p[0],
+                lng: p[1],
+              }));
+              latLngs.paths.push(pline)
             });
-            setPolylines(latLngs);
+            setPolylines([...polylines, latLngs]);
           },
           error => {
             console.log(error);
