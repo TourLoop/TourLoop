@@ -88,6 +88,7 @@ class Algo1(SearchAlgorithm):
                 heappush(self.frontier, new_path)
 
     def extract_route(self, path):
+        print(path)
         self.route = [n.getLatLonTuple() for n in path.node_list] + self.route
         path = path.prev_path
         while path != None:
@@ -196,6 +197,15 @@ class Path:
     def __lt__(self, other):
         if not isinstance(other, type(self)): return NotImplemented
         return self.getWeight() < other.getWeight()
+
+    def __str__(self):
+        string = """Path:
+        traveled_d: {}
+        segment # nodes: {}
+        weight: {}
+        Good paths: {}
+        """.format(self.total_d, len(self.node_list), self.getWeight(), self.pref_path_count)
+        return string
 
 
 if __name__ == "__main__":
