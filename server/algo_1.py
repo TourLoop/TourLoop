@@ -94,10 +94,6 @@ class Algo1(SearchAlgorithm):
             self.route = [n.getLatLonTuple() for n in path.node_list] + self.route
             path = path.prev_path
         # TODO: some points are duplicates...
-#        d = 0
-#        for i in range(len(self.route)-1):
-#            d+= vincenty(self.route[i], self.route[i+1])
-#        print(d)
 
 
 def mockRow(node_id, path_count):
@@ -189,9 +185,9 @@ class Path:
         return abs(self.target_d - self.total_d)
 
     def getWeight(self):
-        d_approx = self.node_list[-1].getD(self.goal_node)
+        d_approx = self.target_d - self.getDistanceDiff() - self.node_list[-1].getD(self.goal_node)
         # TODO: what else goes in the tuple
-        return (self.pref_path_count, self.getDistanceDiff() + d_approx)
+        return (d_approx, self.pref_path_count)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)): return NotImplemented
