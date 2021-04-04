@@ -1,6 +1,7 @@
 import polyline
 from flask import Blueprint, request, send_file
 from algo_2 import Algo2
+from algo_1 import Algo1
 from pins_algo import ReturnPins
 from path_options import PathOptions
 
@@ -59,7 +60,7 @@ def demo_pins():
             algo = Algo2(path_options, get_db())
         elif algorithm == 'algo1':
             print('Running Algorithm 1')
-            algo = Algo2(path_options, get_db())
+            algo = Algo1(path_options, get_db())
         elif algorithm == 'algo2':
             print('Running Algorithm 2')
             algo = Algo2(path_options, get_db())

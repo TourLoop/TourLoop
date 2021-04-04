@@ -1,6 +1,7 @@
 from vincenty import vincenty
 
 
+# TODO: make this a subclass of simple node
 class Node:
 
     # Remember to initialize the end target (lat, lon)
@@ -32,3 +33,22 @@ class Node:
             return self.__dict__ == other.__dict__
         else:
             return False
+
+    def getLatLonTuple(self):
+        return (self.lat, self.lon)
+
+    def getD(self, other):
+        return vincenty(self.getLatLonTuple(), other.getLatLonTuple())
+
+class SimpleNode:
+    def __init__(self, prev_node, node_id, lat, lon):
+        self.prev_node = prev_node
+        self.node_id = node_id
+        self.lat = float(lat)
+        self.lon = float(lon)
+
+    def getLatLonTuple(self):
+        return (self.lat, self.lon)
+
+    def getD(self, other):
+        return vincenty(self.getLatLonTuple(), other.getLatLonTuple())
