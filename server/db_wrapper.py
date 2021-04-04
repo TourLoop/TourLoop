@@ -79,6 +79,24 @@ class DBWrapper:
             return session.read_transaction(
                 self._getNeighbours, prev_node)
 
+    def getNHopNeighbours(self, prev_node, path_type, hops=10):
+        # TODO: finish doc test
+        """gets the n-hop neighbours for the prev_node:Node
+
+        >>> hops = 10
+        >>> d=DBWrapper("bolt://localhost:7687", "neo4j", "test")
+        >>> prev_node = Node(None, "2815578994", "53.5098266", "-113.5411793")
+        >>> rows = d.getNHopNeighbours(prev_node, "bike", hops)
+        >>> assert len(rows) > 0
+        >>> for row in rows:
+        ...     assert row[1] >= 0
+        ...     assert len(row[0]) == hops + 1
+        """
+
+        with self.driver.session() as session:
+            return session.read_transaction(
+                self._getNHopNeighbours, prev_node, path_type, hops)
+
     @staticmethod
     def _getNeighbours(tx, prev_node):
         closest_point_to_pathtype_query = """
@@ -93,6 +111,43 @@ class DBWrapper:
                          'n1']['lat'], r.data()['n1']['lon']))
 
         return nodes
+
+
+    @staticmethod
+    def _getNHopNeighbours(tx, prev_node, path_type, hops=10):
+        n_hop_q = """
+        Match p = (n:Node {nodeId: $id})-[:Way*""" + str(hops) + """]-(n1:Node)
+        CALL {
+            with p
+            UNWIND relationships(p) as w
+            with w as W
+            where W.pathType = $ptype
+            with count(W) as c
+            return c
+        }
+        return nodes(p), c
+        """
+        res = tx.run(n_hop_q,
+                     id=prev_node.node_id,
+                     ptype=path_type)
+
+        rows = []
+        for r in res:
+            # convert list of neo4j nodes to server Nodes
+            l = []
+            for i, n in enumerate(r.data()['nodes(p)']):
+                prev = None
+                if i == 0:
+                    prev = prev_node
+                else:
+                    prev = l[i-1]
+                l.append(Node(prev, n['nodeId'], n['lat'], n['lon']))
+            # append path and count
+            rows.append((l, r.data()['c']))
+
+        # returns: [([Node], int)]
+        return rows
+
 
     def getPinsExampleRoutes(self):
         pins_query = """
