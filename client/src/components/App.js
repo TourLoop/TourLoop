@@ -4,7 +4,7 @@ import { decode } from '@googlemaps/polyline-codec';
 import Map from './Map';
 import Sidebar from './Sidebar';
 
-const ALLPATHS = 'ALLPATHS';
+const ALLDIRTPATHS = 'ALLDIRTPATHS';
 const ALLBIKEPATHS = 'ALLBIKEPATHS';
 const ALGO2 = 'ALGO2';
 
@@ -21,8 +21,8 @@ function App() {
   const [polylines, setPolylines] = useState([]);
 
   const fetchAllPaths = (bikesOnly = false) => {
-    let id = ALLPATHS;
-    let url = '/api/allpaths';
+    let id = ALLDIRTPATHS;
+    let url = '/api/alldirtpaths';
     let pathColor = '#577590';
     if (bikesOnly) {
       id = ALLBIKEPATHS;
