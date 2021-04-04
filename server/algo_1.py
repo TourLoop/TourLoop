@@ -69,7 +69,7 @@ class Algo1(SearchAlgorithm):
                         5)
 
             # insert neighbours into frontier
-            print("iter: {}, row_#: {}, front: {}".format(count, len(rows), len(self.frontier)))
+            print("iter: {}, row_#: {}, front: {}, w: {}, id: {}".format(count, len(rows), len(self.frontier), curr.getWeight(), curr.node_list[-1].node_id ))
             # TODO: don't add all paths to frontier
             for row in rows:
                 new_path = Path(
@@ -184,12 +184,13 @@ class Path:
                 return
 
     def getDistanceDiff(self):
-        return abs(self.target_d - self.total_d)
+        return abs(self.target_d - self.total_d - self.node_list[-1].getD(self.goal_node))
 
     def getWeight(self):
-        d_approx = self.target_d - self.getDistanceDiff() - self.node_list[-1].getD(self.goal_node)
         # TODO: what else goes in the tuple
-        return (d_approx, self.pref_path_count)
+        # TODO: add random variable
+        # TODO: 1 - pref_path_count
+        return (round(self.getDistanceDiff(), 2), self.pref_path_count)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)): return NotImplemented
