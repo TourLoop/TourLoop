@@ -31,7 +31,7 @@ const Sidebar = props => {
 
       setPolylines([
         {
-          path: polylines,
+          paths: [polylines],
           display: true,
           id: 'temp',
           color: '#FF6347',
@@ -134,9 +134,9 @@ const Sidebar = props => {
       <div
         style={{ display: 'flex', flexDirection: 'column', padding: '2rem' }}
       >
-        <label>Display All Paths</label>
+        <label>Display All Dirt Paths</label>
         <input
-          id='allPaths'
+          id='allDirtPaths'
           type='checkbox'
           className='rounded text-blue-500 mb-4'
           onClick={() => props.fetchAllPaths(false)}

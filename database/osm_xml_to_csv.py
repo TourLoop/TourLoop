@@ -15,7 +15,7 @@ class OsmHandler(xml.sax.ContentHandler):
 #        self.way_f.write("id,type,distance,a,b\n")
 #        self.node_f.write("id,lat,lon\n")
 
-        self.all_paths_f = open("all_paths.txt", 'w')
+        self.all_paths_f = open("all_dirt_paths.txt", 'w')
         self.all_bike_paths_f = open("all_bike_paths.txt", 'w')
 
         self.curr = dict()

@@ -23,7 +23,7 @@ tar -cvzf tourloop-database.tar.gz database-files/*
 mv tourloop-database.tar.gz ../../server/instance
 
 echo "save all path and all bike path results"
-mv ../all_paths.txt ../../server/instance
+mv ../all_dirt_paths.txt ../../server/instance
 mv ../all_bike_paths.txt ../../server/instance
 
 echo "container should be running..."

@@ -7,18 +7,20 @@ import heapq
 class Algo2(SearchAlgorithm):
     def generateRoutes(self):
         self.start_time = time()
+        print(self.options.__dict__)
 
         Node.target = self.options.getEnd()
         Node.target_distance = self.options.getTargetDistance()
 
-        n = self.db_wrapper.getClosestPoint(self.options.getStart()[0], self.options.getStart()[1])
+        n = self.db_wrapper.getClosestPoint(
+            self.options.getStart()[0], self.options.getStart()[1])
 
         visited = set(n.node_id)
         frontier = [n]
         heapq.heapify(frontier)
         while n.target_dist_est > 0.1:
             n = heapq.heappop(frontier)
-            # print("Distance: ", n.path_dist, n.target_dist_est)
+            print("Distance: ", n.path_dist, n.target_dist_est)
 
             for c in self.db_wrapper.getNeighbours(n):
                 if c.node_id not in visited:

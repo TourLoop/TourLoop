@@ -21,9 +21,9 @@ def sample():
     return paths
 
 
-@bp.route('allpaths', methods=['GET'])
+@bp.route('alldirtpaths', methods=['GET'])
 def all_paths():
-    return send_file("../instance/all_paths.txt")
+    return send_file("../instance/all_dirt_paths.txt")
 
 
 @bp.route('allbikepaths', methods=['GET'])
@@ -41,16 +41,18 @@ def demo_pins():
         path_type = request.json['pathType']
         algorithm = request.json['algorithm']
 
-        start_lat_lng = tuple(float(coord) for coord in start_location.split(','))
+        start_lat_lng = tuple(float(coord)
+                              for coord in start_location.split(','))
         end_lat_lng = tuple(float(coord) for coord in end_location.split(','))
 
         if len(start_lat_lng) != 2:
-            return { "message": "Error parsing start location" }
+            return {"message": "Error parsing start location"}
 
         if len(end_lat_lng) != 2:
-            return { "message": "Error parsing end location" }
+            return {"message": "Error parsing end location"}
 
-        path_options = PathOptions(start_lat_lng, end_lat_lng, path_type, target_distance, algorithm)
+        path_options = PathOptions(
+            start_lat_lng, end_lat_lng, path_type, target_distance, algorithm)
 
         if algorithm == 'pins':
             print('Running Pins')
@@ -65,7 +67,7 @@ def demo_pins():
             print('Running Algorithm 3')
             algo = Algo2(path_options, get_db())
         else:
-            return { "message": "Error in algorithm selection" }
+            return {"message": "Error in algorithm selection"}
 
         algo.generateRoutes()
         return algo.getRoutesJson()
