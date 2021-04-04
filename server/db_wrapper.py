@@ -85,7 +85,7 @@ class DBWrapper:
 
         >>> hops = 10
         >>> d=DBWrapper("bolt://localhost:7687", "neo4j", "test")
-        >>> prev_node = Node(None, "2815578994", "53.5098266", "-113.5411793")
+        >>> prev_node = SimpleNode(None, "2815578994", "53.5098266", "-113.5411793")
         >>> rows = d.getNHopNeighbours(prev_node, "bike", hops)
         >>> assert len(rows) > 0
         >>> for row in rows:
@@ -141,13 +141,12 @@ class DBWrapper:
                     prev = prev_node
                 else:
                     prev = l[i-1]
-                l.append(Node(prev, n['nodeId'], n['lat'], n['lon']))
+                l.append(SimpleNode(prev, n['nodeId'], n['lat'], n['lon']))
             # append path and count
             rows.append((l, r.data()['c']))
 
         # returns: [([Node], int)]
         return rows
-
 
     def getPinsExampleRoutes(self):
         pins_query = """
