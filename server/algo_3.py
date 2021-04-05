@@ -13,6 +13,7 @@ class Algo3(SearchAlgorithm):
 
         Node.target = self.options.getEnd()
         Node.target_distance = self.options.getTargetDistance()
+        Node.target_path_type = self.options.getPathType()
 
         n = self.db_wrapper.getClosestPoint(
             self.options.getStart()[0], self.options.getStart()[1])
@@ -30,7 +31,9 @@ class Algo3(SearchAlgorithm):
                     #print("h1: ", c.huer)
                     decimals = 2
                     factor = 10 ** decimals
-                    c.huer = (math.floor(c.huer * factor) / factor, randint(0,9))
+                    # round for more matching
+                    percent_good_paths = math.floor(100 - 100 * (c.pref_count / c.count))
+                    c.huer = (math.floor(c.huer * factor) / factor, percent_good_paths, randint(0,9))
                     #print("h2: ", c.huer)
                     visited.add(c.node_id)
                     heapq.heappush(frontier, c)
@@ -42,7 +45,7 @@ class Algo3(SearchAlgorithm):
             n = n.prev_node
         self.route.append((n.lat, n.lon))
 
-        self.getElapsedTime()
+        print("Elapsed time: ", self.getElapsedTime())
 
 
 
@@ -52,9 +55,13 @@ if __name__ == "__main__":
     from path_options import *
     from db_wrapper import *
     db = DBWrapper('bolt://localhost:7687', 'neo4j', 'test')
-    ops = PathOptions((53.509905, -113.541233),(53.504764, -113.560748), None, 4.0, "algo_1")
-    #ops = PathOptions((53.510339, -113.536677),(53.510339, -113.536677), None, 2.0, "algo_3")
-    #ops = PathOptions((53.510339, -113.536677),(53.510339, -113.536677), None, 4.5, "algo_3") # loop example
+    ops = PathOptions((53.509905, -113.541233),(53.504764, -113.560748), "bike", 4.0, "algo_1")
     search = Algo3(ops, db)
     search.generateRoutes()
     print(search.getRoutesJson()['path'])
+    assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
+    ops = PathOptions((53.510339, -113.536677),(53.510339, -113.536677), "paved", 4.5, "algo_3") # loop example
+    search = Algo3(ops, db)
+    search.generateRoutes()
+    print(search.getRoutesJson()['path'])
+    assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
