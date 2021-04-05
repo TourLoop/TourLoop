@@ -30,7 +30,7 @@ class Algo3(SearchAlgorithm):
                     #print("h1: ", c.huer)
                     decimals = 2
                     factor = 10 ** decimals
-                    c.huer = (math.floor(c.huer * factor) / factor, randint(0,2))
+                    c.huer = (math.floor(c.huer * factor) / factor, randint(0,9))
                     #print("h2: ", c.huer)
                     visited.add(c.node_id)
                     heapq.heappush(frontier, c)
