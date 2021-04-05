@@ -55,6 +55,10 @@ class Algo1(SearchAlgorithm):
             # TODO: modernize this
             # popuntil we're starting from somewhere new
             while curr.node_list[-1].node_id in already_searched_from:
+                # no more paths
+                if len(self.frontier) == 0:
+                    print("didn't find solution")
+                    return
                 curr = heappop(self.frontier)
             already_searched_from.add(curr.node_list[-1].node_id)
 
