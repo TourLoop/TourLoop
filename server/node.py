@@ -3,21 +3,40 @@ from vincenty import vincenty
 
 # TODO: make this a subclass of simple node
 class Node:
+    """
+    >>> n = Node(None, "1", 0.0, 0.0)
+    >>> n.pref_count
+    0
+    >>> n.count
+    1
+    >>> Node.target_path_type = "bike"
+    >>> n2 = Node(n, "2", 0.0, 0.0, "bike")
+    >>> n2.count
+    2
+    >>> n2.pref_count
+    1
+    """
 
     # Remember to initialize the end target (lat, lon)
     # and target_distance for the Node class!
     target = (0.0, 0.0)
     target_distance = 0.0
+    target_path_type = None
 
-    def __init__(self, prev_node, node_id, lat, lon):
+    def __init__(self, prev_node, node_id, lat, lon, path_type=""):
         self.prev_node = prev_node
         self.node_id = node_id
         self.lat = float(lat)
         self.lon = float(lon)
 
+        one_or_zero = lambda x : 1 if x == Node.target_path_type else 0
         if prev_node == None:
             self.path_dist = 0.0
+            self.pref_count = one_or_zero(path_type)
+            self.count = 1
         else:
+            self.pref_count = prev_node.pref_count + one_or_zero(path_type)
+            self.count = prev_node.count + 1
             self.path_dist = prev_node.path_dist + \
                 vincenty((self.lat, self.lon), (prev_node.lat, prev_node.lon))
 
