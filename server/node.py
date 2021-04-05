@@ -23,10 +23,10 @@ class Node:
 
         self.target_dist_est = vincenty((self.lat, self.lon), Node.target)
 
-        self.huer = Node.target_distance - self.path_dist - self.target_dist_est
+        self.huer = abs(Node.target_distance - self.path_dist - self.target_dist_est)
 
     def __lt__(self, other):
-        return abs(self.huer) < abs(other.huer)
+        return self.huer < other.huer
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
