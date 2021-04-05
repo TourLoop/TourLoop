@@ -22,6 +22,8 @@ class Algo3(SearchAlgorithm):
         frontier = [n]
         heapq.heapify(frontier)
         while n.target_dist_est > 0.05 or n.path_dist < (Node.target_distance / 2):
+            if len(frontier) == 0:
+                break
             n = heapq.heappop(frontier)
             print("Distance: ", n.path_dist, n.target_dist_est)
 
@@ -55,13 +57,25 @@ if __name__ == "__main__":
     from path_options import *
     from db_wrapper import *
     db = DBWrapper('bolt://localhost:7687', 'neo4j', 'test')
+
+    # doesn't have solution...?
+    ops = PathOptions((53.515521, -113.513749),(53.515521, -113.513749), "paved", 2, "algo_3")
+    search = Algo3(ops, db)
+    search.generateRoutes()
+    print(search.getRoutesJson()['path'])
+    assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
+
     ops = PathOptions((53.509905, -113.541233),(53.504764, -113.560748), "bike", 4.0, "algo_1")
     search = Algo3(ops, db)
     search.generateRoutes()
     print(search.getRoutesJson()['path'])
     assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
+
     ops = PathOptions((53.510339, -113.536677),(53.510339, -113.536677), "paved", 4.5, "algo_3") # loop example
     search = Algo3(ops, db)
     search.generateRoutes()
     print(search.getRoutesJson()['path'])
     assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
+
+
+
