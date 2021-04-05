@@ -20,7 +20,7 @@ class Algo3(SearchAlgorithm):
         visited = set(n.node_id)
         frontier = [n]
         heapq.heapify(frontier)
-        while n.target_dist_est > 0.1:
+        while n.target_dist_est > 0.05 or n.path_dist < (Node.target_distance / 2):
             n = heapq.heappop(frontier)
             print("Distance: ", n.path_dist, n.target_dist_est)
 
@@ -43,3 +43,18 @@ class Algo3(SearchAlgorithm):
         self.route.append((n.lat, n.lon))
 
         self.getElapsedTime()
+
+
+
+
+
+if __name__ == "__main__":
+    from path_options import *
+    from db_wrapper import *
+    db = DBWrapper('bolt://localhost:7687', 'neo4j', 'test')
+    ops = PathOptions((53.509905, -113.541233),(53.504764, -113.560748), None, 4.0, "algo_1")
+    #ops = PathOptions((53.510339, -113.536677),(53.510339, -113.536677), None, 2.0, "algo_3")
+    #ops = PathOptions((53.510339, -113.536677),(53.510339, -113.536677), None, 4.5, "algo_3") # loop example
+    search = Algo3(ops, db)
+    search.generateRoutes()
+    print(search.getRoutesJson()['path'])
