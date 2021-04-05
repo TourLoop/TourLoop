@@ -50,12 +50,9 @@ class Algo3(SearchAlgorithm):
         print("Elapsed time: ", self.getElapsedTime())
 
 
-
-
-
-if __name__ == "__main__":
-    from path_options import *
-    from db_wrapper import *
+def smoke_tests():
+    from path_options import PathOptions
+    from db_wrapper import DBWrapper
     db = DBWrapper('bolt://localhost:7687', 'neo4j', 'test')
 
     # doesn't have solution...?
@@ -65,17 +62,20 @@ if __name__ == "__main__":
     print(search.getRoutesJson()['path'])
     assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
 
+    # loop example
     ops = PathOptions((53.509905, -113.541233),(53.504764, -113.560748), "bike", 4.0, "algo_1")
     search = Algo3(ops, db)
     search.generateRoutes()
     print(search.getRoutesJson()['path'])
     assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
 
+    # this example should produce different paths randomly
     ops = PathOptions((53.510339, -113.536677),(53.510339, -113.536677), "paved", 4.5, "algo_3") # loop example
     search = Algo3(ops, db)
     search.generateRoutes()
     print(search.getRoutesJson()['path'])
     assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
 
-
-
+# Algo 3 test suite
+if __name__ == "__main__":
+    smoke_tests()
