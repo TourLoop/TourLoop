@@ -100,15 +100,15 @@ class DBWrapper:
     @staticmethod
     def _getNeighbours(tx, prev_node):
         closest_point_to_pathtype_query = """
-        Match(n:Node {nodeId: $id})-[:Way]-(n1:Node)
-        Return n1
+        Match(n:Node {nodeId: $id})-[w:Way]-(n1:Node)
+        Return n1, w.pathType
         """
         res = tx.run(closest_point_to_pathtype_query,
                      id=prev_node.node_id)
         nodes = []
         for r in res:
             nodes.append(Node(prev_node, r.data()['n1']['nodeId'], r.data()[
-                         'n1']['lat'], r.data()['n1']['lon']))
+                         'n1']['lat'], r.data()['n1']['lon'], r.data()['w.pathType']))
 
         return nodes
 
