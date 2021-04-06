@@ -20,6 +20,34 @@ function App() {
   // }, ...]
   const [polylines, setPolylines] = useState([]);
 
+  // Current Location code to null island 
+  const [currPos, setCurrPos] = useState({lat:0.0, lng:0.0});
+  // Update the location periodically 
+  const locationUpdateFrequency = 10; // seconds 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log("Trying to update current position...")
+      // form https://developers.google.com/maps/documentation/javascript/geolocation
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setCurrPos({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            });
+          },
+          (error) => {
+            console.log("Something went wrong setting the current location")
+            console.log(error)
+          }
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        console.log("geolocation not supported by browser")
+      }
+    }, 1000*locationUpdateFrequency);
+  });
+
   const fetchAllPaths = (bikesOnly = false) => {
     let id = ALLDIRTPATHS;
     let url = '/api/alldirtpaths';
@@ -85,7 +113,7 @@ function App() {
 
   return (
     <div className='app'>
-      <Map polylines={polylines} />
+      <Map polylines={polylines} position={currPos}/>
       <Sidebar fetchAllPaths={fetchAllPaths} setPolylines={setPolylines} />
     </div>
   );

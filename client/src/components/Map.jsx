@@ -1,4 +1,4 @@
-import { GoogleMap, LoadScript, Polyline } from '@react-google-maps/api';
+import { GoogleMap, Marker, LoadScript, Polyline } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '70vw',
@@ -19,6 +19,7 @@ const Map = props => {
         zoom={11}
         on
       >
+        <Marker position={props.position} />;
         {props.polylines.map((polyline, i) => {
           const opt = {
             strokeColor: polyline.color,
