@@ -16,3 +16,18 @@ https://drive.google.com/drive/u/0/folders/1JBpHteP74f7XHVhRrggnip0sJwK-L794
 
 ## example lat-long pairs
 TODO: add pairs
+
+### belgravia loop
+53.510339, -113.536677
+53.510339, -113.536677
+4.5
+paved Road
+Algo3
+
+### belgravia loop 2
+53.510339, -113.536677
+53.510339, -113.536677
+4.5
+Bike path
+Algo3
+
