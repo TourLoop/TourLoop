@@ -8,6 +8,9 @@ const Sidebar = props => {
   const { setPolylines } = props;
   const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState('additionalFunctionality');
+  const [dirtPathsChecked, setDirtPathsChecked] = useState(false);
+  const [bikePathsChecked, setBikePathsChecked] = useState(false);
+  const [locationChecked, setLocationChecked] = useState(false);
 
   const {
     register,
@@ -166,21 +169,33 @@ const Sidebar = props => {
               id='allDirtPaths'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => props.fetchAllPaths(false)}
+              onClick={() => {
+                setDirtPathsChecked(!dirtPathsChecked);
+                props.fetchAllPaths(false);
+              }}
+              checked={dirtPathsChecked}
             />
             <label>Display All Bike Paths</label>
             <input
               id='allBikePaths'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => props.fetchAllPaths(true)}
+              onClick={() => {
+                setBikePathsChecked(!bikePathsChecked);
+                props.fetchAllPaths(true);
+              }}
+              checked={bikePathsChecked}
             />
             <label>Track Current Location</label>
             <input
               id='locationToggle'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => props.setUseLocation(!props.useLocation)}
+              onClick={() => {
+                setLocationChecked(!locationChecked);
+                props.setUseLocation(!props.useLocation);
+              }}
+              checked={locationChecked}
             />
             <button className='button' onClick={downloadDatabaseFiles}>
               Download Database
