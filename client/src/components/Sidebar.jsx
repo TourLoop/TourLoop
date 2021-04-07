@@ -93,7 +93,7 @@ const Sidebar = props => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              padding: '2rem',
+              padding: '1rem 2rem',
             }}
           >
             <label htmlFor='pointToPoint'>Point-to-Point</label>
@@ -148,9 +148,15 @@ const Sidebar = props => {
               <option value='algo3'>Algorithm 3</option>
             </select>
 
-            <button type='submit' className='button'>
+            <button
+              type='submit'
+              className='button'
+              disabled={loading}
+              style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
+            >
               Generate Routes
             </button>
+            {loading && <h2 className='form-submit-header'>Generating...</h2>}
           </form>
         </>
       )}

@@ -55,4 +55,8 @@
   @apply outline-none shadow-md;
 }
 
+.form-submit-header {
+  @apply text-sm;
+}
+
 @tailwind utilities;
