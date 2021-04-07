@@ -11,7 +11,7 @@
 }
 
 .sidebar-header {
-  @apply text-center text-lg mt-2;
+  @apply text-center text-lg mt-2 mb-2;
 }
 
 .input {
@@ -34,6 +34,29 @@
 
 .button:focus {
   @apply outline-none shadow-md;
+}
+
+.navigation {
+  @apply px-4 py-2;
+  @apply flex-1;
+}
+
+.navigation-tab {
+  @apply px-2 py-1 ml-2 w-48 h-12;
+  @apply bg-pink-500 rounded;
+  @apply font-bold text-white text-sm;
+}
+
+.navigation-tab:hover {
+  @apply bg-pink-700;
+}
+
+.navigation-tab:focus {
+  @apply outline-none shadow-md;
+}
+
+.form-submit-header {
+  @apply text-sm;
 }
 
 @tailwind utilities;

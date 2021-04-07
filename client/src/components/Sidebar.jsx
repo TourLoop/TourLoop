@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { decode } from '@googlemaps/polyline-codec';
+import Navigation from './navigation/Navigation';
+import NavigationTab from './navigation/NavigationTab';
 
 const Sidebar = props => {
   const { setPolylines } = props;
   const [loading, setLoading] = useState(false);
+  const [menu, setMenu] = useState('additionalFunctionality');
+  const [dirtPathsChecked, setDirtPathsChecked] = useState(false);
+  const [bikePathsChecked, setBikePathsChecked] = useState(false);
+  const [locationChecked, setLocationChecked] = useState(false);
 
   const {
     register,
@@ -68,97 +74,141 @@ const Sidebar = props => {
 
   return (
     <div className='sidebar'>
-      <h1 className='sidebar-header'>Generate Routes</h1>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        style={{ display: 'flex', flexDirection: 'column', padding: '2rem' }}
-      >
-        <label htmlFor='pointToPoint'>Point-to-Point</label>
-        <input
-          {...register('pointToPoint')}
-          id='pointToPoint'
-          type='checkbox'
-          className='rounded text-blue-500 mb-4'
+      <Navigation>
+        <h1 className='sidebar-header'>Menu</h1>
+        <NavigationTab
+          label='Generate Routes'
+          onClick={() => setMenu('generateRoutes')}
         />
-
-        <label htmlFor='startLocation'>Start Location</label>
-        <input
-          {...register('startLocation', {
-            required: true,
-          })}
-          id='startLocation'
-          type='text'
-          className='input'
+        <NavigationTab
+          label='Additional Functionality'
+          onClick={() => setMenu('additionalFunctionality')}
         />
+      </Navigation>
+      {menu === 'generateRoutes' && (
+        <>
+          <h1 className='sidebar-header'>Generate Routes</h1>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '1rem 2rem',
+            }}
+          >
+            <label htmlFor='pointToPoint'>Point-to-Point</label>
+            <input
+              {...register('pointToPoint')}
+              id='pointToPoint'
+              type='checkbox'
+              className='rounded text-blue-500 mb-4'
+            />
 
-        <label htmlFor='endLocation'>End Location</label>
-        <input
-          {...register('endLocation')}
-          id='endLocation'
-          type='text'
-          className='input'
-        />
+            <label htmlFor='startLocation'>Start Location</label>
+            <input
+              {...register('startLocation', {
+                required: true,
+              })}
+              id='startLocation'
+              type='text'
+              className='input'
+            />
 
-        <label htmlFor='targetRouteDistance'>Target Route Distance</label>
-        <input
-          {...register('targetRouteDistance', {
-            required: true,
-            valueAsNumber: true,
-          })}
-          id='targetRouteDistance'
-          type='text'
-          className='input'
-        />
+            <label htmlFor='endLocation'>End Location</label>
+            <input
+              {...register('endLocation')}
+              id='endLocation'
+              type='text'
+              className='input'
+            />
 
-        <label htmlFor='pathType'>Path Type</label>
-        <select {...register('pathType')} id='pathType' className='input'>
-          <option value='bike'>Bike Path</option>
-          <option value='paved'>Paved Road</option>
-          <option value='dirt'>Dirt Trail</option>
-        </select>
+            <label htmlFor='targetRouteDistance'>Target Route Distance</label>
+            <input
+              {...register('targetRouteDistance', {
+                required: true,
+                valueAsNumber: true,
+              })}
+              id='targetRouteDistance'
+              type='text'
+              className='input'
+            />
 
-        <label htmlFor='algorithm'>Algorithm</label>
-        <select {...register('algorithm')} id='algorithm' className='input'>
-          <option value='pins'>Pins</option>
-          <option value='algo1'>Algorithm 1</option>
-          <option value='algo2'>Algorithm 2</option>
-          <option value='algo3'>Algorithm 3</option>
-        </select>
+            <label htmlFor='pathType'>Path Type</label>
+            <select {...register('pathType')} id='pathType' className='input'>
+              <option value='bike'>Bike Path</option>
+              <option value='paved'>Paved Road</option>
+              <option value='dirt'>Dirt Trail</option>
+            </select>
 
-        <button type='submit' className='button'>
-          Generate Routes
-        </button>
-      </form>
-      <hr />
-      <h1 className='sidebar-header'>Additional Functionality</h1>
-      <div
-        style={{ display: 'flex', flexDirection: 'column', padding: '2rem' }}
-      >
-        <label>Display All Dirt Paths</label>
-        <input
-          id='allDirtPaths'
-          type='checkbox'
-          className='rounded text-blue-500 mb-4'
-          onClick={() => props.fetchAllPaths(false)}
-        />
-        <label>Display All Bike Paths</label>
-        <input
-          id='allBikePaths'
-          type='checkbox'
-          className='rounded text-blue-500 mb-4'
-          onClick={() => props.fetchAllPaths(true)}
-        />
-        <label>Track Current Location</label>
-        <input 
-          id="locationToggle" 
-          type="checkbox" 
-          className='rounded text-blue-500 mb-4'
-          onClick={() => props.setUseLocation(!props.useLocation) }
-         />
-        <button className='button' onClick={downloadDatabaseFiles}>
-          Download Database
-        </button>
-      </div>
+            <label htmlFor='algorithm'>Algorithm</label>
+            <select {...register('algorithm')} id='algorithm' className='input'>
+              <option value='pins'>Pins</option>
+              <option value='algo1'>Algorithm 1</option>
+              <option value='algo2'>Algorithm 2</option>
+              <option value='algo3'>Algorithm 3</option>
+            </select>
+
+            <button
+              type='submit'
+              className='button'
+              disabled={loading}
+              style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
+            >
+              Generate Routes
+            </button>
+            {loading && <h2 className='form-submit-header'>Generating...</h2>}
+          </form>
+        </>
+      )}
+      {menu === 'additionalFunctionality' && (
+        <>
+          <h1 className='sidebar-header'>Additional Functionality</h1>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '2rem',
+            }}
+          >
+            <label>Display All Dirt Paths</label>
+            <input
+              id='allDirtPaths'
+              type='checkbox'
+              className='rounded text-blue-500 mb-4'
+              onClick={() => {
+                setDirtPathsChecked(!dirtPathsChecked);
+                props.fetchAllPaths(false);
+              }}
+              checked={dirtPathsChecked}
+            />
+            <label>Display All Bike Paths</label>
+            <input
+              id='allBikePaths'
+              type='checkbox'
+              className='rounded text-blue-500 mb-4'
+              onClick={() => {
+                setBikePathsChecked(!bikePathsChecked);
+                props.fetchAllPaths(true);
+              }}
+              checked={bikePathsChecked}
+            />
+            <label>Track Current Location</label>
+            <input
+              id='locationToggle'
+              type='checkbox'
+              className='rounded text-blue-500 mb-4'
+              onClick={() => {
+                setLocationChecked(!locationChecked);
+                props.setUseLocation(!props.useLocation);
+              }}
+              checked={locationChecked}
+            />
+            <button className='button' onClick={downloadDatabaseFiles}>
+              Download Database
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
