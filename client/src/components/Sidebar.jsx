@@ -148,6 +148,13 @@ const Sidebar = props => {
           className='rounded text-blue-500 mb-4'
           onClick={() => props.fetchAllPaths(true)}
         />
+        <label>Track Current Location</label>
+        <input 
+          id="locationToggle" 
+          type="checkbox" 
+          className='rounded text-blue-500 mb-4'
+          onClick={() => props.setUseLocation(!props.useLocation) }
+         />
         <button className='button' onClick={downloadDatabaseFiles}>
           Download Database
         </button>

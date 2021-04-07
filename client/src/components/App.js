@@ -19,31 +19,37 @@ function App() {
   //    time: string,
   // }, ...]
   const [polylines, setPolylines] = useState([]);
+  const [useLocation, setUseLocation] = useState(false);
 
   // Current Location code to null island 
-  const [currPos, setCurrPos] = useState({lat:0.0, lng:0.0});
+  const defaultPosition = {lat:0.0, lng:0.0} // "null island"
+  const [currPos, setCurrPos] = useState();
   // Update the location periodically 
   const locationUpdateFrequency = 10; // seconds 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log("Trying to update current position...")
+    setTimeout(() => {
+      // console.log("Trying to update current position...")
       // form https://developers.google.com/maps/documentation/javascript/geolocation
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setCurrPos({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
-          },
-          (error) => {
-            console.log("Something went wrong setting the current location")
-            console.log(error)
-          }
-        );
+      if (useLocation) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              setCurrPos({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              });
+            },
+            (error) => {
+              console.log("Something went wrong setting the current location")
+              console.log(error)
+            }
+          );
+        } else {
+          // Browser doesn't support Geolocation
+          console.log("geolocation not supported by browser")
+        }
       } else {
-        // Browser doesn't support Geolocation
-        console.log("geolocation not supported by browser")
+        setCurrPos(defaultPosition)
       }
     }, 1000*locationUpdateFrequency);
   });
@@ -114,7 +120,7 @@ function App() {
   return (
     <div className='app'>
       <Map polylines={polylines} position={currPos}/>
-      <Sidebar fetchAllPaths={fetchAllPaths} setPolylines={setPolylines} />
+      <Sidebar fetchAllPaths={fetchAllPaths} setPolylines={setPolylines} setUseLocation={setUseLocation} useLocation={useLocation}/>
     </div>
   );
 }
