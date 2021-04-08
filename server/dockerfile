@@ -16,5 +16,4 @@ COPY ./instance/* /opt/instance/
 ENV FLASK_APP=flask_api
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
-#CMD ["flask", "run"]
-
+CMD ["flask", "run"]
