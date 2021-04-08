@@ -20,9 +20,16 @@ function App() {
   // }, ...]
   const [polylines, setPolylines] = useState([]);
   const [useLocation, setUseLocation] = useState(false);
+  const [clickedLatLng, setClickedLatLng] = useState("");
+
+  const onGoogleMapClick = (e) => {
+    let lat = e.latLng.lat().toFixed(6)
+    let lng = e.latLng.lng().toFixed(6)
+    setClickedLatLng(`${lat}, ${lng}`)
+  }
 
   // Current Location code to null island 
-  const defaultPosition = {lat:0.0, lng:0.0} // "null island"
+  const defaultPosition = { lat: 0.0, lng: 0.0 } // "null island"
   const [currPos, setCurrPos] = useState();
   // Update the location periodically 
   const locationUpdateFrequency = 10; // seconds 
@@ -51,7 +58,7 @@ function App() {
       } else {
         setCurrPos(defaultPosition)
       }
-    }, 1000*locationUpdateFrequency);
+    }, 1000 * locationUpdateFrequency);
   });
 
   const fetchAllPaths = (bikesOnly = false) => {
@@ -119,8 +126,8 @@ function App() {
 
   return (
     <div className='app'>
-      <Map polylines={polylines} position={currPos}/>
-      <Sidebar fetchAllPaths={fetchAllPaths} setPolylines={setPolylines} setUseLocation={setUseLocation} useLocation={useLocation}/>
+      <Map polylines={polylines} position={currPos} onGoogleMapClick={onGoogleMapClick} />
+      <Sidebar clickedLatLng={clickedLatLng} fetchAllPaths={fetchAllPaths} setPolylines={setPolylines} setUseLocation={setUseLocation} useLocation={useLocation} />
     </div>
   );
 }

@@ -14,6 +14,11 @@
   @apply text-center text-lg mt-2 mb-2;
 }
 
+.sidebar-latlng {
+  @apply text-center mt-2 mb-2;
+  font-weight: lighter;
+}
+
 .input {
   @apply mt-1 mb-4 block w-full rounded-md border-gray-300 shadow-sm;
 }
