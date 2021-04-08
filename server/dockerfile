@@ -11,6 +11,7 @@ COPY ./flask_api/*.py ./flask_api
 COPY ./*.py /opt
 run mkdir /opt/instance
 COPY ./instance/* /opt/instance/
+RUN mkdir /opt/front-end-files
 
 #ENV FLASK_API flask_api
 ENV FLASK_APP=flask_api
