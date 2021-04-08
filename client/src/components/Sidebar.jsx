@@ -4,8 +4,19 @@ import { decode } from '@googlemaps/polyline-codec';
 import Navigation from './navigation/Navigation';
 import NavigationTab from './navigation/NavigationTab';
 
+const algorithms = {
+  algo1: 'Algorithm 1',
+  algo2: 'Algorithm 2',
+  algo3: 'Algorithm 3',
+};
+
 const Sidebar = props => {
-  const { polylines, setPolylines, toggleAllPathsDisplay } = props;
+  const {
+    polylines,
+    setPolylines,
+    toggleDisplay,
+    toggleAllPathsDisplay,
+  } = props;
   const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState('generateRoutes');
   const [dirtPathsChecked, setDirtPathsChecked] = useState(false);
@@ -169,7 +180,34 @@ const Sidebar = props => {
         </>
       )}
       {menu === 'routeLegend' && (
-        <h1 className='sidebar-header'>Route Legend</h1>
+        <>
+          <h1 className='sidebar-header'>Route Legend</h1>
+          <div style={{ padding: '2rem' }}>
+            {polylines
+              .filter(p => p.paths.length > 0)
+              .map(p => (
+                <div
+                  key={p.id}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <label>Display Route From {algorithms[p.id]}</label>
+                  <input
+                    id={p.id}
+                    type='checkbox'
+                    className='rounded mb-4'
+                    style={{ color: p.color }}
+                    onChange={() => {
+                      toggleDisplay(p.id);
+                    }}
+                    checked={polylines.find(poly => poly.id === p.id).display}
+                  />
+                </div>
+              ))}
+          </div>
+        </>
       )}
       {menu === 'additionalFunctionality' && (
         <>
@@ -186,7 +224,7 @@ const Sidebar = props => {
               id='allDirtPaths'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => {
+              onChange={() => {
                 setDirtPathsChecked(!dirtPathsChecked);
                 toggleAllPathsDisplay('allDirtPaths', '/api/alldirtpaths');
               }}
@@ -197,7 +235,7 @@ const Sidebar = props => {
               id='allBikePaths'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => {
+              onChange={() => {
                 setBikePathsChecked(!bikePathsChecked);
                 toggleAllPathsDisplay('allBikePaths', '/api/allbikepaths');
               }}
@@ -208,7 +246,7 @@ const Sidebar = props => {
               id='locationToggle'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => {
+              onChange={() => {
                 setLocationChecked(!locationChecked);
                 props.setUseLocation(!props.useLocation);
               }}

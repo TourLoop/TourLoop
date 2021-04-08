@@ -87,14 +87,18 @@ function App() {
     }, 1000 * locationUpdateFrequency);
   });
 
+  const toggleDisplay = id => {
+    const newPolylines = polylines.map(p =>
+      p.id === id ? { ...p, display: !p.display } : p
+    );
+    setPolylines(newPolylines);
+  };
+
   const toggleAllPathsDisplay = (id, url) => {
     if (polylines.find(p => p.id === id).paths.length === 0) {
       fetchAllPaths({ id, url });
     } else {
-      const newPolylines = polylines.map(p =>
-        p.id === id ? { ...p, display: !p.display } : p
-      );
-      setPolylines(newPolylines);
+      toggleDisplay(id);
     }
   };
 
@@ -208,6 +212,7 @@ function App() {
     <div className='app'>
       <Map polylines={polylines} position={currPos} />
       <Sidebar
+        toggleDisplay={toggleDisplay}
         toggleAllPathsDisplay={toggleAllPathsDisplay}
         polylines={polylines}
         setPolylines={setPolylines}
