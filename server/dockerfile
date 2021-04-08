@@ -7,11 +7,15 @@ RUN pip3 install -r /opt/requirements.txt
 # copy over backend files
 WORKDIR /opt
 RUN mkdir -p server/flask_api
-COPY ./* /opt/server/
+RUN mkdir -p server/instance
+COPY ./*.py /opt/server/
+COPY ./instance/* /opt/server/instance
+COPY ./flask_api/*.py /opt/server/flask_api
 RUN mkdir -p /opt/client/build
+WORKDIR /opt/server
 
 #ENV FLASK_API flask_api
 ENV FLASK_APP=flask_api
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
-CMD ["flask", "run"]
+CMD ["python3", "main.py"]
