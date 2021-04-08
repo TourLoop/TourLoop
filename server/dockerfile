@@ -6,12 +6,9 @@ RUN pip3 install -r /opt/requirements.txt
 
 # copy over backend files
 WORKDIR /opt
-RUN mkdir flask_api
-COPY ./flask_api/*.py ./flask_api
-COPY ./*.py /opt
-run mkdir /opt/instance
-COPY ./instance/* /opt/instance/
-RUN mkdir /opt/front-end-files
+RUN mkdir -p server/flask_api
+COPY ./* /opt/server/
+RUN mkdir -p /opt/client/build
 
 #ENV FLASK_API flask_api
 ENV FLASK_APP=flask_api
