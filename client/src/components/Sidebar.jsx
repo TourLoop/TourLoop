@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { decode } from '@googlemaps/polyline-codec';
 import Navigation from './navigation/Navigation';
 import NavigationTab from './navigation/NavigationTab';
+import HelpModal from './HelpModal';
 
 const Sidebar = props => {
   const { setPolylines } = props;
@@ -74,6 +75,7 @@ const Sidebar = props => {
 
   return (
     <div className='sidebar'>
+      <HelpModal/>
       <Navigation>
         <h1 className='sidebar-header'>Menu</h1>
         <NavigationTab
