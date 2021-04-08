@@ -7,4 +7,11 @@ services:
             - "7687:7687"
         environment:
             - NEO4J_AUTH=neo4j/test
+    backend:
+        build:
+            context: ../../server
+        volumes:
+            - ./../../client/build:/opt/front-end-files
+        ports:
+            - "5000:5000"
 
