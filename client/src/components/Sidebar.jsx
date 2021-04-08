@@ -5,7 +5,7 @@ import Navigation from './navigation/Navigation';
 import NavigationTab from './navigation/NavigationTab';
 
 const Sidebar = props => {
-  const { polylines, setPolylines } = props;
+  const { polylines, setPolylines, toggleAllPathsDisplay } = props;
   const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState('generateRoutes');
   const [dirtPathsChecked, setDirtPathsChecked] = useState(false);
@@ -188,7 +188,7 @@ const Sidebar = props => {
               className='rounded text-blue-500 mb-4'
               onClick={() => {
                 setDirtPathsChecked(!dirtPathsChecked);
-                props.fetchAllPaths(false);
+                toggleAllPathsDisplay('allDirtPaths', '/api/alldirtpaths');
               }}
               checked={dirtPathsChecked}
             />
@@ -199,7 +199,7 @@ const Sidebar = props => {
               className='rounded text-blue-500 mb-4'
               onClick={() => {
                 setBikePathsChecked(!bikePathsChecked);
-                props.fetchAllPaths(true);
+                toggleAllPathsDisplay('allBikePaths', '/api/allbikepaths');
               }}
               checked={bikePathsChecked}
             />
