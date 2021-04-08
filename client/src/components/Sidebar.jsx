@@ -8,6 +8,8 @@ const algorithms = {
   algo1: 'Algorithm 1',
   algo2: 'Algorithm 2',
   algo3: 'Algorithm 3',
+  allBikePaths: 'All Bike Paths',
+  allDirtPaths: 'All Dirt Paths',
 };
 
 const Sidebar = props => {
