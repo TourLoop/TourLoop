@@ -6,7 +6,7 @@ from flask import Flask, send_from_directory
 def create_app():
     # /client/build should hold the built react frontend (npm build)
     app = Flask(__name__, instance_relative_config=True,
-                static_folder='./front-end-files', static_url_path='/')
+                static_folder='../../client/build', static_url_path='/')
 
     # Check that the instance folder exists. It should hold the config.py file.
     try:
