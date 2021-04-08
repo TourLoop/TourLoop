@@ -5,9 +5,9 @@ import Navigation from './navigation/Navigation';
 import NavigationTab from './navigation/NavigationTab';
 
 const Sidebar = props => {
-  const { setPolylines } = props;
+  const { polylines, setPolylines } = props;
   const [loading, setLoading] = useState(false);
-  const [menu, setMenu] = useState('additionalFunctionality');
+  const [menu, setMenu] = useState('generateRoutes');
   const [dirtPathsChecked, setDirtPathsChecked] = useState(false);
   const [bikePathsChecked, setBikePathsChecked] = useState(false);
   const [locationChecked, setLocationChecked] = useState(false);
@@ -30,19 +30,23 @@ const Sidebar = props => {
       const route = await res.json();
 
       const latLngs = decode(route.path, 6);
-      const polylines = latLngs.map(latLng => ({
+      const paths = latLngs.map(latLng => ({
         lat: latLng[0],
         lng: latLng[1],
       }));
 
-      setPolylines([
-        {
-          paths: [polylines],
-          display: true,
-          id: 'temp',
-          color: '#FF6347',
-        },
-      ]);
+      const newPolylines = polylines.map(polyline =>
+        polyline.id === route.algorithm
+          ? {
+              paths: [paths],
+              display: polyline.display,
+              id: polyline.id,
+              color: polyline.color,
+            }
+          : polyline
+      );
+
+      setPolylines(newPolylines);
     } else {
       // error message
     }
@@ -79,6 +83,10 @@ const Sidebar = props => {
         <NavigationTab
           label='Generate Routes'
           onClick={() => setMenu('generateRoutes')}
+        />
+        <NavigationTab
+          label='Route Legend'
+          onClick={() => setMenu('routeLegend')}
         />
         <NavigationTab
           label='Additional Functionality'
@@ -159,6 +167,9 @@ const Sidebar = props => {
             {loading && <h2 className='form-submit-header'>Generating...</h2>}
           </form>
         </>
+      )}
+      {menu === 'routeLegend' && (
+        <h1 className='sidebar-header'>Route Legend</h1>
       )}
       {menu === 'additionalFunctionality' && (
         <>

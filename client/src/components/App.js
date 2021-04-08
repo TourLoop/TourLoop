@@ -8,6 +8,39 @@ const ALLDIRTPATHS = 'ALLDIRTPATHS';
 const ALLBIKEPATHS = 'ALLBIKEPATHS';
 const ALGO2 = 'ALGO2';
 
+const defaultPolylines = [
+  {
+    paths: [],
+    display: true,
+    id: 'algo1',
+    color: '#FF6347',
+  },
+  {
+    paths: [],
+    display: true,
+    id: 'algo2',
+    color: '#3B82F6',
+  },
+  {
+    paths: [],
+    display: true,
+    id: 'algo3',
+    color: '#EC4899',
+  },
+  {
+    paths: [],
+    display: false,
+    id: 'allDirtPaths',
+    color: '#577590',
+  },
+  {
+    paths: [],
+    display: false,
+    id: 'allBikePaths',
+    color: '#4BA973',
+  },
+];
+
 function App() {
   // polylines is of type
   // [{
@@ -18,14 +51,14 @@ function App() {
   //    color: string,
   //    time: string,
   // }, ...]
-  const [polylines, setPolylines] = useState([]);
+  const [polylines, setPolylines] = useState(defaultPolylines);
   const [useLocation, setUseLocation] = useState(false);
 
-  // Current Location code to null island 
-  const defaultPosition = {lat:0.0, lng:0.0} // "null island"
+  // Current Location code to null island
+  const defaultPosition = { lat: 0.0, lng: 0.0 }; // "null island"
   const [currPos, setCurrPos] = useState();
-  // Update the location periodically 
-  const locationUpdateFrequency = 10; // seconds 
+  // Update the location periodically
+  const locationUpdateFrequency = 10; // seconds
   useEffect(() => {
     setTimeout(() => {
       // console.log("Trying to update current position...")
@@ -33,25 +66,25 @@ function App() {
       if (useLocation) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
-            (position) => {
+            position => {
               setCurrPos({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
               });
             },
-            (error) => {
-              console.log("Something went wrong setting the current location")
-              console.log(error)
+            error => {
+              console.log('Something went wrong setting the current location');
+              console.log(error);
             }
           );
         } else {
           // Browser doesn't support Geolocation
-          console.log("geolocation not supported by browser")
+          console.log('geolocation not supported by browser');
         }
       } else {
-        setCurrPos(defaultPosition)
+        setCurrPos(defaultPosition);
       }
-    }, 1000*locationUpdateFrequency);
+    }, 1000 * locationUpdateFrequency);
   });
 
   const fetchAllPaths = (bikesOnly = false) => {
@@ -68,24 +101,29 @@ function App() {
 
     if (ind !== -1) {
       // We have already fetched all paths. Turn display on or off.
-      let plines = [...polylines]
-      let pline = { ...plines[ind] }
-      pline.display = !pline.display
-      plines[ind] = pline
-      setPolylines(plines)
+      let plines = [...polylines];
+      let pline = { ...plines[ind] };
+      pline.display = !pline.display;
+      plines[ind] = pline;
+      setPolylines(plines);
     } else {
       fetch(url)
         .then(res => res.text())
         .then(
           f => {
-            let latLngs = { "paths": [], display: true, id: id, color: pathColor };
+            let latLngs = {
+              paths: [],
+              display: true,
+              id: id,
+              color: pathColor,
+            };
             f.split('\n').forEach(function (path) {
               var p = decode(path, 6);
               let pline = p.map(p => ({
                 lat: p[0],
                 lng: p[1],
               }));
-              latLngs.paths.push(pline)
+              latLngs.paths.push(pline);
             });
             setPolylines([...polylines, latLngs]);
           },
@@ -119,8 +157,14 @@ function App() {
 
   return (
     <div className='app'>
-      <Map polylines={polylines} position={currPos}/>
-      <Sidebar fetchAllPaths={fetchAllPaths} setPolylines={setPolylines} setUseLocation={setUseLocation} useLocation={useLocation}/>
+      <Map polylines={polylines} position={currPos} />
+      <Sidebar
+        fetchAllPaths={fetchAllPaths}
+        polylines={polylines}
+        setPolylines={setPolylines}
+        setUseLocation={setUseLocation}
+        useLocation={useLocation}
+      />
     </div>
   );
 }
