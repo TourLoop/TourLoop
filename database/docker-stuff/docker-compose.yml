@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
     neo4jdb:
         build: .
@@ -11,7 +11,7 @@ services:
         build:
             context: ../../server
         volumes:
-            - ./../../client/build:/opt/front-end-files
+            - ./../../client/build:/opt/client/build
         ports:
             - "5000:5000"
 
