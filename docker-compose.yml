@@ -1,7 +1,8 @@
 version: "3"
 services:
     neo4jdb:
-        build: .
+        build:
+            context: ./database/docker-stuff
         ports:
             - "7474:7474"
             - "7687:7687"
@@ -9,7 +10,7 @@ services:
             - NEO4J_AUTH=neo4j/test
     backend:
         build:
-            context: ../../server
+            context: ./server
         volumes:
             - ./../../client/build:/opt/client/build
         ports:
