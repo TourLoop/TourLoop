@@ -7,6 +7,16 @@ In the top level of this directory run:
 ./deploy.sh
 ```
 
+### system requirements
+- docker
+- docker-compose
+- python3
+- bash
+- npm & nodejs
+
+For optimal performance, docker containers should have access to 4GB of RAM. Change this on your docker settings.
+You may also need to run the deploy script with 'sudo' in order to run docker commands.
+
 ### what the script does
 - compiles the front end to the client/build directory
 - ensures the raw OSM-xml data is present
