@@ -112,7 +112,12 @@ const Sidebar = props => {
 
   return (
     <div className='sidebar'>
-      <HelpIcon className='help-icon' onClick={toggle} />
+      <div className='sidebar-help'>
+        <label className='help-label' onClick={toggle}>
+          Help
+        </label>
+        <HelpIcon className='help-icon' onClick={toggle} />
+      </div>
       <HelpModal isShowing={isShowing} hide={toggle} />
       <Navigation>
         <h1 className='sidebar-header'>Menu</h1>
@@ -137,7 +142,8 @@ const Sidebar = props => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              padding: '1rem 2rem',
+              paddingLeft: '2rem',
+              paddingRight: '2rem',
             }}
           >
             <label htmlFor='pointToPoint'>Point-to-Point</label>

@@ -20,7 +20,7 @@ class Algo2(SearchAlgorithm):
         heapq.heapify(frontier)
         while n.target_dist_est > 0.1:
             n = heapq.heappop(frontier)
-            print("Distance: ", n.path_dist, n.target_dist_est)
+            # print("Distance: ", n.path_dist, n.target_dist_est)
 
             for c in self.db_wrapper.getNeighbours(n):
                 if c.node_id not in visited:

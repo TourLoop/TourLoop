@@ -90,8 +90,16 @@
   @apply my-4;
 }
 
+.sidebar-help {
+  @apply flex m-2 mr-4 h-8 justify-end;
+}
+
+.help-label {
+  @apply mr-2 text-lg;
+}
+
 .help-icon {
-  @apply w-12 h-12;
+  @apply w-8 h-8;
 }
 
 @tailwind utilities;
