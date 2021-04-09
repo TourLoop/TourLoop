@@ -186,7 +186,6 @@ const Sidebar = props => {
 
             <label htmlFor='algorithm'>Algorithm</label>
             <select {...register('algorithm')} id='algorithm' className='input'>
-              <option value='pins'>Pins</option>
               <option value='algo1'>Algorithm 1</option>
               <option value='algo2'>Algorithm 2</option>
               <option value='algo3'>Algorithm 3</option>
