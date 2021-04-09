@@ -53,13 +53,13 @@ function App() {
   // }, ...]
   const [polylines, setPolylines] = useState(defaultPolylines);
   const [useLocation, setUseLocation] = useState(false);
-  const [clickedLatLng, setClickedLatLng] = useState("");
+  const [clickedLatLng, setClickedLatLng] = useState('');
 
-  const onGoogleMapClick = (e) => {
-    let lat = e.latLng.lat().toFixed(6)
-    let lng = e.latLng.lng().toFixed(6)
-    setClickedLatLng(`${lat}, ${lng}`)
-  }
+  const onGoogleMapClick = e => {
+    let lat = e.latLng.lat().toFixed(6);
+    let lng = e.latLng.lng().toFixed(6);
+    setClickedLatLng(`${lat}, ${lng}`);
+  };
 
   // Current Location code to null island
   const defaultPosition = { lat: 0.0, lng: 0.0 }; // "null island"
@@ -217,8 +217,13 @@ function App() {
 
   return (
     <div className='app'>
-      <Map polylines={polylines} position={currPos} />
+      <Map
+        polylines={polylines}
+        position={currPos}
+        onGoogleMapClick={onGoogleMapClick}
+      />
       <Sidebar
+        clickedLatLng={clickedLatLng}
         toggleDisplay={toggleDisplay}
         toggleAllPathsDisplay={toggleAllPathsDisplay}
         polylines={polylines}
