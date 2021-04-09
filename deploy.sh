@@ -6,7 +6,7 @@ npm install && npm run build
 cd ../
 
 # skip this step by pre-downloading edmonton-OSM-data.xml into raw-data from:
-# <google-drive-link>
+# https://drive.google.com/drive/u/0/folders/1csxY4bgFG6Vt3tK8NuExde1NCZFQ3Dan
 # get the original datafile
 # if not already there
 if [ ! -f ./raw-data/edmonton-OSM-data.xml ]; then
