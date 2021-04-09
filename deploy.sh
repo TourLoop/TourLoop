@@ -19,6 +19,7 @@ fi
 # rebuild the database (prepare for it at least)
 echo "generating db files, this may take a while..."
 cd database
+pip3 install neo4j polyline vincenty || true
 ./rebuild-database-files.sh
 cd ../
 
