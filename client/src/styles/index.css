@@ -42,12 +42,12 @@
 }
 
 .navigation {
-  @apply px-4 py-2;
+  @apply px-2 py-1;
   @apply flex-1;
 }
 
 .navigation-tab {
-  @apply px-2 py-1 ml-2 w-48 h-12;
+  @apply px-2 py-1 ml-2 h-12;
   @apply bg-pink-500 rounded;
   @apply font-bold text-white text-sm;
 }
@@ -62,6 +62,19 @@
 
 .form-submit-header {
   @apply text-sm;
+}
+
+.route-statistic {
+  @apply mx-4 my-2 p-2;
+  @apply bg-gray-700 rounded-md shadow-md;
+}
+
+.route-statistic-header {
+  @apply text-green-500;
+}
+
+.route-statistic-header span {
+  @apply text-white;
 }
 
 @tailwind utilities;
