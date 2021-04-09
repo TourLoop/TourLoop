@@ -21,19 +21,22 @@ class Algo2(SearchAlgorithm):
             self.options.getStart()[0], self.options.getStart()[1])
 
         if vincenty(n.getLatLonTuple(), self.options.getStart()) > MAX_DIST_FROM_START_END:
-            self.err_message = "Could not find path close to your start location"
+            self.err_message = "Could not find path close to your start location."
             return
 
         n_closest_end = self.db_wrapper.getClosestPoint(
             self.options.getEnd()[0], self.options.getEnd()[1])
 
         if vincenty(n_closest_end.getLatLonTuple(), self.options.getEnd()) > MAX_DIST_FROM_START_END:
-            self.err_message = "Could not find path close to your end location"
+            self.err_message = "Could not find path close to your end location."
             return
 
         frontier = [n]
         frontier_ids = set([n.node_id])
         while n.path_dist < Node.target_distance * 2 and (n.target_dist_est > MAX_DIST_FROM_START_END or n.path_dist < (Node.target_distance / 2)):
+            if not frontier:
+                self.err_message = "Could not find a path between start and end location."
+
             n = frontier.pop(0)
             frontier_ids.remove(n.node_id)
 

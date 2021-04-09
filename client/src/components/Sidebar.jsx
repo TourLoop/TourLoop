@@ -3,14 +3,34 @@ import { useForm } from 'react-hook-form';
 import { decode } from '@googlemaps/polyline-codec';
 import Navigation from './navigation/Navigation';
 import NavigationTab from './navigation/NavigationTab';
+import HelpModal from './HelpModal';
+import RouteStatistic from './RouteStatistic';
+import useModal from '../hooks/useModal';
+import { ReactComponent as HelpIcon } from '../assets/images/help_icon.svg';
+
+const algorithms = {
+  algo1: 'Algorithm 1',
+  algo2: 'Algorithm 2',
+  algo3: 'Algorithm 3',
+  allBikePaths: 'All Bike Paths',
+  allDirtPaths: 'All Dirt Paths',
+};
 
 const Sidebar = props => {
-  const { setPolylines } = props;
+  const {
+    polylines,
+    setPolylines,
+    toggleDisplay,
+    toggleAllPathsDisplay,
+  } = props;
   const [loading, setLoading] = useState(false);
-  const [menu, setMenu] = useState('additionalFunctionality');
+  const [menu, setMenu] = useState('generateRoutes');
   const [dirtPathsChecked, setDirtPathsChecked] = useState(false);
   const [bikePathsChecked, setBikePathsChecked] = useState(false);
   const [locationChecked, setLocationChecked] = useState(false);
+  const [routeStatistics, setRouteStatistics] = useState([]);
+
+  const { isShowing, toggle } = useModal();
 
   const {
     register,
@@ -29,20 +49,38 @@ const Sidebar = props => {
     if (res.status === 200) {
       const route = await res.json();
 
+      const statistics = routeStatistics.filter(
+        rs => rs.algorithm !== route.algorithm
+      );
+      const newRouteStatistics = [
+        ...statistics,
+        {
+          algorithm: route.algorithm,
+          distance: route.distance,
+          percentPathType: route.percentPathType,
+          time: route.time,
+        },
+      ];
+
       const latLngs = decode(route.path, 6);
-      const polylines = latLngs.map(latLng => ({
+      const paths = latLngs.map(latLng => ({
         lat: latLng[0],
         lng: latLng[1],
       }));
 
-      setPolylines([
-        {
-          paths: [polylines],
-          display: true,
-          id: 'temp',
-          color: '#FF6347',
-        },
-      ]);
+      const newPolylines = polylines.map(polyline =>
+        polyline.id === route.algorithm
+          ? {
+              paths: [paths],
+              display: polyline.display,
+              id: polyline.id,
+              color: polyline.color,
+            }
+          : polyline
+      );
+
+      setPolylines(newPolylines);
+      setRouteStatistics(newRouteStatistics);
     } else {
       // error message
     }
@@ -74,11 +112,17 @@ const Sidebar = props => {
 
   return (
     <div className='sidebar'>
+      <HelpIcon className='help-icon' onClick={toggle} />
+      <HelpModal isShowing={isShowing} hide={toggle} />
       <Navigation>
         <h1 className='sidebar-header'>Menu</h1>
         <NavigationTab
           label='Generate Routes'
           onClick={() => setMenu('generateRoutes')}
+        />
+        <NavigationTab
+          label='Route Legend'
+          onClick={() => setMenu('routeLegend')}
         />
         <NavigationTab
           label='Additional Functionality'
@@ -161,6 +205,45 @@ const Sidebar = props => {
           <h3 className='sidebar-latlng'>{props.clickedLatLng}</h3>
         </>
       )}
+      {menu === 'routeLegend' && (
+        <>
+          <h1 className='sidebar-header'>Route Legend</h1>
+          <div style={{ padding: '2rem' }}>
+            {polylines
+              .filter(p => p.paths.length > 0)
+              .map(p => (
+                <div
+                  key={p.id}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <label>Display Route From {algorithms[p.id]}</label>
+                  <input
+                    id={p.id}
+                    type='checkbox'
+                    className='rounded mb-4'
+                    style={{ color: p.color }}
+                    onChange={() => {
+                      toggleDisplay(p.id);
+                    }}
+                    checked={polylines.find(poly => poly.id === p.id).display}
+                  />
+                </div>
+              ))}
+          </div>
+          {routeStatistics.map(rs => (
+            <RouteStatistic
+              key={rs.algorithm}
+              algorithm={algorithms[rs.algorithm]}
+              distance={rs.distance}
+              percentPathType={rs.percentPathType}
+              time={rs.time}
+            />
+          ))}
+        </>
+      )}
       {menu === 'additionalFunctionality' && (
         <>
           <h1 className='sidebar-header'>Additional Functionality</h1>
@@ -176,9 +259,9 @@ const Sidebar = props => {
               id='allDirtPaths'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => {
+              onChange={() => {
                 setDirtPathsChecked(!dirtPathsChecked);
-                props.fetchAllPaths(false);
+                toggleAllPathsDisplay('allDirtPaths', '/api/alldirtpaths');
               }}
               checked={dirtPathsChecked}
             />
@@ -187,9 +270,9 @@ const Sidebar = props => {
               id='allBikePaths'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => {
+              onChange={() => {
                 setBikePathsChecked(!bikePathsChecked);
-                props.fetchAllPaths(true);
+                toggleAllPathsDisplay('allBikePaths', '/api/allbikepaths');
               }}
               checked={bikePathsChecked}
             />
@@ -198,7 +281,7 @@ const Sidebar = props => {
               id='locationToggle'
               type='checkbox'
               className='rounded text-blue-500 mb-4'
-              onClick={() => {
+              onChange={() => {
                 setLocationChecked(!locationChecked);
                 props.setUseLocation(!props.useLocation);
               }}

@@ -34,4 +34,4 @@ class SearchAlgorithm:
         if self.err_message != None:
             return {"errMessage": self.err_message}
 
-        return {"path": polyline.encode(self.route, 6), "time": self.elapsed_time, "distance": self.distance, "percentpathtype": self.percent_path_type}
+        return {"path": polyline.encode(self.route, 6), "time": self.elapsed_time, "distance": self.distance, "percentpathtype": self.percent_path_type, "algorithm": self.options.getAlgorithmType()}

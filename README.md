@@ -1,6 +1,41 @@
 # TourLoop
 The #1 loop generating map in the world.
 
+## Deploy instructions
+In the top level of this directory run:
+```bash
+./deploy.sh
+```
+
+### system requirements
+- docker
+- docker-compose
+- python3
+- bash
+- npm & nodejs
+
+For optimal performance, docker containers should have access to 4GB of RAM. Change this on your docker settings.
+You may also need to run the deploy script with 'sudo' in order to run docker commands.
+
+### what the script does
+- compiles the front end to the client/build directory
+- ensures the raw OSM-xml data is present
+- rebuilds database files
+- uses docker-compose to bring up the database and flask API
+- waits a bit then adds indexes to the running neo4j container
+
+### skipping downloading the osm xml raw data file
+The deploy script will make a call to the OpenStreetMap overpassAPI which handles exports.
+In order to skip this step, the file must already exist in the raw-data folder.
+Furthermore, the file must be named exactly "edmonton-OSM-data.xml"
+
+### A note for the ECE493 marking team
+The original datafile we wrote the system on is located at:
+https://drive.google.com/drive/u/0/folders/1csxY4bgFG6Vt3tK8NuExde1NCZFQ3Dan
+Use this file to test the system. The file downloaded by the deploy script may not be exactly the same (due to the updates OSM puts out) as the one we developed on.
+It was out of scope to handle updates from OpenStreetMaps data, so if for some reason the system encounters an error using an up-to-date version of the xml file, please switch to the original xml file located on google drive.
+
+
 ## Build-n-run the DB
 
 The TourLoop database is run out of a custom docker container.
