@@ -5,11 +5,16 @@ cd client
 npm install && npm run build
 cd ../
 
+# skip this step by pre-downloading edmonton-OSM-data.xml into raw-data from:
+# <google-drive-link>
 # get the original datafile
 # if not already there
-cd raw-data
-./download.sh
-cd ../
+if [ ! -f ./raw-data/edmonton-OSM-data.xml ]; then
+    cd raw-data
+    echo "Database file not found... downloading from overpass API"
+    ./download.sh
+    cd ../
+fi
 
 # rebuild the database (prepare for it at least)
 cd database
