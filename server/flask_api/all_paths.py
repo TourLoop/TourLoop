@@ -3,7 +3,6 @@ from flask import Blueprint, request, send_file
 from algo_3 import Algo3
 from algo_2 import Algo2
 from algo_1 import Algo1
-from pins_algo import ReturnPins
 from path_options import PathOptions
 
 from flask_api.db import get_db
@@ -56,10 +55,7 @@ def demo_pins():
         path_options = PathOptions(
             start_lat_lng, end_lat_lng, path_type, target_distance, algorithm)
 
-        if algorithm == 'pins':
-            print('Running Pins')
-            algo = Algo2(path_options, get_db())
-        elif algorithm == 'algo1':
+        if algorithm == 'algo1':
             print('Running Algorithm 1')
             algo = Algo1(path_options, get_db())
         elif algorithm == 'algo2':
