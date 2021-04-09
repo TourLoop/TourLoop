@@ -17,14 +17,17 @@ if [ ! -f ./raw-data/edmonton-OSM-data.xml ]; then
 fi
 
 # rebuild the database (prepare for it at least)
+echo "generating db files, this may take a while..."
 cd database
 ./rebuild-database-files.sh
 cd ../
 
 # docker up the services
+echo "Starting db and backend containers"
 docker-compose up -d --build
 
 # auto-add the neo4j indexes
+echo "Adding neo4j indexes for imporoved performance"
 sleep 30s
 cd database
 python3 index_creator.py
