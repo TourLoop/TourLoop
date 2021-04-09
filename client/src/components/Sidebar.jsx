@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { decode } from '@googlemaps/polyline-codec';
 import Navigation from './navigation/Navigation';
 import NavigationTab from './navigation/NavigationTab';
+import RouteStatistic from './RouteStatistic';
 
 const algorithms = {
   algo1: 'Algorithm 1',
@@ -24,6 +25,7 @@ const Sidebar = props => {
   const [dirtPathsChecked, setDirtPathsChecked] = useState(false);
   const [bikePathsChecked, setBikePathsChecked] = useState(false);
   const [locationChecked, setLocationChecked] = useState(false);
+  const [routeStatistics, setRouteStatistics] = useState([]);
 
   const {
     register,
@@ -41,6 +43,19 @@ const Sidebar = props => {
 
     if (res.status === 200) {
       const route = await res.json();
+
+      const statistics = routeStatistics.filter(
+        rs => rs.algorithm !== route.algorithm
+      );
+      const newRouteStatistics = [
+        ...statistics,
+        {
+          algorithm: route.algorithm,
+          distance: route.distance,
+          percentPathType: route.percentPathType,
+          time: route.time,
+        },
+      ];
 
       const latLngs = decode(route.path, 6);
       const paths = latLngs.map(latLng => ({
@@ -60,6 +75,7 @@ const Sidebar = props => {
       );
 
       setPolylines(newPolylines);
+      setRouteStatistics(newRouteStatistics);
     } else {
       // error message
     }
@@ -209,6 +225,15 @@ const Sidebar = props => {
                 </div>
               ))}
           </div>
+          {routeStatistics.map(rs => (
+            <RouteStatistic
+              key={rs.algorithm}
+              algorithm={algorithms[rs.algorithm]}
+              distance={rs.distance}
+              percentPathType={rs.percentPathType}
+              time={rs.time}
+            />
+          ))}
         </>
       )}
       {menu === 'additionalFunctionality' && (

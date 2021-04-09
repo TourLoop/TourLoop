@@ -59,4 +59,17 @@
   @apply text-sm;
 }
 
+.route-statistic {
+  @apply mx-4 my-2 p-2;
+  @apply bg-gray-700 rounded-md shadow-md;
+}
+
+.route-statistic-header {
+  @apply text-green-500;
+}
+
+.route-statistic-header span {
+  @apply text-white;
+}
+
 @tailwind utilities;
