@@ -48,10 +48,10 @@ def demo_pins():
         end_lat_lng = tuple(float(coord) for coord in end_location.split(','))
 
         if len(start_lat_lng) != 2:
-            return {"message": "Error parsing start location"}
+            return {"errMessage": "Error parsing start location"}
 
         if len(end_lat_lng) != 2:
-            return {"message": "Error parsing end location"}
+            return {"errMessage": "Error parsing end location"}
 
         path_options = PathOptions(
             start_lat_lng, end_lat_lng, path_type, target_distance, algorithm)
@@ -69,7 +69,7 @@ def demo_pins():
             print('Running Algorithm 3')
             algo = Algo3(path_options, get_db())
         else:
-            return {"message": "Error in algorithm selection"}
+            return {"errMessage": "Error in algorithm selection"}
 
         algo.generateRoutes()
         return algo.getRoutesJson()

@@ -17,7 +17,7 @@ class Node:
     1
     """
 
-    # Remember to initialize the end target (lat, lon)
+    # Remember to initialize the end target (lat, lon), path_type
     # and target_distance for the Node class!
     target = (0.0, 0.0)
     target_distance = 0.0
@@ -29,20 +29,21 @@ class Node:
         self.lat = float(lat)
         self.lon = float(lon)
 
-        one_or_zero = lambda x : 1 if x == Node.target_path_type else 0
         if prev_node == None:
             self.path_dist = 0.0
-            self.pref_count = one_or_zero(path_type)
+            self.pref_count = self.one_or_zero(path_type)
             self.count = 1
         else:
-            self.pref_count = prev_node.pref_count + one_or_zero(path_type)
+            self.pref_count = prev_node.pref_count + \
+                self.one_or_zero(path_type)
             self.count = prev_node.count + 1
             self.path_dist = prev_node.path_dist + \
                 vincenty((self.lat, self.lon), (prev_node.lat, prev_node.lon))
 
         self.target_dist_est = vincenty((self.lat, self.lon), Node.target)
 
-        self.huer = abs(Node.target_distance - self.path_dist - self.target_dist_est)
+        self.huer = abs(Node.target_distance -
+                        self.path_dist - self.target_dist_est)
 
     def __lt__(self, other):
         return self.huer < other.huer
@@ -53,11 +54,15 @@ class Node:
         else:
             return False
 
+    def one_or_zero(self, x):
+        return 1 if x == Node.target_path_type else 0
+
     def getLatLonTuple(self):
         return (self.lat, self.lon)
 
     def getD(self, other):
         return vincenty(self.getLatLonTuple(), other.getLatLonTuple())
+
 
 class SimpleNode:
     def __init__(self, prev_node, node_id, lat, lon):
