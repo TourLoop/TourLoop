@@ -5,6 +5,8 @@ import Navigation from './navigation/Navigation';
 import NavigationTab from './navigation/NavigationTab';
 import HelpModal from './HelpModal';
 import RouteStatistic from './RouteStatistic';
+import useModal from '../hooks/useModal';
+import { ReactComponent as HelpIcon } from '../assets/images/help_icon.svg';
 
 const algorithms = {
   algo1: 'Algorithm 1',
@@ -27,6 +29,8 @@ const Sidebar = props => {
   const [bikePathsChecked, setBikePathsChecked] = useState(false);
   const [locationChecked, setLocationChecked] = useState(false);
   const [routeStatistics, setRouteStatistics] = useState([]);
+
+  const { isShowing, toggle } = useModal();
 
   const {
     register,
@@ -108,7 +112,8 @@ const Sidebar = props => {
 
   return (
     <div className='sidebar'>
-      <HelpModal/>
+      <HelpIcon className='help-icon' onClick={toggle} />
+      <HelpModal isShowing={isShowing} hide={toggle} />
       <Navigation>
         <h1 className='sidebar-header'>Menu</h1>
         <NavigationTab
