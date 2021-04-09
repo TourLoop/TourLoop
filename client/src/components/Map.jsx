@@ -17,7 +17,7 @@ const Map = props => {
         mapContainerStyle={containerStyle}
         center={center}
         zoom={11}
-        on
+        onClick={props.onGoogleMapClick}
       >
         <Marker position={props.position} />;
         {props.polylines.map((polyline, i) => {
@@ -39,7 +39,7 @@ const Map = props => {
         })}
         {/* Child components, such as markers, info windows, etc. */}
         <></>
-      </GoogleMap>
+      </GoogleMap >
     </LoadScript>
   );
 };

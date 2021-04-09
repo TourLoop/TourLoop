@@ -195,6 +195,7 @@ const Sidebar = props => {
             </button>
             {loading && <h2 className='form-submit-header'>Generating...</h2>}
           </form>
+          <h3 className='sidebar-latlng'>{props.clickedLatLng}</h3>
         </>
       )}
       {menu === 'routeLegend' && (
