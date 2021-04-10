@@ -8,6 +8,15 @@ import Sidebar from './Sidebar';
 // const ALLBIKEPATHS = 'ALLBIKEPATHS';
 // const ALGO2 = 'ALGO2';
 
+const DISCLAIMER_MESSAGE = `
+DISCLAIMER:
+
+TourLoop is not responsible for any inacuracies in map data. 
+The data we have and the routes we generate may not be up to date, accurate, or safe.
+
+Be aware of your surroundings. Use this application at your own risk. 
+`
+
 const defaultPolylines = [
   {
     paths: [],
@@ -99,6 +108,8 @@ function App() {
       }
     }, 1000 * locationUpdateFrequency);
   });
+
+  useEffect(() => {alert(DISCLAIMER_MESSAGE)}, [])
 
   const toggleDisplay = (id) => {
     const newPolylines = polylines.map((p) =>
