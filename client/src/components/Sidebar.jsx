@@ -27,6 +27,7 @@ const Sidebar = (props) => {
   const [menu, setMenu] = useState('generateRoutes');
   const [dirtPathsChecked, setDirtPathsChecked] = useState(false);
   const [bikePathsChecked, setBikePathsChecked] = useState(false);
+  const [pavedPathsChecked, setPavedPathsChecked] = useState(false);
   const [locationChecked, setLocationChecked] = useState(false);
   const [routeStatistics, setRouteStatistics] = useState([]);
   const [errMessage, setErrMessage] = useState('');
@@ -289,6 +290,17 @@ const Sidebar = (props) => {
                 toggleAllPathsDisplay('allBikePaths', '/api/allbikepaths');
               }}
               checked={bikePathsChecked}
+            />
+            <label>Display All Paved Paths</label>
+            <input
+              id='allPavedPaths'
+              type='checkbox'
+              className='rounded text-blue-500 mb-4'
+              onChange={() => {
+                setPavedPathsChecked(!pavedPathsChecked);
+                toggleAllPathsDisplay('allPavedPaths', '/api/allpavedpaths');
+              }}
+              checked={pavedPathsChecked}
             />
             <label>Track Current Location</label>
             <input

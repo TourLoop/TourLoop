@@ -28,7 +28,7 @@ class DBWrapper:
     def _getClosestPoint(tx, lat_string, lon_string):
         closest_point_query = """
         Match (n:Node)
-        WHERE distance(n.location, point({latitude:toFloat($lat), longitude:toFloat($lon)})) < 1000
+        WHERE distance(n.location, point({latitude:toFloat($lat), longitude:toFloat($lon)})) < 100
         Return n
         Order by distance(n.location, point({latitude:toFloat($lat), longitude:toFloat($lon)}))
         limit 1

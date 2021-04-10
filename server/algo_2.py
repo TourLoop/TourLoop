@@ -3,8 +3,8 @@ from time import time
 from node import Node
 from vincenty import vincenty
 
-MAX_FRONTIER = 7
-MAX_DIST_FROM_START_END = 0.5
+MAX_FRONTIER = 20
+MAX_DIST_FROM_START_END = 0.1
 
 class Algo2(SearchAlgorithm):
 
@@ -20,36 +20,36 @@ class Algo2(SearchAlgorithm):
             self.options.getStart()[0], self.options.getStart()[1])
 
         if n == None:
-            self.err_message = "Could not find path within 1 km of your start location."
+            self.err_message = "Could not find path within 100m of your start location."
             return
 
         n_closest_end = self.db_wrapper.getClosestPoint(
             self.options.getEnd()[0], self.options.getEnd()[1])
 
         if n_closest_end == None:
-            self.err_message = "Could not find path within 1 km of your end location."
+            self.err_message = "Could not find path within 100m of your end location."
             return
 
         frontier = [n]
-        frontier_ids = set([n.node_id])
+        visited = set([n.node_id])
         while n.path_dist < Node.target_distance * 2 and (n.target_dist_est > MAX_DIST_FROM_START_END or n.path_dist < (Node.target_distance / 2)):
             if not frontier:
                 self.err_message = "Could not find a path between start and end location."
+                return
 
             n = frontier.pop(0)
-            frontier_ids.remove(n.node_id)
 
+            print("Huer: ", n.huer, "ID: ", n.node_id, "Dist: ", n.path_dist, "Remaining Dist: ", n.target_dist_est, "Front: ", len(frontier))
 
             for c in self.db_wrapper.getNeighbours(n):
                 if n.prev_node == None or c.node_id != n.prev_node.node_id:
-                    if c.node_id not in frontier_ids:
+                    if c.node_id not in visited:
                         frontier.append(c)
-                        frontier_ids.add(c.node_id)
+                        visited.add(c.node_id)
 
             frontier.sort()
             while len(frontier) > MAX_FRONTIER:
                 p = frontier.pop()
-                frontier_ids.remove(p.node_id)
 
         self.distance = n.path_dist
 

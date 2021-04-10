@@ -31,6 +31,10 @@ def all_paths():
 def all_bike_paths():
     return send_file("../instance/all_bike_paths.txt")
 
+@bp.route('allpavedpaths', methods=['GET'])
+def all_paved_paths():
+    return send_file("../instance/all_paved_paths.txt")
+
 
 @bp.route('', methods=['GET', 'POST'])
 def demo_pins():
