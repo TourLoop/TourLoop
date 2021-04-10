@@ -16,7 +16,7 @@ const algorithms = {
   allDirtPaths: 'All Dirt Paths',
 };
 
-const Sidebar = props => {
+const Sidebar = (props) => {
   const {
     polylines,
     setPolylines,
@@ -29,6 +29,7 @@ const Sidebar = props => {
   const [bikePathsChecked, setBikePathsChecked] = useState(false);
   const [locationChecked, setLocationChecked] = useState(false);
   const [routeStatistics, setRouteStatistics] = useState([]);
+  const [errMessage, setErrMessage] = useState('');
 
   const { isShowing, toggle } = useModal();
 
@@ -38,8 +39,9 @@ const Sidebar = props => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     setLoading(true);
+    setErrMessage('');
     const res = await fetch('/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -49,8 +51,14 @@ const Sidebar = props => {
     if (res.status === 200) {
       const route = await res.json();
 
+      if (route.errMessage) {
+        setErrMessage(route.errMessage);
+        setLoading(false);
+        return;
+      }
+
       const statistics = routeStatistics.filter(
-        rs => rs.algorithm !== route.algorithm
+        (rs) => rs.algorithm !== route.algorithm
       );
       const newRouteStatistics = [
         ...statistics,
@@ -63,12 +71,12 @@ const Sidebar = props => {
       ];
 
       const latLngs = decode(route.path, 6);
-      const paths = latLngs.map(latLng => ({
+      const paths = latLngs.map((latLng) => ({
         lat: latLng[0],
         lng: latLng[1],
       }));
 
-      const newPolylines = polylines.map(polyline =>
+      const newPolylines = polylines.map((polyline) =>
         polyline.id === route.algorithm
           ? {
               paths: [paths],
@@ -90,8 +98,8 @@ const Sidebar = props => {
 
   const downloadDatabaseFiles = () => {
     fetch('/export/tar')
-      .then(response => response.blob())
-      .then(blob => {
+      .then((response) => response.blob())
+      .then((blob) => {
         // from https://medium.com/yellowcode/download-api-files-with-react-fetch-393e4dae0d9e
         // 2. Create blob link to download
         const url = window.URL.createObjectURL(new Blob([blob]));
@@ -105,7 +113,7 @@ const Sidebar = props => {
         // 5. Clean up and remove the link
         link.parentNode.removeChild(link);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -207,6 +215,7 @@ const Sidebar = props => {
             </button>
             {loading && <h2 className='form-submit-header'>Generating...</h2>}
           </form>
+          <h3 className='sidebar-err'>{errMessage}</h3>
           <h3 className='sidebar-latlng'>{props.clickedLatLng}</h3>
         </>
       )}
@@ -215,8 +224,8 @@ const Sidebar = props => {
           <h1 className='sidebar-header'>Route Legend</h1>
           <div style={{ padding: '2rem' }}>
             {polylines
-              .filter(p => p.paths.length > 0)
-              .map(p => (
+              .filter((p) => p.paths.length > 0)
+              .map((p) => (
                 <div
                   key={p.id}
                   style={{
@@ -233,12 +242,12 @@ const Sidebar = props => {
                     onChange={() => {
                       toggleDisplay(p.id);
                     }}
-                    checked={polylines.find(poly => poly.id === p.id).display}
+                    checked={polylines.find((poly) => poly.id === p.id).display}
                   />
                 </div>
               ))}
           </div>
-          {routeStatistics.map(rs => (
+          {routeStatistics.map((rs) => (
             <RouteStatistic
               key={rs.algorithm}
               algorithm={algorithms[rs.algorithm]}

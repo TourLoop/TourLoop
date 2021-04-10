@@ -18,6 +18,7 @@ class SearchAlgorithm:
         self.frontier = []
         self.db_wrapper = db
         self.route = []
+        self.err_message = None
 
     def getElapsedTime(self):
         if self.elapsed_time == None:
@@ -30,10 +31,7 @@ class SearchAlgorithm:
         return
 
     def getRoutesJson(self):
-        return {
-            "path": polyline.encode(self.route, 6), \
-            "time": self.elapsed_time, \
-            "distance": self.distance, \
-            "percentpathtype": self.percent_path_type, \
-            "algorithm": self.options.getAlgorithmType()
-        }
+        if self.err_message != None:
+            return {"errMessage": self.err_message}
+
+        return {"path": polyline.encode(self.route, 6), "time": self.elapsed_time, "distance": self.distance, "percentpathtype": self.percent_path_type, "algorithm": self.options.getAlgorithmType()}
