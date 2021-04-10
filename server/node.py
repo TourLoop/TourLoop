@@ -28,6 +28,7 @@ class Node:
         self.node_id = node_id
         self.lat = float(lat)
         self.lon = float(lon)
+        
 
         if prev_node == None:
             self.path_dist = 0.0
