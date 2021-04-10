@@ -31,6 +31,8 @@ const HelpModal = props => {
             }}
           >
             <h1 className='help-modal-header'>Help</h1>
+
+            <h2 className='help-modal-header'>Generate Routes Info</h2>
             <p className='help-modal-text'>
               Coordinate input box format: lat-decimal, lon-decimal{' '}
             </p>
@@ -43,6 +45,20 @@ const HelpModal = props => {
             <p className='help-modal-text'>
               * 500 meters should be entered as 0.5
             </p>
+
+            <h2 className='help-modal-header'>Route Legend Info</h2>
+            <p className='help-modal-text'>As you generate routes they will show up in the Routes Legend</p>
+            <p className='help-modal-text'>Generated route overlays can be toggled in this menu</p>
+            <p className='help-modal-text'>In this menu you will also see additional information on the generated routes</p>
+
+            <h2 className='help-modal-header'>Additional Features Info</h2>
+            <p className='help-modal-text'>In this menu you can toggle the different path type overlays onto the map</p>
+            <p className='help-modal-text'>The available overlays are all paths, all bike path and all dirt paths</p>
+            <p className='help-modal-text'>In this menu you can also toggle current location tracking</p>
+            <p className='help-modal-text'>Your current location will update every 10 seconds</p>
+            <p className='help-modal-text'>Location accuracy may varry</p>
+            <p className='help-modal-text'>This menu is also where you can download the database</p>
+
           </div>
         </>,
         document.body
