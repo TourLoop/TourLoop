@@ -21,4 +21,5 @@ mv tourloop-database.tar.gz ../../server/instance
 echo "save all path and all bike path results"
 mv ../all_dirt_paths.txt ../../server/instance
 mv ../all_bike_paths.txt ../../server/instance
+mv ../all_paved_paths.txt ../../server/instance
 cd ../
