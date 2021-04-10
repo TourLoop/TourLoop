@@ -35,6 +35,8 @@ class DBWrapper:
         """
         res = tx.run(closest_point_query, lat=lat_string, lon=lon_string)
         r = res.single()
+        if r == None: 
+            return None
         return Node(None, r.data()['n']['nodeId'], r.data()['n']['lat'], r.data()['n']['lon'])
 
     # TOURLOOP FR3 : Closest Node point

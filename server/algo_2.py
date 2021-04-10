@@ -6,7 +6,6 @@ from vincenty import vincenty
 MAX_FRONTIER = 7
 MAX_DIST_FROM_START_END = 0.5
 
-
 class Algo2(SearchAlgorithm):
 
     def generateRoutes(self):
@@ -20,15 +19,15 @@ class Algo2(SearchAlgorithm):
         n = self.db_wrapper.getClosestPoint(
             self.options.getStart()[0], self.options.getStart()[1])
 
-        if vincenty(n.getLatLonTuple(), self.options.getStart()) > MAX_DIST_FROM_START_END:
-            self.err_message = "Could not find path close to your start location."
+        if n == None:
+            self.err_message = "Could not find path within 1 km of your start location."
             return
 
         n_closest_end = self.db_wrapper.getClosestPoint(
             self.options.getEnd()[0], self.options.getEnd()[1])
 
-        if vincenty(n_closest_end.getLatLonTuple(), self.options.getEnd()) > MAX_DIST_FROM_START_END:
-            self.err_message = "Could not find path close to your end location."
+        if n_closest_end == None:
+            self.err_message = "Could not find path within 1 km of your end location."
             return
 
         frontier = [n]
