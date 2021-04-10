@@ -85,6 +85,7 @@
 .help-modal {
   @apply absolute z-50 w-1/2 h-1/2 py-4 px-8;
   @apply bg-white rounded-xl;
+  @apply overflow-y-auto; 
 }
 
 .help-modal-header {
