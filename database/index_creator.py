@@ -13,6 +13,15 @@ if __name__ == "__main__":
         index2 = """
         CREATE INDEX location_index IF NOT EXISTS FOR (n:Node) ON (n.location)
         """
+
+        delsingles = """
+        Match(n:Node)
+        WHERE NOT (n)-[:Way]-(:Node)
+        Delete n
+        """
+
         session.run(index1)
         session.run(index2)
-        print("indexes created :)")
+        session.run(delsingles)
+
+        print("indices created and deleted single nodes :)")
