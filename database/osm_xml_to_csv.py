@@ -111,7 +111,6 @@ class OsmHandler(xml.sax.ContentHandler):
                           self.way_f, self.node_f, self.all_dirt_paths_f, self.all_bike_paths_f, self.all_paved_paths_f)
         if tag == "node":
             self.id_to_nodes[self.curr[tag]['id']] = Node(self.curr[tag]['lat'], self.curr[tag]['lon'], self.curr[tag]['id'])
-            
 
 
 # TOURLOOP FR17 : Clean OpenStreetMap data
@@ -122,7 +121,9 @@ def parse_osm_xml(filename):
     """
     >>> test_filename ="../raw-data/belgravia-test.xml"
     >>> parse_osm_xml(test_filename)
-    >>> assert count_nodes(test_filename)  == count_lines("osm-nodes.csv")
+    >>> assert count_nodes(test_filename)  >= count_lines("osm-nodes.csv")
+    >>> count_nodes(test_filename) != 0
+    True
     >>> cleanup_parsed_files()
 
     """
