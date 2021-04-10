@@ -109,6 +109,16 @@ class OsmHandler(xml.sax.ContentHandler):
 
 # TOURLOOP FR17 : Clean OpenStreetMap data
 def main():
+    parse_osm_xml("../raw-data/edmonton-OSM-data.xml")
+
+def parse_osm_xml(filename):
+    """
+    >>> test_filename ="../raw-data/belgravia-test.xml"
+    >>> parse_osm_xml(test_filename)
+    >>> assert count_nodes(test_filename)  == count_lines("osm-nodes.csv")
+    >>> cleanup_parsed_files()
+
+    """
     # code largely from turotial
     # from https://www.tutorialspoint.com/python3/python_xml_processing.htm
 
@@ -121,8 +131,22 @@ def main():
     Handler = OsmHandler()
     parser.setContentHandler(Handler)
 
-    parser.parse("../raw-data/edmonton-OSM-data.xml")
+    parser.parse(filename)
 
+def count_lines(filename, fil= lambda x: True ):
+    with open(filename) as f:
+        return len(list(filter(fil, f.readlines())))
+
+
+def count_nodes(filename):
+    return count_lines(filename, lambda x: "<node " in x)
+
+def cleanup_parsed_files():
+    import os
+    import glob
+    for pattern in ["./*.csv", "./*.txt"]:
+        for filePath in glob.glob(pattern):
+            os.remove(filePath)
 
 if __name__ == "__main__":
     main()
