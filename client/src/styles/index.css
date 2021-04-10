@@ -19,6 +19,11 @@
   font-weight: lighter;
 }
 
+.sidebar-err {
+  @apply text-center mt-2 mb-2;
+  color: #a82f2f;
+}
+
 .input {
   @apply mt-1 mb-4 block w-full rounded-md border-gray-300 shadow-sm;
 }
