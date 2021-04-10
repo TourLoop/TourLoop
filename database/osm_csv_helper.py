@@ -14,9 +14,10 @@ def path_type(w):
         return "dirt"
     elif bike_cond(w):
         return "bike"
-    else:
+    elif set(w['tags'].keys()).intersection({'highway'}):
         return "paved"
-
+    else:
+        return None
 
 def bike_cond(w):
     tags = w['tags']
@@ -56,20 +57,25 @@ def distance(a, b):
 
 def write_node_csv(n, f):
     point_fmt = '"{' + \
-        "latitude:{}, longitude:{}".format(n['lat'], n['lon']) + '}"'
+        "latitude:{}, longitude:{}".format(n.lat, n.lng) + '}"'
     line = "Node,{},{},{},{},".format(
-        n['id'], n['id'], n['lat'], n['lon']) + point_fmt
+        n.id, n.id, n.lat, n.lng) + point_fmt
     f.write(line + "\n")
 
 
-def write_way_csv(w, id_to_coord, f_way, f_dirt, f_bike):
+def write_way_csv(w, written_node_ids, id_to_nodes, f_way, f_nodes, f_dirt, f_bike, f_paved):
     bike_path = []
     dirt_path = []
+    paved_path = []
+
+    if path_type(w) == None:
+        return
+
     for i in range(len(w['path']) - 1):
         j = i+1
         a = w['path'][i]
         b = w['path'][j]
-        dist = distance(id_to_coord[a], id_to_coord[b])
+        dist = distance(id_to_nodes[a].getCoords(), id_to_nodes[b].getCoords())
         p_type = path_type(w)
         f_way.write("{},{},{},{},{}\n".format(
             "Way",
@@ -78,18 +84,31 @@ def write_way_csv(w, id_to_coord, f_way, f_dirt, f_bike):
             '"{}"'.format(p_type),
             dist))
 
+        # Write node if it is included in a way
+        if a not in written_node_ids:
+            write_node_csv(id_to_nodes[a], f_nodes)
+            written_node_ids.add(a)
+
         # Save coordinates to encode as polyline and write to file for all path queries
-        all_coord = id_to_coord[a]
+        all_coord = id_to_nodes[a].getCoords()
         if p_type == "dirt":
             dirt_path.append((float(all_coord[0]), float(all_coord[1])))
         if p_type == "bike":
             bike_path.append((float(all_coord[0]), float(all_coord[1])))
+        if p_type == "paved":
+            paved_path.append((float(all_coord[0]), float(all_coord[1])))
+
+    # Write the final node
+    if b not in written_node_ids:
+        write_node_csv(id_to_nodes[b], f_nodes)
+        written_node_ids.add(b)
 
     if dirt_path:
         f_dirt.write(polyline.encode(dirt_path, 6) + '\n')
     if bike_path:
         f_bike.write(polyline.encode(bike_path, 6) + '\n')
-
+    if paved_path:
+        f_paved.write(polyline.encode(paved_path, 6) + '\n')
 
 if __name__ == "__main__":
     print("reading json")
