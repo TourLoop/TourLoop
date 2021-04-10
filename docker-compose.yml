@@ -12,7 +12,7 @@ services:
         build:
             context: ./server
         volumes:
-            - ./../../client/build:/opt/client/build
+            - ./client/build:/opt/client/build
         ports:
             - "5000:5000"
 

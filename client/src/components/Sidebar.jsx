@@ -120,7 +120,12 @@ const Sidebar = (props) => {
 
   return (
     <div className='sidebar'>
-      <HelpIcon className='help-icon' onClick={toggle} />
+      <div className='sidebar-help'>
+        <label className='help-label' onClick={toggle}>
+          Help
+        </label>
+        <HelpIcon className='help-icon' onClick={toggle} />
+      </div>
       <HelpModal isShowing={isShowing} hide={toggle} />
       <Navigation>
         <h1 className='sidebar-header'>Menu</h1>
@@ -145,7 +150,8 @@ const Sidebar = (props) => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              padding: '1rem 2rem',
+              paddingLeft: '2rem',
+              paddingRight: '2rem',
             }}
           >
             <label htmlFor='pointToPoint'>Point-to-Point</label>
@@ -194,7 +200,6 @@ const Sidebar = (props) => {
 
             <label htmlFor='algorithm'>Algorithm</label>
             <select {...register('algorithm')} id='algorithm' className='input'>
-              <option value='pins'>Pins</option>
               <option value='algo1'>Algorithm 1</option>
               <option value='algo2'>Algorithm 2</option>
               <option value='algo3'>Algorithm 3</option>

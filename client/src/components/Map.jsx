@@ -1,4 +1,9 @@
-import { GoogleMap, Marker, LoadScript, Polyline } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  Marker,
+  LoadScript,
+  Polyline,
+} from '@react-google-maps/api';
 
 const containerStyle = {
   width: '70vw',
@@ -34,12 +39,12 @@ const Map = props => {
             zIndex: 1,
           };
           return polyline.paths.map((path, j) => {
-            return < Polyline key={j} path={path} options={opt} />;
+            return <Polyline key={j} path={path} options={opt} />;
           });
         })}
         {/* Child components, such as markers, info windows, etc. */}
         <></>
-      </GoogleMap >
+      </GoogleMap>
     </LoadScript>
   );
 };

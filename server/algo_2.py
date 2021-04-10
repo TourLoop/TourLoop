@@ -39,6 +39,7 @@ class Algo2(SearchAlgorithm):
             n = frontier.pop(0)
             frontier_ids.remove(n.node_id)
 
+
             for c in self.db_wrapper.getNeighbours(n):
                 if n.prev_node == None or c.node_id != n.prev_node.node_id:
                     if c.node_id not in frontier_ids:

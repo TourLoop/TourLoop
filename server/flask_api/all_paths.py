@@ -3,7 +3,6 @@ from flask import Blueprint, request, send_file
 from algo_3 import Algo3
 from algo_2 import Algo2
 from algo_1 import Algo1
-from pins_algo import ReturnPins
 from path_options import PathOptions
 
 from flask_api.db import get_db

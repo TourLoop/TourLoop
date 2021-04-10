@@ -25,7 +25,7 @@ class Algo3(SearchAlgorithm):
             if len(frontier) == 0:
                 break
             n = heapq.heappop(frontier)
-            print("Distance: ", n.path_dist, n.target_dist_est)
+            # print("Distance: ", n.path_dist, n.target_dist_est)
 
             for c in self.db_wrapper.getNeighbours(n):
                 if c.node_id not in visited:
