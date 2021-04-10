@@ -9,8 +9,8 @@ WORKDIR /opt
 RUN mkdir -p server/flask_api
 RUN mkdir -p server/instance
 COPY ./*.py /opt/server/
-COPY ./instance/* /opt/server/instance
-COPY ./flask_api/*.py /opt/server/flask_api
+COPY ./instance/* /opt/server/instance/
+COPY ./flask_api/*.py /opt/server/flask_api/
 RUN mkdir -p /opt/client/build
 WORKDIR /opt/server
 
