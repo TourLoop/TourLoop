@@ -13,8 +13,8 @@ mv osm-ways.csv docker-stuff/database-files/
 mv osm-nodes.csv docker-stuff/database-files/
 
 echo "compress csv files for server export"
-cd docker-stuff
 mkdir -p ../server/instance || true
+cd docker-stuff
 tar -cvzf tourloop-database.tar.gz database-files/*
 mv tourloop-database.tar.gz ../../server/instance
 
