@@ -170,7 +170,10 @@ class Path:
         self.node_list.append(n)
 
     def isGoal(self):
-        return len(self.node_list) >= 3 and self.goal_node.node_id == self.node_list[-1].node_id and not self.isInvalid()
+        return len(self.node_list) >= 3 and self.goal_node.node_id == self.node_list[-1].node_id and not self.isInvalid() and self.min_length()
+
+    def min_length(self):
+        return self.total_d > (self.target_d / 2)
 
     def isInvalid(self):
         # TODO: missing what else?
