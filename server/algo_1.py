@@ -23,6 +23,10 @@ class Algo1(SearchAlgorithm):
             str(self.options.getEnd()[0]),
             str(self.options.getEnd()[1]))
 
+        if goal_node == None or start_node == None:
+            self.err_message = "Could not find path within 100m of your start location."
+            return
+
         # add start point to frontiner
         start_path = Path(None,
                 0,
@@ -49,6 +53,7 @@ class Algo1(SearchAlgorithm):
             # no more paths
             if len(self.frontier) == 0:
                 #print("didn't find solution")
+                self.err_message("could not find route given input paramaters")
                 return
 
             curr = heappop(self.frontier) # let curr: Path, ignore weight
@@ -59,6 +64,7 @@ class Algo1(SearchAlgorithm):
                 # no more paths
                 if len(self.frontier) == 0:
                     #print("didn't find solution")
+                    self.err_message("could not find route given input paramaters")
                     return
                 curr = heappop(self.frontier)
             already_searched_from.add(curr.node_list[-1].node_id)
