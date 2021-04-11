@@ -38,8 +38,8 @@ class Algo1(SearchAlgorithm):
         already_searched_from = set()
 
 
-        print(start_node.node_id)
-        print(goal_node.node_id)
+        #print(start_node.node_id)
+        #print(goal_node.node_id)
         # ----- itterative BFS ------
         count = 0
         while True:
@@ -47,7 +47,7 @@ class Algo1(SearchAlgorithm):
 
             # no more paths
             if len(self.frontier) == 0:
-                print("didn't find solution")
+                #print("didn't find solution")
                 return
 
             curr = heappop(self.frontier) # let curr: Path, ignore weight
@@ -57,7 +57,7 @@ class Algo1(SearchAlgorithm):
             while curr.node_list[-1].node_id in already_searched_from:
                 # no more paths
                 if len(self.frontier) == 0:
-                    print("didn't find solution")
+                    #print("didn't find solution")
                     return
                 curr = heappop(self.frontier)
             already_searched_from.add(curr.node_list[-1].node_id)
@@ -73,7 +73,7 @@ class Algo1(SearchAlgorithm):
                         5)
 
             # insert neighbours into frontier
-            print("iter: {}, row_#: {}, front: {}, w: {}, id: {}".format(count, len(rows), len(self.frontier), curr.getWeight(), curr.node_list[-1].node_id ))
+            #print("iter: {}, row_#: {}, front: {}, w: {}, id: {}".format(count, len(rows), len(self.frontier), curr.getWeight(), curr.node_list[-1].node_id ))
             # TODO: don't add all paths to frontier
             for row in rows:
                 new_path = Path(
@@ -89,13 +89,13 @@ class Algo1(SearchAlgorithm):
                 if new_path.isGoal():
                     # TODO: reconstruct route from linked list
                     self.extract_route(new_path)
-                    print("found a solution")
+                    #print("found a solution")
                     return
                 # push path to frontiner
                 heappush(self.frontier, new_path)
 
     def extract_route(self, path):
-        print(path)
+        #print(path)
         self.route = [n.getLatLonTuple() for n in path.node_list] + self.route
         path = path.prev_path
         while path != None:
