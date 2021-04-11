@@ -14,7 +14,7 @@ class Algo1(SearchAlgorithm):
         # TODO: account for the fact that...
         # since getStart() != start_node
         # since getEnd() != end_node
-        self.elapsed_time = time()
+        self.start_time = time()
 
         start_node = self.db_wrapper.getClosestPoint(
             str(self.options.getStart()[0]),
