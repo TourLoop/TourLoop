@@ -14,6 +14,7 @@ class Algo1(SearchAlgorithm):
         # TODO: account for the fact that...
         # since getStart() != start_node
         # since getEnd() != end_node
+        self.start_time = time()
 
         start_node = self.db_wrapper.getClosestPoint(
             str(self.options.getStart()[0]),
@@ -96,11 +97,18 @@ class Algo1(SearchAlgorithm):
 
     def extract_route(self, path):
         #print(path)
+        # set superclass propeties
+        self.distance = path.total_d
+        self.elapsed_time = self.getElapsedTime()
+        self.percent_path_type = path.pref_path_count
+
         self.route = [n.getLatLonTuple() for n in path.node_list] + self.route
         path = path.prev_path
         while path != None:
             self.route = [n.getLatLonTuple() for n in path.node_list] + self.route
             path = path.prev_path
+
+        self.percent_path_type = self.percent_path_type / len(self.route)
         # TODO: some points are duplicates...
 
 
