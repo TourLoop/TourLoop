@@ -4,6 +4,7 @@ from algo_2 import *
 from algo_3 import *
 from path_options import PathOptions
 from db_wrapper import DBWrapper
+from random import *
 
 k_point = (53.507640, -113.546640)
 fav_belgravia_point = (53.510339, -113.536677)
@@ -67,6 +68,38 @@ def path_pref_has_impact_test(algo_class):
     searches = [search_test(algo_class, op) for op in ops]
     # assert different solutions
     assert 1 < len({ s.getRoutesJson()['path'] for s in searches})
+
+def random_edmonton_point():
+    top =  53.6482
+    bottom =  53.3971
+    right =  -113.3161
+    left =  -113.7155
+
+    scale = lambda L, U: (U - L) * random() + L
+    lat = scale(bottom, top)
+    lon = scale(left, right)
+
+    assert bottom <= lat and lat <= top, "Point out of Edmonton, you did your math wrong"
+    assert left <= lon and lon <= right, "Point out of Edmonton, you did your math wrong"
+
+    return (lat, lon)
+
+def random_param_test(algo_class):
+    """ test feature 1
+    """
+
+    # generate solveable under 5km paramaters
+    target_d = random() * 5
+    p1 = random_edmonton_point()
+    p2 = random_edmonton_point()
+    while vincenty(p1, p1) > target_d:
+        target_d = random() * 5
+        p1 = rand_edmonton_point()
+        p2 = rand_edmonton_point()
+
+    # TODO: handle common occuring "start point within 100m not found"
+    ops = PathOptions(p1, p2, choice(['dirt', 'bike', 'paved']), target_d, type(algo_class).__name__)
+    search_test(algo_class, ops)
 
 
 # Algo 3 test suite
