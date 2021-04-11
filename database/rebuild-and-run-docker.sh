@@ -5,13 +5,14 @@
 # fail if one command fails
 set -e
 
-echo "parsing xml file (~1 min?)"
+echo "parsing xml file (~3 min?)"
 time python3 osm_xml_to_csv.py
 
 echo "starting container construction"
 mv osm-ways.csv docker-stuff/database-files/
 mv osm-nodes.csv docker-stuff/database-files/
 
+# TODO: refactor script to account for new docker-compose location
 echo "Stop any existing db containers and reubild one (~3 min?)"
 cd docker-stuff
 docker-compose down

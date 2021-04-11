@@ -5,7 +5,7 @@
 # fail if one command fails
 set -e
 
-echo "parsing xml file (~1 min?)"
+echo "parsing xml file (~3 min?)"
 time python3 osm_xml_to_csv.py
 
 echo "move csv files to loading area"
