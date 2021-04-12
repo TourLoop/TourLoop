@@ -16,7 +16,7 @@ const algorithms = {
   allDirtPaths: 'All Dirt Paths',
 };
 
-const Sidebar = (props) => {
+const Sidebar = props => {
   const {
     polylines,
     setPolylines,
@@ -40,7 +40,7 @@ const Sidebar = (props) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setLoading(true);
     setErrMessage('');
     const res = await fetch('/api', {
@@ -59,7 +59,7 @@ const Sidebar = (props) => {
       }
 
       const statistics = routeStatistics.filter(
-        (rs) => rs.algorithm !== route.algorithm
+        rs => rs.algorithm !== route.algorithm
       );
       const newRouteStatistics = [
         ...statistics,
@@ -72,12 +72,12 @@ const Sidebar = (props) => {
       ];
 
       const latLngs = decode(route.path, 6);
-      const paths = latLngs.map((latLng) => ({
+      const paths = latLngs.map(latLng => ({
         lat: latLng[0],
         lng: latLng[1],
       }));
 
-      const newPolylines = polylines.map((polyline) =>
+      const newPolylines = polylines.map(polyline =>
         polyline.id === route.algorithm
           ? {
               paths: [paths],
@@ -99,8 +99,8 @@ const Sidebar = (props) => {
 
   const downloadDatabaseFiles = () => {
     fetch('/export/tar')
-      .then((response) => response.blob())
-      .then((blob) => {
+      .then(response => response.blob())
+      .then(blob => {
         // from https://medium.com/yellowcode/download-api-files-with-react-fetch-393e4dae0d9e
         // 2. Create blob link to download
         const url = window.URL.createObjectURL(new Blob([blob]));
@@ -114,35 +114,44 @@ const Sidebar = (props) => {
         // 5. Clean up and remove the link
         link.parentNode.removeChild(link);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
 
   return (
-    <div className='sidebar'>
-      {/* <div className='sidebar-help'>
-        <label className='help-label' onClick={toggle}>
-          Help
-        </label>
-        <HelpIcon className='help-icon' onClick={toggle} />
-      </div> */}
-      <HelpModal isShowing={isShowing} hide={toggle} />
-        <h1 className='sidebar-header text-left ml-4'>Navigation</h1>
-      <Navigation>
-        <NavigationTab
-          label='Generate'
-          onClick={() => setMenu('generateRoutes')}
-        />
-        <NavigationTab
-          label='Legend'
-          onClick={() => setMenu('routeLegend')}
-        />
-        <NavigationTab
-          label='Extra'
-          onClick={() => setMenu('additionalFunctionality')}
-        />
-      </Navigation>
+    <div
+      className='h-screen bg-gray-50 flex flex-col'
+      style={{ width: '30vw' }}
+    >
+      <div className='flex-initial'>
+        <div className='flex m-4 mr-4 h-8 justify-between'>
+          <h1 className='text-2xl font-medium'>Navigation</h1>
+          <div
+            className='flex items-center bg-indigo-100 px-3 rounded-full'
+            onClick={toggle}
+          >
+            <span className='mr-2 text-lg'>Help</span>
+            <HelpIcon className='w-6 h-6' />
+          </div>
+        </div>
+        <HelpModal isShowing={isShowing} hide={toggle} />
+        <Navigation>
+          <NavigationTab
+            label='Generate'
+            onClick={() => setMenu('generateRoutes')}
+          />
+          <NavigationTab
+            label='Legend'
+            onClick={() => setMenu('routeLegend')}
+          />
+          <NavigationTab
+            label='Extra'
+            onClick={() => setMenu('additionalFunctionality')}
+          />
+        </Navigation>
+      </div>
+
       {/* <div className='rounded-full bg-gray-500 mx-8 mt-4' style={{ height: '0.01rem'}}></div> */}
       {menu === 'generateRoutes' && (
         <>
@@ -226,8 +235,8 @@ const Sidebar = (props) => {
           <h1 className='sidebar-header'>Route Legend</h1>
           <div style={{ padding: '2rem' }}>
             {polylines
-              .filter((p) => p.paths.length > 0)
-              .map((p) => (
+              .filter(p => p.paths.length > 0)
+              .map(p => (
                 <div
                   key={p.id}
                   style={{
@@ -244,12 +253,12 @@ const Sidebar = (props) => {
                     onChange={() => {
                       toggleDisplay(p.id);
                     }}
-                    checked={polylines.find((poly) => poly.id === p.id).display}
+                    checked={polylines.find(poly => poly.id === p.id).display}
                   />
                 </div>
               ))}
           </div>
-          {routeStatistics.map((rs) => (
+          {routeStatistics.map(rs => (
             <RouteStatistic
               key={rs.algorithm}
               algorithm={algorithms[rs.algorithm]}
