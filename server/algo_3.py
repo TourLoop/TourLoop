@@ -22,7 +22,7 @@ class Algo3(SearchAlgorithm):
         visited = set(n.node_id)
         frontier = [n]
         heapq.heapify(frontier)
-        while n.target_dist_est > 0.05 or n.path_dist < (Node.target_distance / 2):
+        while n.target_dist_est > 0.1 or n.path_dist < (Node.target_distance / 2):
             if len(frontier) == 0:
                 break
             n = heapq.heappop(frontier)
