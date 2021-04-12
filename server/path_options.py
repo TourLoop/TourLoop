@@ -1,13 +1,7 @@
 class PathOptions:
     """
-    >>> path_opts_1 = PathOptions()
-    >>> path_opts_1.setOptionsLoop((0.0, 1.1), "bike", 2.2, "algo1")
-
-    >>> path_opts_2 = PathOptions((0.0, 1.1), (0.0, 1.1), "bike", 2.2, "algo1")
-
+    >>> path_opts_1 = PathOptions((0.0, 1.1), (0.0, 1.1), "bike", 2.2, "algo1")
     >>> path_opts_1.getStart() == path_opts_1.getEnd()
-    True
-    >>> path_opts_1.getStart() == path_opts_2.getStart()
     True
     """
 
@@ -54,7 +48,7 @@ class PathOptions:
         end_lat_lng = end_location.split(",", 1)
 
         try:
-            float(target_distance) 
+            float(target_distance)
         except:
             return "Unable to parse target distance."
 
