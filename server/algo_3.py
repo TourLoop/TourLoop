@@ -4,6 +4,7 @@ from node import Node
 import heapq
 import math
 from random import randint
+from algo_test_suite import *
 
 
 class Algo3(SearchAlgorithm):
@@ -75,6 +76,19 @@ def smoke_tests():
     search.generateRoutes()
     print(search.getRoutesJson()['path'])
     assert len(search.getRoutesJson()['path']) > 0, "didn't find solution"
+
+
+def river_valley_test():
+    start = (53.57366287308875, -113.66998330789366)
+    end = (53.51522325458278, -113.47241237785987)
+    d = 0.2835008991832183
+    p_type = 'bike'
+    algo = 'algo_3'
+
+    ops = PathOptions(start, end, p_type, d, algo)
+    search = search_test(Algo3, ops)
+
+
 
 # Algo 3 test suite
 if __name__ == "__main__":
