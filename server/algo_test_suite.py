@@ -100,18 +100,24 @@ def random_params():
     return ops
 
 
-def random_param_test(algo_class):
-    search_test(algo_class, random_params())
+def random_param_test(algo_class, n=1):
+    for i in range(n):
+        print("Random test #" + str(i+1) + "/" + str(n))
+        search_test(algo_class, random_params())
+        print("passed")
+
+def all_tests():
+    random_path_test()
+    loop_and_p2p_all_test()
+    path_pref_has_impact_test(Algo3)
+    path_pref_has_impact_test(Algo1)
+    #path_pref_has_impact_test(Algo2) # TODO: pass this test
+    random_param_test(Algo1, 5)
+    random_param_test(Algo2, 5)
+    random_param_test(Algo3, 5)
 
 
 # Algo 3 test suite
 if __name__ == "__main__":
-    #random_path_test()
-    #loop_and_p2p_all_test()
-    #path_pref_has_impact_test(Algo3)
-    #path_pref_has_impact_test(Algo1)
-    #path_pref_has_impact_test(Algo2)
-    for i in range(5):
-        print("Random test #", i)
-        random_param_test(Algo2)
-        print("passed")
+    # if this runs without crashing then all tests passed
+    all_tests()
