@@ -143,6 +143,8 @@ class Path:
 >>> p1.addRow(mockRow(10, 1))
 >>> assert len(p1.node_list) == 4
 >>> assert p1.isInvalid() == False
+>>> assert p1.isGoal() == False, "should fail min length"
+>>> p1.total_d = 10
 >>> assert p1.isGoal() == True
 >>> back = Path(None, 0, "", 10.0, SimpleNode(None, 10, 1.0, 1.0), 0, mockRow(2,1))
 >>> assert not back.isInvalid()
