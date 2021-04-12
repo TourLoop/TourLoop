@@ -77,7 +77,7 @@ class Algo1(SearchAlgorithm):
             rows = self.db_wrapper.getNHopNeighbours(
                         curr.node_list[-1],
                         self.options.getPathType(),
-                        5)
+                        3)
 
             # insert neighbours into frontier
             #print("iter: {}, row_#: {}, front: {}, w: {}, id: {}".format(count, len(rows), len(self.frontier), curr.getWeight(), curr.node_list[-1].node_id ))
