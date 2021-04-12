@@ -121,28 +121,29 @@ const Sidebar = (props) => {
 
   return (
     <div className='sidebar'>
-      <div className='sidebar-help'>
+      {/* <div className='sidebar-help'>
         <label className='help-label' onClick={toggle}>
           Help
         </label>
         <HelpIcon className='help-icon' onClick={toggle} />
-      </div>
+      </div> */}
       <HelpModal isShowing={isShowing} hide={toggle} />
+        <h1 className='sidebar-header text-left ml-4'>Navigation</h1>
       <Navigation>
-        <h1 className='sidebar-header'>Menu</h1>
         <NavigationTab
-          label='Generate Routes'
+          label='Generate'
           onClick={() => setMenu('generateRoutes')}
         />
         <NavigationTab
-          label='Route Legend'
+          label='Legend'
           onClick={() => setMenu('routeLegend')}
         />
         <NavigationTab
-          label='Additional Functionality'
+          label='Extra'
           onClick={() => setMenu('additionalFunctionality')}
         />
       </Navigation>
+      {/* <div className='rounded-full bg-gray-500 mx-8 mt-4' style={{ height: '0.01rem'}}></div> */}
       {menu === 'generateRoutes' && (
         <>
           <h1 className='sidebar-header'>Generate Routes</h1>

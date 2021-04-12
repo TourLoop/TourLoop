@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const Navigation = props => {
   const { children } = props;
 
-  return <div className='navigation'>{children}</div>;
+  return <div className='px-2 py-1 flex'>{children}</div>;
 };
 
 Navigation.propTypes = {};
