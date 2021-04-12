@@ -35,7 +35,7 @@ def bel_loop_test(algo_class):
     search_test(algo_class, ops)
 
 
-def random_path_test():
+def paths_are_random_test():
     """ test FR9
     """
     ops = PathOptions(fav_belgravia_point, fav_belgravia_point, "paved", 4.5, "algo_3") # loop example
@@ -107,7 +107,7 @@ def random_param_test(algo_class, n=1):
         print("passed")
 
 def all_tests():
-    random_path_test()
+    paths_are_random_test()
     loop_and_p2p_all_test()
     path_pref_has_impact_test(Algo3)
     path_pref_has_impact_test(Algo1)
