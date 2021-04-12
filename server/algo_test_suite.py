@@ -11,7 +11,6 @@ fav_belgravia_point = (53.510339, -113.536677)
 
 
 def assert_no_error(algo):
-    print(algo.err_message)
     assert algo.err_message == None, "Error finding route for " + type(algo).__name__
 
 def assert_has_route_polyline(algo):
@@ -41,7 +40,6 @@ def random_path_test():
     """
     ops = PathOptions(fav_belgravia_point, fav_belgravia_point, "paved", 4.5, "algo_3") # loop example
     searches = [Algo3(ops, get_db()), Algo3(ops, get_db()),Algo3(ops, get_db()),Algo3(ops, get_db()),Algo3(ops, get_db())]
-    print(searches)
     # all find paths
     for s in searches:
         s.generateRoutes()
@@ -92,10 +90,10 @@ def random_param_test(algo_class):
     target_d = random() * 5
     p1 = random_edmonton_point()
     p2 = random_edmonton_point()
-    while vincenty(p1, p1) > target_d:
+    while vincenty(p1, p2) > target_d:
         target_d = random() * 5
-        p1 = rand_edmonton_point()
-        p2 = rand_edmonton_point()
+        p1 = random_edmonton_point()
+        p2 = random_edmonton_point()
 
     # TODO: handle common occuring "start point within 100m not found"
     ops = PathOptions(p1, p2, choice(['dirt', 'bike', 'paved']), target_d, type(algo_class).__name__)
@@ -104,8 +102,10 @@ def random_param_test(algo_class):
 
 # Algo 3 test suite
 if __name__ == "__main__":
-    random_path_test()
-    loop_and_p2p_all_test()
-    path_pref_has_impact_test(Algo3)
-    path_pref_has_impact_test(Algo1)
+    #random_path_test()
+    #loop_and_p2p_all_test()
+    #path_pref_has_impact_test(Algo3)
+    #path_pref_has_impact_test(Algo1)
+    random_param_test(Algo2)
+
     #path_pref_has_impact_test(Algo2)
