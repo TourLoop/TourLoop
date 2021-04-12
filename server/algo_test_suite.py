@@ -82,22 +82,26 @@ def random_edmonton_point():
 
     return (lat, lon)
 
-def random_param_test(algo_class):
-    """ test feature 1
-    """
 
+def cant_find_closest(point):
+    return None == get_db().getClosestPoint(str(point[0]), str(point[1]))
+
+def random_params():
     # generate solveable under 5km paramaters
     target_d = random() * 5
     p1 = random_edmonton_point()
     p2 = random_edmonton_point()
-    while vincenty(p1, p2) > target_d:
+    while vincenty(p1, p2) > target_d or cant_find_closest(p1) or cant_find_closest(p2):
         target_d = random() * 5
         p1 = random_edmonton_point()
         p2 = random_edmonton_point()
 
-    # TODO: handle common occuring "start point within 100m not found"
-    ops = PathOptions(p1, p2, choice(['dirt', 'bike', 'paved']), target_d, type(algo_class).__name__)
-    search_test(algo_class, ops)
+    ops = PathOptions(p1, p2, choice(['dirt', 'bike', 'paved']), target_d, "algo_x")
+    return ops
+
+
+def random_param_test(algo_class):
+    search_test(algo_class, random_params())
 
 
 # Algo 3 test suite
@@ -106,6 +110,8 @@ if __name__ == "__main__":
     #loop_and_p2p_all_test()
     #path_pref_has_impact_test(Algo3)
     #path_pref_has_impact_test(Algo1)
-    random_param_test(Algo2)
-
     #path_pref_has_impact_test(Algo2)
+    for i in range(5):
+        print("Random test #", i)
+        random_param_test(Algo2)
+        print("passed")
