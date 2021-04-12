@@ -188,7 +188,7 @@ const Sidebar = (props) => {
                 valueAsNumber: true,
               })}
               id='targetRouteDistance'
-              type='text'
+              type='number'
               className='input'
             />
 
