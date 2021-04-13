@@ -73,6 +73,7 @@ function App() {
   const [polylines, setPolylines] = useState(defaultPolylines);
   const [startLocation, setStartLocation] = useState(defaultPosition);
   const [endLocation, setEndLocation] = useState(defaultPosition);
+  const [currentLocation, setCurrentLocation] = useState(defaultPosition);
   const [useLocation, setUseLocation] = useState(false);
   const [pointToPointChecked, setPointToPointChecked] = useState(false);
 
@@ -96,18 +97,17 @@ function App() {
     setEndLocation(defaultPosition);
   };
 
-  const [currPos, setCurrPos] = useState();
   // Update the location periodically
-  const locationUpdateFrequency = 10; // seconds
+  const locationUpdateFrequency = 1; // seconds
   useEffect(() => {
-    setTimeout(() => {
+    const updateLocation = setInterval(() => {
       // console.log("Trying to update current position...")
       // form https://developers.google.com/maps/documentation/javascript/geolocation
       if (useLocation) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             position => {
-              setCurrPos({
+              setCurrentLocation({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
               });
@@ -119,13 +119,15 @@ function App() {
           );
         } else {
           // Browser doesn't support Geolocation
-          console.log('geolocation not supported by browser');
+          console.log('Geolocation not supported by browser');
         }
       } else {
-        setCurrPos(defaultPosition);
+        setCurrentLocation(defaultPosition);
       }
     }, 1000 * locationUpdateFrequency);
-  });
+
+    return () => clearInterval(updateLocation);
+  }, [useLocation]);
 
   // useEffect(() => {
   //   alert(DISCLAIMER_MESSAGE);
@@ -191,7 +193,7 @@ function App() {
         polylines={polylines}
         startLocation={startLocation}
         endLocation={endLocation}
-        currentLocation={currPos}
+        currentLocation={currentLocation}
         onGoogleMapClick={onGoogleMapClick}
         onGoogleMapRightClick={onGoogleMapRightClick}
       />
