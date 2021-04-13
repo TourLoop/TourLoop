@@ -189,6 +189,7 @@ const Sidebar = props => {
               })}
               id='targetRouteDistance'
               type='number'
+              step='0.001'
               className='input'
             />
 
