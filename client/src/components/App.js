@@ -72,9 +72,10 @@ function App() {
   const [clickedLatLng, setClickedLatLng] = useState('');
 
   const onGoogleMapClick = e => {
-    let lat = e.latLng.lat().toFixed(6);
-    let lng = e.latLng.lng().toFixed(6);
-    setClickedLatLng(`${lat}, ${lng}`);
+    setClickedLatLng({
+      lat: +e.latLng.lat().toFixed(6),
+      lng: +e.latLng.lng().toFixed(6),
+    });
   };
 
   // Current Location code to null island
@@ -110,9 +111,9 @@ function App() {
     }, 1000 * locationUpdateFrequency);
   });
 
-  useEffect(() => {
-    alert(DISCLAIMER_MESSAGE);
-  }, []);
+  // useEffect(() => {
+  //   alert(DISCLAIMER_MESSAGE);
+  // }, []);
 
   const toggleDisplay = id => {
     const newPolylines = polylines.map(p =>
@@ -242,6 +243,7 @@ function App() {
         polylines={polylines}
         position={currPos}
         onGoogleMapClick={onGoogleMapClick}
+        clickedLatLng={clickedLatLng}
       />
       <Sidebar
         clickedLatLng={clickedLatLng}

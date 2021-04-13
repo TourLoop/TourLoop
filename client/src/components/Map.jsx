@@ -11,6 +11,8 @@ const center = {
 };
 
 const Map = props => {
+  const { clickedLatLng, position } = props;
+
   return (
     <LoadScript googleMapsApiKey=''>
       <GoogleMap
@@ -19,7 +21,8 @@ const Map = props => {
         zoom={11}
         onClick={props.onGoogleMapClick}
       >
-        <Marker position={props.position} />;
+        <Marker position={position} />;
+        <Marker position={clickedLatLng} />;
         {props.polylines.map((polyline, i) => {
           const opt = {
             strokeColor: polyline.color,
