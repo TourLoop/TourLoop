@@ -121,7 +121,7 @@ const Sidebar = props => {
 
   return (
     <div
-      className='h-screen bg-gray-50 flex flex-col'
+      className='h-screen bg-gray-50 flex flex-col '
       style={{ width: '30vw' }}
     >
       <div className='flex-initial'>
@@ -131,8 +131,8 @@ const Sidebar = props => {
             className='flex items-center bg-indigo-100 px-3 rounded-full'
             onClick={toggle}
           >
-            <span className='mr-2 text-lg'>Help</span>
-            <HelpIcon className='w-6 h-6' />
+            <span className='mr-2 text-lg text-indigo-500'>Help</span>
+            <HelpIcon className='w-6 h-6 text-indigo-500' />
           </div>
         </div>
         <HelpModal isShowing={isShowing} hide={toggle} />
@@ -154,8 +154,10 @@ const Sidebar = props => {
 
       {/* <div className='rounded-full bg-gray-500 mx-8 mt-4' style={{ height: '0.01rem'}}></div> */}
       {menu === 'generateRoutes' && (
-        <>
-          <h1 className='sidebar-header'>Generate Routes</h1>
+        <div className='flex-1 '>
+          <h1 className='text-center text-2xl mt-2 mb-2 font-medium'>
+            Generate Routes
+          </h1>
           <form
             onSubmit={handleSubmit(onSubmit)}
             style={{
@@ -164,14 +166,19 @@ const Sidebar = props => {
               paddingLeft: '2rem',
               paddingRight: '2rem',
             }}
+            className='flex-1'
           >
-            <label htmlFor='pointToPoint'>Point-to-Point</label>
-            <input
-              {...register('pointToPoint')}
-              id='pointToPoint'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
-            />
+            <div className='flex items-center mb-4'>
+              <input
+                {...register('pointToPoint')}
+                id='pointToPoint'
+                type='checkbox'
+                className='rounded text-indigo-500'
+              />
+              <label className='ml-2' htmlFor='pointToPoint'>
+                Point-to-Point
+              </label>
+            </div>
 
             <label htmlFor='startLocation'>Start Location</label>
             <input
@@ -180,7 +187,7 @@ const Sidebar = props => {
               })}
               id='startLocation'
               type='text'
-              className='input'
+              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
             />
 
             <label htmlFor='endLocation'>End Location</label>
@@ -188,7 +195,7 @@ const Sidebar = props => {
               {...register('endLocation')}
               id='endLocation'
               type='text'
-              className='input'
+              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
             />
 
             <label htmlFor='targetRouteDistance'>Target Route Distance</label>
@@ -199,18 +206,26 @@ const Sidebar = props => {
               })}
               id='targetRouteDistance'
               type='number'
-              className='input'
+              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
             />
 
             <label htmlFor='pathType'>Path Type</label>
-            <select {...register('pathType')} id='pathType' className='input'>
+            <select
+              {...register('pathType')}
+              id='pathType'
+              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
+            >
               <option value='bike'>Bike Path</option>
               <option value='paved'>Paved Road</option>
               <option value='dirt'>Dirt Trail</option>
             </select>
 
             <label htmlFor='algorithm'>Algorithm</label>
-            <select {...register('algorithm')} id='algorithm' className='input'>
+            <select
+              {...register('algorithm')}
+              id='algorithm'
+              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
+            >
               <option value='algo1'>Algorithm 1</option>
               <option value='algo2'>Algorithm 2</option>
               <option value='algo3'>Algorithm 3</option>
@@ -218,7 +233,7 @@ const Sidebar = props => {
 
             <button
               type='submit'
-              className='button'
+              className='mt-1 px-4 py-2 w-48 h-12 bg-indigo-500 shadow-lg rounded-lg font-bold text-white'
               disabled={loading}
               style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
             >
@@ -228,7 +243,7 @@ const Sidebar = props => {
           </form>
           <h3 className='sidebar-err'>{errMessage}</h3>
           <h3 className='sidebar-latlng'>{props.clickedLatLng}</h3>
-        </>
+        </div>
       )}
       {menu === 'routeLegend' && (
         <>

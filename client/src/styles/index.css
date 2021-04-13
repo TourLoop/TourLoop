@@ -6,7 +6,7 @@
 }
 
 .sidebar {
-  @apply h-screen bg-gray-50;
+  @apply h-screen;
   width: 30vw;
 }
 
@@ -34,7 +34,7 @@
 
 .button {
   @apply px-4 py-2 w-48 h-12;
-  @apply bg-indigo-500 rounded;
+  @apply bg-indigo-500 shadow-lg rounded-lg;
   @apply font-bold text-white;
 }
 
@@ -119,6 +119,7 @@
   h6,
   label,
   span,
+  select,
   button {
     font-family: 'Baloo Chettan 2';
     font-weight: 400;
