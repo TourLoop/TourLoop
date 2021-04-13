@@ -95,16 +95,28 @@
 
 .help-modal {
   @apply absolute z-50 w-1/2 h-1/2 py-4 px-8;
-  @apply bg-white rounded-xl;
+  @apply bg-white rounded-lg;
   @apply overflow-y-auto;
 }
 
+.help-modal-overlay {
+  @apply fixed inset-0 bg-black opacity-25 z-50;
+}
+
+.help-modal-section {
+  @apply my-6;
+}
+
 .help-modal-header {
-  @apply text-center text-2xl;
+  @apply text-center text-4xl font-medium text-indigo-500;
+}
+
+.help-modal-section-header {
+  @apply text-2xl font-medium my-2;
 }
 
 .help-modal-text {
-  @apply my-4;
+  @apply my-1;
 }
 
 .sidebar-help {
