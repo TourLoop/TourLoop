@@ -7,6 +7,7 @@ import HelpModal from './HelpModal';
 import RouteStatistic from './RouteStatistic';
 import useModal from '../hooks/useModal';
 import { ReactComponent as HelpIcon } from '../assets/images/help_icon.svg';
+import Checkbox from './input/Checkbox';
 
 const algorithms = {
   algo1: 'Algorithm 1',
@@ -247,30 +248,21 @@ const Sidebar = props => {
       )}
       {menu === 'routeLegend' && (
         <>
-          <h1 className='sidebar-header'>Route Legend</h1>
-          <div style={{ padding: '2rem' }}>
+          <h1 className='text-center text-2xl mt-2 mb-2 font-medium'>
+            Route Legend
+          </h1>
+          <div style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
             {polylines
               .filter(p => p.paths.length > 0)
               .map(p => (
-                <div
+                <Checkbox
                   key={p.id}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <label>Display Route From {algorithms[p.id]}</label>
-                  <input
-                    id={p.id}
-                    type='checkbox'
-                    className='rounded mb-4'
-                    style={{ color: p.color }}
-                    onChange={() => {
-                      toggleDisplay(p.id);
-                    }}
-                    checked={polylines.find(poly => poly.id === p.id).display}
-                  />
-                </div>
+                  id={p.id}
+                  style={{ color: p.color }}
+                  onChange={() => toggleDisplay(p.id)}
+                  checked={polylines.find(poly => poly.id === p.id).display}
+                  label={`Display Route From ${algorithms[p.id]}`}
+                />
               ))}
           </div>
           {routeStatistics.map(rs => (
@@ -286,57 +278,52 @@ const Sidebar = props => {
       )}
       {menu === 'additionalFunctionality' && (
         <>
-          <h1 className='sidebar-header'>Additional Functionality</h1>
+          <h1 className='text-center text-2xl mt-2 mb-2 font-medium'>
+            Additional Functionality
+          </h1>
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              padding: '2rem',
+              paddingLeft: '2rem',
+              paddingRight: '2rem',
             }}
           >
-            <label>Display All Dirt Paths</label>
-            <input
+            <Checkbox
               id='allDirtPaths'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
               onChange={() => {
                 setDirtPathsChecked(!dirtPathsChecked);
                 toggleAllPathsDisplay('allDirtPaths', '/api/alldirtpaths');
               }}
               checked={dirtPathsChecked}
+              label='Display All Dirt Paths'
             />
-            <label>Display All Bike Paths</label>
-            <input
+            <Checkbox
               id='allBikePaths'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
               onChange={() => {
                 setBikePathsChecked(!bikePathsChecked);
                 toggleAllPathsDisplay('allBikePaths', '/api/allbikepaths');
               }}
               checked={bikePathsChecked}
+              label='Display All Bike Paths'
             />
-            <label>Display All Paved Paths</label>
-            <input
+            <Checkbox
               id='allPavedPaths'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
               onChange={() => {
                 setPavedPathsChecked(!pavedPathsChecked);
                 toggleAllPathsDisplay('allPavedPaths', '/api/allpavedpaths');
               }}
               checked={pavedPathsChecked}
+              label='Display All Paved Paths'
             />
-            <label>Track Current Location</label>
-            <input
+            <Checkbox
               id='locationToggle'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
               onChange={() => {
                 setLocationChecked(!locationChecked);
                 props.setUseLocation(!props.useLocation);
               }}
               checked={locationChecked}
+              label='Track Current Location'
             />
             <button className='button' onClick={downloadDatabaseFiles}>
               Download Database

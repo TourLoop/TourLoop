@@ -75,11 +75,11 @@
 }
 
 .route-statistic-header {
-  @apply text-green-500;
+  @apply text-indigo-300;
 }
 
 .route-statistic-header span {
-  @apply text-white;
+  @apply text-indigo-100;
 }
 
 .help-modal {
