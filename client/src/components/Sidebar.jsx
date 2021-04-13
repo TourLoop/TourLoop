@@ -33,6 +33,7 @@ const Sidebar = props => {
   const [locationChecked, setLocationChecked] = useState(false);
   const [routeStatistics, setRouteStatistics] = useState([]);
   const [errMessage, setErrMessage] = useState('');
+  const [pointToPointChecked, setPointToPointChecked] = useState(false);
 
   const { isShowing, toggle } = useModal();
 
@@ -44,6 +45,11 @@ const Sidebar = props => {
 
   const onSubmit = async data => {
     setLoading(true);
+
+    if (!pointToPointChecked) {
+      data.endLocation = data.startLocation;
+    }
+
     setErrMessage('');
     const res = await fetch('/api', {
       method: 'POST',
@@ -157,6 +163,8 @@ const Sidebar = props => {
                 id='pointToPoint'
                 type='checkbox'
                 className='rounded text-indigo-500'
+                onChange={() => setPointToPointChecked(!pointToPointChecked)}
+                checked={pointToPointChecked}
               />
               <label className='ml-2' htmlFor='pointToPoint'>
                 Point-to-Point
@@ -173,13 +181,17 @@ const Sidebar = props => {
               className='input'
             />
 
-            <label htmlFor='endLocation'>End Location</label>
-            <input
-              {...register('endLocation')}
-              id='endLocation'
-              type='text'
-              className='input'
-            />
+            {pointToPointChecked && (
+              <>
+                <label htmlFor='endLocation'>End Location</label>
+                <input
+                  {...register('endLocation')}
+                  id='endLocation'
+                  type='text'
+                  className='input'
+                />
+              </>
+            )}
 
             <label htmlFor='targetRouteDistance'>Target Route Distance</label>
             <input
