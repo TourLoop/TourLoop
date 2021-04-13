@@ -8,6 +8,7 @@ import RouteStatistic from './RouteStatistic';
 import useModal from '../hooks/useModal';
 import { ReactComponent as HelpIcon } from '../assets/images/help_icon.svg';
 import Checkbox from './input/Checkbox';
+import Header from './Header';
 
 const algorithms = {
   algo1: 'Algorithm 1',
@@ -152,23 +153,10 @@ const Sidebar = props => {
           />
         </Navigation>
       </div>
-
-      {/* <div className='rounded-full bg-gray-500 mx-8 mt-4' style={{ height: '0.01rem'}}></div> */}
       {menu === 'generateRoutes' && (
-        <div className='flex-1 '>
-          <h1 className='text-center text-2xl mt-2 mb-2 font-medium'>
-            Generate Routes
-          </h1>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              paddingLeft: '2rem',
-              paddingRight: '2rem',
-            }}
-            className='flex-1'
-          >
+        <div className='flex-1'>
+          <Header label='Generate Routes' />
+          <form onSubmit={handleSubmit(onSubmit)} className='px-8'>
             <div className='flex items-center mb-4'>
               <input
                 {...register('pointToPoint')}
@@ -247,11 +235,9 @@ const Sidebar = props => {
         </div>
       )}
       {menu === 'routeLegend' && (
-        <>
-          <h1 className='text-center text-2xl mt-2 mb-2 font-medium'>
-            Route Legend
-          </h1>
-          <div style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
+        <div className='flex-1'>
+          <Header label='Route Legend' />
+          <div className='px-8'>
             {polylines
               .filter(p => p.paths.length > 0)
               .map(p => (
@@ -274,21 +260,12 @@ const Sidebar = props => {
               time={rs.time}
             />
           ))}
-        </>
+        </div>
       )}
       {menu === 'additionalFunctionality' && (
-        <>
-          <h1 className='text-center text-2xl mt-2 mb-2 font-medium'>
-            Additional Functionality
-          </h1>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              paddingLeft: '2rem',
-              paddingRight: '2rem',
-            }}
-          >
+        <div className='flex-1'>
+          <Header label='Additional Functionality' />
+          <div className='px-8'>
             <Checkbox
               id='allDirtPaths'
               onChange={() => {
@@ -329,7 +306,7 @@ const Sidebar = props => {
               Download Database
             </button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

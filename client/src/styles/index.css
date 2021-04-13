@@ -10,8 +10,8 @@
   width: 30vw;
 }
 
-.sidebar-header {
-  @apply text-center text-2xl mt-4 mb-2 font-medium;
+.header {
+  @apply text-center text-2xl mt-2 mb-2 font-medium;
 }
 
 .sidebar-latlng {
