@@ -24,7 +24,12 @@ const Sidebar = props => {
     setPolylines,
     toggleDisplay,
     toggleAllPathsDisplay,
-    clickedLatLng,
+    pointToPointChecked,
+    setPointToPointChecked,
+    startLocation,
+    setStartLocation,
+    endLocation,
+    setEndLocation,
   } = props;
   const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState('generateRoutes');
@@ -34,7 +39,6 @@ const Sidebar = props => {
   const [locationChecked, setLocationChecked] = useState(false);
   const [routeStatistics, setRouteStatistics] = useState([]);
   const [errMessage, setErrMessage] = useState('');
-  const [pointToPointChecked, setPointToPointChecked] = useState(false);
 
   const { isShowing, toggle } = useModal();
 
@@ -46,10 +50,50 @@ const Sidebar = props => {
   } = useForm();
 
   useEffect(() => {
-    if (clickedLatLng.lat && clickedLatLng.lng) {
-      setValue('startLocation', `${clickedLatLng.lat}, ${clickedLatLng.lng}`);
+    if (startLocation.lat && startLocation.lng) {
+      setValue('startLocation', `${startLocation.lat}, ${startLocation.lng}`);
+    } else {
+      setValue('startLocation', '');
     }
-  }, [clickedLatLng]);
+  }, [startLocation]);
+
+  useEffect(() => {
+    if (endLocation.lat && endLocation.lng) {
+      setValue('endLocation', `${endLocation.lat}, ${endLocation.lng}`);
+    } else {
+      setValue('endLocation', '');
+    }
+  }, [endLocation]);
+
+  const handleStartLocation = e => {
+    const latLng = e.target.value.split(',');
+    const coord =
+      +latLng[0] && +latLng[1]
+        ? {
+            lat: +latLng[0],
+            lng: +latLng[1],
+          }
+        : {
+            lat: 0,
+            lng: 0,
+          };
+    setStartLocation(coord);
+  };
+
+  const handleEndLocation = e => {
+    const latLng = e.target.value.split(',');
+    const coord =
+      +latLng[0] && +latLng[1]
+        ? {
+            lat: +latLng[0],
+            lng: +latLng[1],
+          }
+        : {
+            lat: 0,
+            lng: 0,
+          };
+    setEndLocation(coord);
+  };
 
   const onSubmit = async data => {
     setLoading(true);
@@ -185,6 +229,7 @@ const Sidebar = props => {
               id='startLocation'
               type='text'
               className='input'
+              onBlur={handleStartLocation}
             />
 
             {pointToPointChecked && (
@@ -195,6 +240,7 @@ const Sidebar = props => {
                   id='endLocation'
                   type='text'
                   className='input'
+                  onBlur={handleEndLocation}
                 />
               </>
             )}
