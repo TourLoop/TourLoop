@@ -86,6 +86,8 @@ function App() {
       setStartLocation(coord);
     } else if (pointToPointChecked && !endLocation.lat && !endLocation.lng) {
       setEndLocation(coord);
+    } else if (!pointToPointChecked) {
+      setStartLocation(coord);
     }
   };
 
