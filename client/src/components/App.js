@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { decode } from '@googlemaps/polyline-codec';
 
 import Map from './Map';
@@ -71,10 +71,13 @@ function App() {
   const [useLocation, setUseLocation] = useState(false);
   const [clickedLatLng, setClickedLatLng] = useState('');
 
+  const startLocationInput = useRef(null);
+
   const onGoogleMapClick = e => {
     let lat = e.latLng.lat().toFixed(6);
     let lng = e.latLng.lng().toFixed(6);
     setClickedLatLng(`${lat}, ${lng}`);
+    startLocationInput.current.value = `${lat}, ${lng}`;
   };
 
   // Current Location code to null island
@@ -244,6 +247,7 @@ function App() {
         onGoogleMapClick={onGoogleMapClick}
       />
       <Sidebar
+        ref={startLocationInput}
         clickedLatLng={clickedLatLng}
         toggleDisplay={toggleDisplay}
         toggleAllPathsDisplay={toggleAllPathsDisplay}
