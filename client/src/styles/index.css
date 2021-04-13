@@ -2,16 +2,24 @@
 @tailwind components;
 
 .app {
-  @apply flex flex-1;
+  @apply flex;
+}
+
+.map {
+  @apply h-screen flex-1;
 }
 
 .sidebar {
-  @apply h-screen bg-gray-50;
-  width: 30vw;
+  @apply h-screen flex-initial flex flex-col;
+  width: 28rem;
 }
 
-.sidebar-header {
-  @apply text-center text-lg mt-2 mb-2;
+.logo {
+  @apply absolute z-50 w-24 m-4;
+}
+
+.header {
+  @apply text-center text-2xl mt-2 mb-2 font-medium;
 }
 
 .sidebar-latlng {
@@ -25,7 +33,7 @@
 }
 
 .input {
-  @apply mt-1 mb-4 block w-full rounded-md border-gray-300 shadow-sm;
+  @apply mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm;
 }
 
 .input:focus {
@@ -34,12 +42,12 @@
 
 .button {
   @apply px-4 py-2 w-48 h-12;
-  @apply bg-blue-500 rounded;
+  @apply bg-indigo-500 shadow-lg rounded-lg;
   @apply font-bold text-white;
 }
 
 .button:hover {
-  @apply bg-blue-700;
+  @apply bg-indigo-700;
 }
 
 .button:focus {
@@ -47,18 +55,21 @@
 }
 
 .navigation {
-  @apply px-2 py-1;
-  @apply flex-1;
+  @apply flex mb-4 px-2 py-1;
+}
+
+.navigation-header {
+  @apply text-2xl font-medium;
 }
 
 .navigation-tab {
-  @apply px-2 py-1 ml-2 h-12;
-  @apply bg-pink-500 rounded;
+  @apply flex-1 mx-2 h-12;
+  @apply bg-indigo-500 rounded-lg shadow-lg;
   @apply font-bold text-white text-sm;
 }
 
 .navigation-tab:hover {
-  @apply bg-pink-700;
+  @apply bg-indigo-700;
 }
 
 .navigation-tab:focus {
@@ -70,22 +81,22 @@
 }
 
 .route-statistic {
-  @apply mx-4 my-2 p-2;
-  @apply bg-gray-700 rounded-md shadow-md;
+  @apply mx-8 my-2 p-2;
+  @apply bg-gray-700 rounded-lg shadow-lg;
 }
 
 .route-statistic-header {
-  @apply text-green-500;
+  @apply text-indigo-300;
 }
 
 .route-statistic-header span {
-  @apply text-white;
+  @apply text-indigo-100;
 }
 
 .help-modal {
   @apply absolute z-50 w-1/2 h-1/2 py-4 px-8;
   @apply bg-white rounded-xl;
-  @apply overflow-y-auto; 
+  @apply overflow-y-auto;
 }
 
 .help-modal-header {
@@ -100,12 +111,48 @@
   @apply flex m-2 mr-4 h-8 justify-end;
 }
 
+.help-wrapper {
+  @apply flex items-center bg-indigo-100 px-3 rounded-full;
+}
+
+.help-wrapper:hover {
+  @apply bg-indigo-200;
+}
+
 .help-label {
-  @apply mr-2 text-lg;
+  @apply mr-2 text-lg text-indigo-500;
 }
 
 .help-icon {
-  @apply w-8 h-8;
+  @apply w-6 h-6 text-indigo-500;
+}
+
+.checkbox {
+  @apply flex items-center mb-4;
+}
+
+.checkbox-input {
+  @apply rounded text-indigo-500;
+}
+
+.checkbox-label {
+  @apply ml-2;
 }
 
 @tailwind utilities;
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  label,
+  span,
+  select,
+  button {
+    font-family: 'Baloo Chettan 2';
+    font-weight: 400;
+  }
+}

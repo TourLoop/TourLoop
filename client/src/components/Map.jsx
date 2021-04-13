@@ -5,11 +5,6 @@ import {
   Polyline,
 } from '@react-google-maps/api';
 
-const containerStyle = {
-  width: '70vw',
-  height: '100vh',
-};
-
 const center = {
   lat: 53.5461,
   lng: -113.4938,
@@ -19,7 +14,7 @@ const Map = props => {
   return (
     <LoadScript googleMapsApiKey=''>
       <GoogleMap
-        mapContainerStyle={containerStyle}
+        mapContainerClassName='map'
         center={center}
         zoom={11}
         onClick={props.onGoogleMapClick}

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './styles/index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import 'typeface-baloo-chettan-2'
 
 ReactDOM.render(
   <React.StrictMode>

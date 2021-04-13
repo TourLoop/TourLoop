@@ -7,6 +7,8 @@ import HelpModal from './HelpModal';
 import RouteStatistic from './RouteStatistic';
 import useModal from '../hooks/useModal';
 import { ReactComponent as HelpIcon } from '../assets/images/help_icon.svg';
+import Checkbox from './input/Checkbox';
+import Header from './Header';
 
 const algorithms = {
   algo1: 'Algorithm 1',
@@ -16,7 +18,7 @@ const algorithms = {
   allDirtPaths: 'All Dirt Paths',
 };
 
-const Sidebar = (props) => {
+const Sidebar = props => {
   const {
     polylines,
     setPolylines,
@@ -40,7 +42,7 @@ const Sidebar = (props) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setLoading(true);
     setErrMessage('');
     const res = await fetch('/api', {
@@ -59,7 +61,7 @@ const Sidebar = (props) => {
       }
 
       const statistics = routeStatistics.filter(
-        (rs) => rs.algorithm !== route.algorithm
+        rs => rs.algorithm !== route.algorithm
       );
       const newRouteStatistics = [
         ...statistics,
@@ -72,12 +74,12 @@ const Sidebar = (props) => {
       ];
 
       const latLngs = decode(route.path, 6);
-      const paths = latLngs.map((latLng) => ({
+      const paths = latLngs.map(latLng => ({
         lat: latLng[0],
         lng: latLng[1],
       }));
 
-      const newPolylines = polylines.map((polyline) =>
+      const newPolylines = polylines.map(polyline =>
         polyline.id === route.algorithm
           ? {
               paths: [paths],
@@ -99,8 +101,8 @@ const Sidebar = (props) => {
 
   const downloadDatabaseFiles = () => {
     fetch('/export/tar')
-      .then((response) => response.blob())
-      .then((blob) => {
+      .then(response => response.blob())
+      .then(blob => {
         // from https://medium.com/yellowcode/download-api-files-with-react-fetch-393e4dae0d9e
         // 2. Create blob link to download
         const url = window.URL.createObjectURL(new Blob([blob]));
@@ -114,54 +116,52 @@ const Sidebar = (props) => {
         // 5. Clean up and remove the link
         link.parentNode.removeChild(link);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
 
   return (
     <div className='sidebar'>
-      <div className='sidebar-help'>
-        <label className='help-label' onClick={toggle}>
-          Help
-        </label>
-        <HelpIcon className='help-icon' onClick={toggle} />
+      <div className='flex-initial'>
+        <div className='flex m-4 mr-4 h-8 justify-between'>
+          <h1 className='navigation-header'>Navigation</h1>
+          <div className='help-wrapper' onClick={toggle}>
+            <span className='help-label'>Help</span>
+            <HelpIcon className='help-icon' />
+          </div>
+        </div>
+        <HelpModal isShowing={isShowing} hide={toggle} />
+        <Navigation>
+          <NavigationTab
+            label='Generate'
+            onClick={() => setMenu('generateRoutes')}
+          />
+          <NavigationTab
+            label='Legend'
+            onClick={() => setMenu('routeLegend')}
+          />
+          <NavigationTab
+            label='Extra'
+            onClick={() => setMenu('additionalFunctionality')}
+          />
+        </Navigation>
       </div>
-      <HelpModal isShowing={isShowing} hide={toggle} />
-      <Navigation>
-        <h1 className='sidebar-header'>Menu</h1>
-        <NavigationTab
-          label='Generate Routes'
-          onClick={() => setMenu('generateRoutes')}
-        />
-        <NavigationTab
-          label='Route Legend'
-          onClick={() => setMenu('routeLegend')}
-        />
-        <NavigationTab
-          label='Additional Functionality'
-          onClick={() => setMenu('additionalFunctionality')}
-        />
-      </Navigation>
       {menu === 'generateRoutes' && (
-        <>
-          <h1 className='sidebar-header'>Generate Routes</h1>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              paddingLeft: '2rem',
-              paddingRight: '2rem',
-            }}
-          >
-            <label htmlFor='pointToPoint'>Point-to-Point</label>
-            <input
-              {...register('pointToPoint')}
-              id='pointToPoint'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
-            />
+        <div className='flex-1'>
+          <Header label='Generate Routes' />
+          <form onSubmit={handleSubmit(onSubmit)} className='px-8'>
+            <div className='flex items-center mb-4'>
+              <input
+                {...register('pointToPoint')}
+                id='pointToPoint'
+                type='checkbox'
+                className='rounded text-indigo-500'
+              />
+              <label className='ml-2' htmlFor='pointToPoint'>
+                Point-to-Point
+              </label>
+            </div>
 
             <label htmlFor='startLocation'>Start Location</label>
             <input
@@ -218,37 +218,26 @@ const Sidebar = (props) => {
           </form>
           <h3 className='sidebar-err'>{errMessage}</h3>
           <h3 className='sidebar-latlng'>{props.clickedLatLng}</h3>
-        </>
+        </div>
       )}
       {menu === 'routeLegend' && (
-        <>
-          <h1 className='sidebar-header'>Route Legend</h1>
-          <div style={{ padding: '2rem' }}>
+        <div className='flex-1'>
+          <Header label='Route Legend' />
+          <div className='px-8'>
             {polylines
-              .filter((p) => p.paths.length > 0)
-              .map((p) => (
-                <div
+              .filter(p => p.paths.length > 0)
+              .map(p => (
+                <Checkbox
                   key={p.id}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <label>Display Route From {algorithms[p.id]}</label>
-                  <input
-                    id={p.id}
-                    type='checkbox'
-                    className='rounded mb-4'
-                    style={{ color: p.color }}
-                    onChange={() => {
-                      toggleDisplay(p.id);
-                    }}
-                    checked={polylines.find((poly) => poly.id === p.id).display}
-                  />
-                </div>
+                  id={p.id}
+                  style={{ color: p.color }}
+                  onChange={() => toggleDisplay(p.id)}
+                  checked={polylines.find(poly => poly.id === p.id).display}
+                  label={`Display Route From ${algorithms[p.id]}`}
+                />
               ))}
           </div>
-          {routeStatistics.map((rs) => (
+          {routeStatistics.map(rs => (
             <RouteStatistic
               key={rs.algorithm}
               algorithm={algorithms[rs.algorithm]}
@@ -257,67 +246,53 @@ const Sidebar = (props) => {
               time={rs.time}
             />
           ))}
-        </>
+        </div>
       )}
       {menu === 'additionalFunctionality' && (
-        <>
-          <h1 className='sidebar-header'>Additional Functionality</h1>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '2rem',
-            }}
-          >
-            <label>Display All Dirt Paths</label>
-            <input
+        <div className='flex-1'>
+          <Header label='Additional Functionality' />
+          <div className='px-8'>
+            <Checkbox
               id='allDirtPaths'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
               onChange={() => {
                 setDirtPathsChecked(!dirtPathsChecked);
                 toggleAllPathsDisplay('allDirtPaths', '/api/alldirtpaths');
               }}
               checked={dirtPathsChecked}
+              label='Display All Dirt Paths'
             />
-            <label>Display All Bike Paths</label>
-            <input
+            <Checkbox
               id='allBikePaths'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
               onChange={() => {
                 setBikePathsChecked(!bikePathsChecked);
                 toggleAllPathsDisplay('allBikePaths', '/api/allbikepaths');
               }}
               checked={bikePathsChecked}
+              label='Display All Bike Paths'
             />
-            <label>Display All Paved Paths</label>
-            <input
+            <Checkbox
               id='allPavedPaths'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
               onChange={() => {
                 setPavedPathsChecked(!pavedPathsChecked);
                 toggleAllPathsDisplay('allPavedPaths', '/api/allpavedpaths');
               }}
               checked={pavedPathsChecked}
+              label='Display All Paved Paths'
             />
-            <label>Track Current Location</label>
-            <input
+            <Checkbox
               id='locationToggle'
-              type='checkbox'
-              className='rounded text-blue-500 mb-4'
               onChange={() => {
                 setLocationChecked(!locationChecked);
                 props.setUseLocation(!props.useLocation);
               }}
               checked={locationChecked}
+              label='Track Current Location'
             />
             <button className='button' onClick={downloadDatabaseFiles}>
               Download Database
             </button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
