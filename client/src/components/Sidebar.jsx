@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { decode } from '@googlemaps/polyline-codec';
 import Navigation from './navigation/Navigation';
@@ -24,6 +24,7 @@ const Sidebar = props => {
     setPolylines,
     toggleDisplay,
     toggleAllPathsDisplay,
+    clickedLatLng,
   } = props;
   const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState('generateRoutes');
@@ -41,7 +42,12 @@ const Sidebar = props => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
+
+  useEffect(() => {
+    setValue('startLocation', clickedLatLng);
+  }, [clickedLatLng]);
 
   const onSubmit = async data => {
     setLoading(true);
@@ -173,9 +179,7 @@ const Sidebar = props => {
 
             <label htmlFor='startLocation'>Start Location</label>
             <input
-              {...register('startLocation', {
-                required: true,
-              })}
+              {...register('startLocation')}
               id='startLocation'
               type='text'
               className='input'
@@ -230,7 +234,6 @@ const Sidebar = props => {
             {loading && <h2 className='form-submit-header'>Generating...</h2>}
           </form>
           <h3 className='sidebar-err'>{errMessage}</h3>
-          <h3 className='sidebar-latlng'>{props.clickedLatLng}</h3>
         </div>
       )}
       {menu === 'routeLegend' && (
