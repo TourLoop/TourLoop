@@ -122,19 +122,13 @@ const Sidebar = props => {
   };
 
   return (
-    <div
-      className='h-screen bg-gray-50 flex flex-col '
-      style={{ width: '30vw' }}
-    >
+    <div className='h-screen flex flex-col' style={{ width: '30vw' }}>
       <div className='flex-initial'>
         <div className='flex m-4 mr-4 h-8 justify-between'>
-          <h1 className='text-2xl font-medium'>Navigation</h1>
-          <div
-            className='flex items-center bg-indigo-100 px-3 rounded-full'
-            onClick={toggle}
-          >
-            <span className='mr-2 text-lg text-indigo-500'>Help</span>
-            <HelpIcon className='w-6 h-6 text-indigo-500' />
+          <h1 className='navigation-header'>Navigation</h1>
+          <div className='help-wrapper' onClick={toggle}>
+            <span className='help-label'>Help</span>
+            <HelpIcon className='help-icon' />
           </div>
         </div>
         <HelpModal isShowing={isShowing} hide={toggle} />
