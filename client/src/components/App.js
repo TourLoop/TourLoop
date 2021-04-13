@@ -58,6 +58,9 @@ const defaultPolylines = [
 ];
 
 function App() {
+  // Current Location code to null island
+  const defaultPosition = { lat: 0.0, lng: 0.0 }; // "null island"
+
   // polylines is of type
   // [{
   //    paths: [[{lat: float, lng: float}, ...]...],
@@ -68,18 +71,29 @@ function App() {
   //    time: string,
   // }, ...]
   const [polylines, setPolylines] = useState(defaultPolylines);
+  const [startLocation, setStartLocation] = useState(defaultPosition);
+  const [endLocation, setEndLocation] = useState(defaultPosition);
   const [useLocation, setUseLocation] = useState(false);
-  const [clickedLatLng, setClickedLatLng] = useState({ lat: 0, lng: 0 });
+  const [pointToPointChecked, setPointToPointChecked] = useState(false);
 
   const onGoogleMapClick = e => {
-    setClickedLatLng({
+    const coord = {
       lat: +e.latLng.lat().toFixed(6),
       lng: +e.latLng.lng().toFixed(6),
-    });
+    };
+
+    if (!startLocation.lat && !startLocation.lat) {
+      setStartLocation(coord);
+    } else if (pointToPointChecked && !endLocation.lat && !endLocation.lng) {
+      setEndLocation(coord);
+    }
   };
 
-  // Current Location code to null island
-  const defaultPosition = { lat: 0.0, lng: 0.0 }; // "null island"
+  const onGoogleMapRightClick = e => {
+    setStartLocation(defaultPosition);
+    setEndLocation(defaultPosition);
+  };
+
   const [currPos, setCurrPos] = useState();
   // Update the location periodically
   const locationUpdateFrequency = 10; // seconds
@@ -168,91 +182,28 @@ function App() {
     }
   };
 
-  // const fetchAllPaths = (bikesOnly = false) => {
-  //   let id = ALLDIRTPATHS;
-  //   let url = '/api/alldirtpaths';
-  //   let pathColor = '#577590';
-  //   if (bikesOnly) {
-  //     id = ALLBIKEPATHS;
-  //     url = '/api/allbikepaths';
-  //     pathColor = '#4BA973';
-  //   }
-
-  //   let ind = polylines.findIndex(p => p.id === id);
-
-  //   if (ind !== -1) {
-  //     // We have already fetched all paths. Turn display on or off.
-  //     let plines = [...polylines];
-  //     let pline = { ...plines[ind] };
-  //     pline.display = !pline.display;
-  //     plines[ind] = pline;
-  //     setPolylines(plines);
-  //   } else {
-  //     fetch(url)
-  //       .then(res => res.text())
-  //       .then(
-  //         f => {
-  //           let latLngs = {
-  //             paths: [],
-  //             display: true,
-  //             id: id,
-  //             color: pathColor,
-  //           };
-  //           f.split('\n').forEach(function (path) {
-  //             var p = decode(path, 6);
-  //             let pline = p.map(p => ({
-  //               lat: p[0],
-  //               lng: p[1],
-  //             }));
-  //             latLngs.paths.push(pline);
-  //           });
-  //           setPolylines([...polylines, latLngs]);
-  //         },
-  //         error => {
-  //           console.log(error);
-  //         }
-  //       );
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetch('/api')
-  //     .then(res => res.json())
-  //     .then(
-  //       line => {
-  //         let latLngs = [
-  //           { path: [], display: true, id: ALGO2, color: '#FF6347' },
-  //         ];
-  //         var p = decode(line.path, 6);
-  //         for (let j = 0; j < p.length; j++) {
-  //           latLngs[0].path.push({ lat: p[j][0], lng: p[j][1] });
-  //         }
-  //         console.log(latLngs);
-  //         setPolylines(latLngs);
-  //       },
-  //       error => {
-  //         console.log(error);
-  //       }
-  //     );
-  // }, []);
-
   return (
     <div className='app'>
       <img src={logo} className='logo' alt='Logo' />
       <Map
         polylines={polylines}
-        position={currPos}
+        startLocation={startLocation}
+        endLocation={endLocation}
+        currentLocation={currPos}
         onGoogleMapClick={onGoogleMapClick}
-        clickedLatLng={clickedLatLng}
+        onGoogleMapRightClick={onGoogleMapRightClick}
       />
       <Sidebar
-        clickedLatLng={clickedLatLng}
+        startLocation={startLocation}
+        endLocation={endLocation}
         toggleDisplay={toggleDisplay}
         toggleAllPathsDisplay={toggleAllPathsDisplay}
         polylines={polylines}
         setPolylines={setPolylines}
         setUseLocation={setUseLocation}
         useLocation={useLocation}
+        pointToPointChecked={pointToPointChecked}
+        setPointToPointChecked={setPointToPointChecked}
       />
     </div>
   );

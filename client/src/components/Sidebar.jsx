@@ -24,7 +24,10 @@ const Sidebar = props => {
     setPolylines,
     toggleDisplay,
     toggleAllPathsDisplay,
-    clickedLatLng,
+    pointToPointChecked,
+    setPointToPointChecked,
+    startLocation,
+    endLocation,
   } = props;
   const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState('generateRoutes');
@@ -34,7 +37,6 @@ const Sidebar = props => {
   const [locationChecked, setLocationChecked] = useState(false);
   const [routeStatistics, setRouteStatistics] = useState([]);
   const [errMessage, setErrMessage] = useState('');
-  const [pointToPointChecked, setPointToPointChecked] = useState(false);
 
   const { isShowing, toggle } = useModal();
 
@@ -46,10 +48,20 @@ const Sidebar = props => {
   } = useForm();
 
   useEffect(() => {
-    if (clickedLatLng.lat && clickedLatLng.lng) {
-      setValue('startLocation', `${clickedLatLng.lat}, ${clickedLatLng.lng}`);
+    if (startLocation.lat && startLocation.lng) {
+      setValue('startLocation', `${startLocation.lat}, ${startLocation.lng}`);
+    } else {
+      setValue('startLocation', '');
     }
-  }, [clickedLatLng]);
+  }, [startLocation]);
+
+  useEffect(() => {
+    if (endLocation.lat && endLocation.lng) {
+      setValue('endLocation', `${endLocation.lat}, ${endLocation.lng}`);
+    } else {
+      setValue('endLocation', '');
+    }
+  }, [endLocation]);
 
   const onSubmit = async data => {
     setLoading(true);

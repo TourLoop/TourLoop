@@ -11,7 +11,13 @@ const center = {
 };
 
 const Map = props => {
-  const { clickedLatLng, position } = props;
+  const {
+    startLocation,
+    endLocation,
+    currentLocation,
+    onGoogleMapClick,
+    onGoogleMapRightClick,
+  } = props;
 
   return (
     <LoadScript googleMapsApiKey=''>
@@ -19,10 +25,12 @@ const Map = props => {
         mapContainerClassName='map'
         center={center}
         zoom={11}
-        onClick={props.onGoogleMapClick}
+        onClick={onGoogleMapClick}
+        onRightClick={onGoogleMapRightClick}
       >
-        <Marker position={position} />;
-        <Marker position={clickedLatLng} />;
+        <Marker position={startLocation} />;
+        <Marker position={endLocation} />;
+        <Marker position={currentLocation} />;
         {props.polylines.map((polyline, i) => {
           const opt = {
             strokeColor: polyline.color,
@@ -40,8 +48,6 @@ const Map = props => {
             return <Polyline key={j} path={path} options={opt} />;
           });
         })}
-        {/* Child components, such as markers, info windows, etc. */}
-        <></>
       </GoogleMap>
     </LoadScript>
   );
