@@ -197,7 +197,9 @@ function App() {
       />
       <Sidebar
         startLocation={startLocation}
+        setStartLocation={setStartLocation}
         endLocation={endLocation}
+        setEndLocation={setEndLocation}
         toggleDisplay={toggleDisplay}
         toggleAllPathsDisplay={toggleAllPathsDisplay}
         polylines={polylines}

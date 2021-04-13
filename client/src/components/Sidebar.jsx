@@ -27,7 +27,9 @@ const Sidebar = props => {
     pointToPointChecked,
     setPointToPointChecked,
     startLocation,
+    setStartLocation,
     endLocation,
+    setEndLocation,
   } = props;
   const [loading, setLoading] = useState(false);
   const [menu, setMenu] = useState('generateRoutes');
@@ -62,6 +64,36 @@ const Sidebar = props => {
       setValue('endLocation', '');
     }
   }, [endLocation]);
+
+  const handleStartLocation = e => {
+    const latLng = e.target.value.split(',');
+    const coord =
+      +latLng[0] && +latLng[1]
+        ? {
+            lat: +latLng[0],
+            lng: +latLng[1],
+          }
+        : {
+            lat: 0,
+            lng: 0,
+          };
+    setStartLocation(coord);
+  };
+
+  const handleEndLocation = e => {
+    const latLng = e.target.value.split(',');
+    const coord =
+      +latLng[0] && +latLng[1]
+        ? {
+            lat: +latLng[0],
+            lng: +latLng[1],
+          }
+        : {
+            lat: 0,
+            lng: 0,
+          };
+    setEndLocation(coord);
+  };
 
   const onSubmit = async data => {
     setLoading(true);
@@ -197,6 +229,7 @@ const Sidebar = props => {
               id='startLocation'
               type='text'
               className='input'
+              onBlur={handleStartLocation}
             />
 
             {pointToPointChecked && (
@@ -207,6 +240,7 @@ const Sidebar = props => {
                   id='endLocation'
                   type='text'
                   className='input'
+                  onBlur={handleEndLocation}
                 />
               </>
             )}
