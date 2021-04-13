@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { decode } from '@googlemaps/polyline-codec';
 import Navigation from './navigation/Navigation';
@@ -18,7 +18,7 @@ const algorithms = {
   allDirtPaths: 'All Dirt Paths',
 };
 
-const Sidebar = React.forwardRef((props, forwardedRef) => {
+const Sidebar = props => {
   const {
     polylines,
     setPolylines,
@@ -183,7 +183,6 @@ const Sidebar = React.forwardRef((props, forwardedRef) => {
               id='startLocation'
               type='text'
               className='input'
-              ref={forwardedRef}
             />
 
             {pointToPointChecked && (
@@ -313,6 +312,6 @@ const Sidebar = React.forwardRef((props, forwardedRef) => {
       )}
     </div>
   );
-});
+};
 
 export default Sidebar;
