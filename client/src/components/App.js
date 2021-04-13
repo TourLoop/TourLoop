@@ -69,7 +69,7 @@ function App() {
   // }, ...]
   const [polylines, setPolylines] = useState(defaultPolylines);
   const [useLocation, setUseLocation] = useState(false);
-  const [clickedLatLng, setClickedLatLng] = useState('');
+  const [clickedLatLng, setClickedLatLng] = useState({ lat: 0, lng: 0 });
 
   const onGoogleMapClick = e => {
     setClickedLatLng({

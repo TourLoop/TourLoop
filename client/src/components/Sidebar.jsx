@@ -46,7 +46,9 @@ const Sidebar = props => {
   } = useForm();
 
   useEffect(() => {
-    setValue('startLocation', `${clickedLatLng.lat}, ${clickedLatLng.lng}`);
+    if (clickedLatLng.lat && clickedLatLng.lng) {
+      setValue('startLocation', `${clickedLatLng.lat}, ${clickedLatLng.lng}`);
+    }
   }, [clickedLatLng]);
 
   const onSubmit = async data => {
