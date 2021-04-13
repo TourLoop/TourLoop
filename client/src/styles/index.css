@@ -14,6 +14,10 @@
   width: 28rem;
 }
 
+.logo {
+  @apply absolute z-50 w-24 m-4;
+}
+
 .header {
   @apply text-center text-2xl mt-2 mb-2 font-medium;
 }

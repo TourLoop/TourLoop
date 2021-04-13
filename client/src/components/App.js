@@ -3,6 +3,7 @@ import { decode } from '@googlemaps/polyline-codec';
 
 import Map from './Map';
 import Sidebar from './Sidebar';
+import logo from '../assets/images/logo.png';
 
 // const ALLDIRTPATHS = 'ALLDIRTPATHS';
 // const ALLBIKEPATHS = 'ALLBIKEPATHS';
@@ -236,6 +237,7 @@ function App() {
 
   return (
     <div className='app'>
+      <img src={logo} className='logo' alt='Logo' />
       <Map
         polylines={polylines}
         position={currPos}
