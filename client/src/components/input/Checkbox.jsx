@@ -5,16 +5,16 @@ const Checkbox = props => {
   const { id, style, onChange, checked, label } = props;
 
   return (
-    <div className='flex items-center mb-4'>
+    <div className='checkbox'>
       <input
         id={id}
         type='checkbox'
-        className='rounded text-indigo-500'
+        className='checkbox-input'
         style={style}
         onChange={onChange}
         checked={checked}
       />
-      <label className='ml-2'>{label}</label>
+      <label className='checkbox-label'>{label}</label>
     </div>
   );
 };

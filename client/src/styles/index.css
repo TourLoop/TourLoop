@@ -107,6 +107,18 @@
   @apply w-8 h-8;
 }
 
+.checkbox {
+  @apply flex items-center mb-4;
+}
+
+.checkbox-input {
+  @apply rounded text-indigo-500;
+}
+
+.checkbox-label {
+  @apply ml-2;
+}
+
 @tailwind utilities;
 
 @layer base {
