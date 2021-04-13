@@ -2,12 +2,16 @@
 @tailwind components;
 
 .app {
-  @apply flex flex-1;
+  @apply flex;
+}
+
+.map {
+  @apply h-screen flex-1;
 }
 
 .sidebar {
-  @apply h-screen;
-  width: 30vw;
+  @apply h-screen flex-initial flex flex-col;
+  width: 24rem;
 }
 
 .header {

@@ -122,7 +122,7 @@ const Sidebar = props => {
   };
 
   return (
-    <div className='h-screen flex flex-col' style={{ width: '30vw' }}>
+    <div className='sidebar'>
       <div className='flex-initial'>
         <div className='flex m-4 mr-4 h-8 justify-between'>
           <h1 className='navigation-header'>Navigation</h1>

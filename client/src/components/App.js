@@ -15,7 +15,7 @@ TourLoop is not responsible for any inacuracies in map data.
 The data we have and the routes we generate may not be up to date, accurate, or safe.
 
 Be aware of your surroundings. Use this application at your own risk. 
-`
+`;
 
 const defaultPolylines = [
   {
@@ -70,7 +70,7 @@ function App() {
   const [useLocation, setUseLocation] = useState(false);
   const [clickedLatLng, setClickedLatLng] = useState('');
 
-  const onGoogleMapClick = (e) => {
+  const onGoogleMapClick = e => {
     let lat = e.latLng.lat().toFixed(6);
     let lng = e.latLng.lng().toFixed(6);
     setClickedLatLng(`${lat}, ${lng}`);
@@ -88,13 +88,13 @@ function App() {
       if (useLocation) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
-            (position) => {
+            position => {
               setCurrPos({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
               });
             },
-            (error) => {
+            error => {
               console.log('Something went wrong setting the current location');
               console.log(error);
             }
@@ -109,41 +109,43 @@ function App() {
     }, 1000 * locationUpdateFrequency);
   });
 
-  useEffect(() => {alert(DISCLAIMER_MESSAGE)}, [])
+  useEffect(() => {
+    alert(DISCLAIMER_MESSAGE);
+  }, []);
 
-  const toggleDisplay = (id) => {
-    const newPolylines = polylines.map((p) =>
+  const toggleDisplay = id => {
+    const newPolylines = polylines.map(p =>
       p.id === id ? { ...p, display: !p.display } : p
     );
     setPolylines(newPolylines);
   };
 
   const toggleAllPathsDisplay = (id, url) => {
-    if (polylines.find((p) => p.id === id).paths.length === 0) {
+    if (polylines.find(p => p.id === id).paths.length === 0) {
       fetchAllPaths({ id, url });
     } else {
       toggleDisplay(id);
     }
   };
 
-  const fetchAllPaths = async (reqOptions) => {
+  const fetchAllPaths = async reqOptions => {
     try {
       const res = await fetch(reqOptions.url);
 
       if (res.status === 200) {
         const routes = await res.text();
 
-        const paths = routes.split('\n').map((route) => {
+        const paths = routes.split('\n').map(route => {
           const latLngs = decode(route, 6);
-          return latLngs.map((latLng) => ({
+          return latLngs.map(latLng => ({
             lat: latLng[0],
             lng: latLng[1],
           }));
         });
 
-        const polyline = polylines.find((p) => p.id === reqOptions.id);
+        const polyline = polylines.find(p => p.id === reqOptions.id);
 
-        const newPolylines = polylines.map((p) =>
+        const newPolylines = polylines.map(p =>
           p.id === polyline.id
             ? {
                 paths: paths,
