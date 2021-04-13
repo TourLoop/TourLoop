@@ -176,7 +176,7 @@ const Sidebar = props => {
               })}
               id='startLocation'
               type='text'
-              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
+              className='input'
             />
 
             <label htmlFor='endLocation'>End Location</label>
@@ -184,7 +184,7 @@ const Sidebar = props => {
               {...register('endLocation')}
               id='endLocation'
               type='text'
-              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
+              className='input'
             />
 
             <label htmlFor='targetRouteDistance'>Target Route Distance</label>
@@ -195,26 +195,18 @@ const Sidebar = props => {
               })}
               id='targetRouteDistance'
               type='number'
-              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
+              className='input'
             />
 
             <label htmlFor='pathType'>Path Type</label>
-            <select
-              {...register('pathType')}
-              id='pathType'
-              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
-            >
+            <select {...register('pathType')} id='pathType' className='input'>
               <option value='bike'>Bike Path</option>
               <option value='paved'>Paved Road</option>
               <option value='dirt'>Dirt Trail</option>
             </select>
 
             <label htmlFor='algorithm'>Algorithm</label>
-            <select
-              {...register('algorithm')}
-              id='algorithm'
-              className='mt-1 mb-4 block w-full rounded-lg border-gray-300 shadow-sm'
-            >
+            <select {...register('algorithm')} id='algorithm' className='input'>
               <option value='algo1'>Algorithm 1</option>
               <option value='algo2'>Algorithm 2</option>
               <option value='algo3'>Algorithm 3</option>
@@ -222,7 +214,7 @@ const Sidebar = props => {
 
             <button
               type='submit'
-              className='mt-1 px-4 py-2 w-48 h-12 bg-indigo-500 shadow-lg rounded-lg font-bold text-white'
+              className='button'
               disabled={loading}
               style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
             >

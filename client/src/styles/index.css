@@ -39,7 +39,7 @@
 }
 
 .button:hover {
-  @apply bg-blue-700;
+  @apply bg-indigo-700;
 }
 
 .button:focus {
@@ -61,7 +61,7 @@
 }
 
 .navigation-tab:focus {
-  @apply outline-none;
+  @apply outline-none shadow-md;
 }
 
 .form-submit-header {
