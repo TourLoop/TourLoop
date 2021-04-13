@@ -47,22 +47,21 @@
 }
 
 .navigation {
-  @apply px-2 py-1;
-  @apply flex-1;
+  @apply flex mb-4 px-2 py-1;
 }
 
 .navigation-tab {
-  @apply px-2 py-1 ml-2 h-12;
-  @apply bg-pink-500 rounded-full;
-  @apply font-bold text-white text-sm ring-opacity-50 ring-4;
+  @apply flex-1 mx-2 h-12;
+  @apply bg-indigo-500 rounded-lg shadow-lg;
+  @apply font-bold text-white text-sm;
 }
 
 .navigation-tab:hover {
-  @apply bg-pink-700;
+  @apply bg-indigo-700;
 }
 
 .navigation-tab:focus {
-  @apply outline-none shadow-md;
+  @apply outline-none;
 }
 
 .form-submit-header {
