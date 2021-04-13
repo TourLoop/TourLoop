@@ -73,6 +73,10 @@ class Algo1(SearchAlgorithm):
             if curr.isInvalid():
                 continue
 
+            if curr.total_d > 2 * self.options.getTargetDistance():
+                self.err_message = "Could not find a solution within the given paramaters"
+                return
+
             # not solution, keep searching
             rows = self.db_wrapper.getNHopNeighbours(
                         curr.node_list[-1],

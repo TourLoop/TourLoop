@@ -23,6 +23,9 @@ class Algo3(SearchAlgorithm):
         frontier = [n]
         heapq.heapify(frontier)
         while n.target_dist_est > 0.1 or n.path_dist < (Node.target_distance / 2):
+            if n.path_dist > 2* Node.target_distance:
+                self.err_message = "Could not find a route given the input paramaters"
+                return
             if len(frontier) == 0:
                 break
             n = heapq.heappop(frontier)
