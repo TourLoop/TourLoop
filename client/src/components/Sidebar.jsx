@@ -16,6 +16,7 @@ const algorithms = {
   algo3: 'Algorithm 3',
   allBikePaths: 'All Bike Paths',
   allDirtPaths: 'All Dirt Paths',
+  allPavedPaths: 'All Paved Paths',
 };
 
 const Sidebar = props => {
