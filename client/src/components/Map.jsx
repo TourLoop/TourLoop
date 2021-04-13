@@ -4,6 +4,7 @@ import {
   LoadScript,
   Polyline,
 } from '@react-google-maps/api';
+import locationMarker from '../assets/images/location_marker.png';
 
 const center = {
   lat: 53.5461,
@@ -30,7 +31,7 @@ const Map = props => {
       >
         <Marker position={startLocation} />;
         <Marker position={endLocation} />;
-        <Marker position={currentLocation} />;
+        <Marker position={currentLocation} icon={locationMarker} />;
         {props.polylines.map((polyline, i) => {
           const opt = {
             strokeColor: polyline.color,
