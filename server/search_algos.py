@@ -6,7 +6,8 @@ import polyline
 def node_list_to_polyline(node_list, accuracy=6):
     return polyline.encode([(float(n['lat']), float(n['lon'])) for n in node_list], accuracy)
 
-
+# TOURLOOP FR1: loop generation
+# TOURLOOP FR2: point to point routes
 class SearchAlgorithm:
 
     def __init__(self, options, db):
