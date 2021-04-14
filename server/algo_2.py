@@ -6,6 +6,8 @@ from vincenty import vincenty
 MAX_FRONTIER = 20
 MAX_DIST_FROM_START_END = 0.1
 
+# TOURLOOP FR1 : generate loops
+# TOURLOOP FR2 : generate point to point routes
 class Algo2(SearchAlgorithm):
 
     def generateRoutes(self):
@@ -19,6 +21,7 @@ class Algo2(SearchAlgorithm):
         n = self.db_wrapper.getClosestPoint(
             self.options.getStart()[0], self.options.getStart()[1])
 
+        # TOURLOOP FR5 : no route error
         if n == None:
             self.err_message = "Could not find path within 100m of your start location."
             return
@@ -26,11 +29,13 @@ class Algo2(SearchAlgorithm):
         n_closest_end = self.db_wrapper.getClosestPoint(
             self.options.getEnd()[0], self.options.getEnd()[1])
 
+        # TOURLOOP FR5 : no route error
         if n_closest_end == None:
             self.err_message = "Could not find path within 100m of your end location."
             return
 
         frontier = [n]
+        # TOURLOOP FR7 : backtracking prevention
         visited = set([n.node_id])
         while n.path_dist < Node.target_distance * 2 and (n.target_dist_est > MAX_DIST_FROM_START_END or n.path_dist < (Node.target_distance / 2)):
             if not frontier:
