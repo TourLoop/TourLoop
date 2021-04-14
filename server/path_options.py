@@ -1,3 +1,4 @@
+# TOURLOOP FR11 : input paramaters form
 class PathOptions:
     """
     >>> path_opts_1 = PathOptions((0.0, 1.1), (0.0, 1.1), "bike", 2.2, "algo1")
