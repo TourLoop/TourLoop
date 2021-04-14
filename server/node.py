@@ -1,7 +1,9 @@
 from vincenty import vincenty
 
 
-# TODO: make this a subclass of simple node
+# TOURLOOP FR3 : closest node point
+# TOURLOOP FR6 : route length targeting
+# TOURLOOP FR10 : path preference
 class Node:
     """
     >>> n = Node(None, "1", 0.0, 0.0)
@@ -28,7 +30,7 @@ class Node:
         self.node_id = node_id
         self.lat = float(lat)
         self.lon = float(lon)
-        
+
 
         if prev_node == None:
             self.path_dist = 0.0
@@ -65,6 +67,7 @@ class Node:
         return vincenty(self.getLatLonTuple(), other.getLatLonTuple())
 
 
+# TOURLOOP FR3 : closest node point
 class SimpleNode:
     def __init__(self, prev_node, node_id, lat, lon):
         self.prev_node = prev_node
