@@ -7,13 +7,12 @@ from time import time
 from vincenty import vincenty
 from node import *
 
-
+# TOURLOOP FR1 : generate loops
+# TOURLOOP FR2 : generate point to point routes
+# TOURLOOP FR8 : 1/3 different route algorithms
 class Algo1(SearchAlgorithm):
 
     def generateRoutes(self):
-        # TODO: account for the fact that...
-        # since getStart() != start_node
-        # since getEnd() != end_node
         self.start_time = time()
 
         start_node = self.db_wrapper.getClosestPoint(
@@ -23,6 +22,7 @@ class Algo1(SearchAlgorithm):
             str(self.options.getEnd()[0]),
             str(self.options.getEnd()[1]))
 
+        # TOURLOOP FR5 : No Route error
         if goal_node == None or start_node == None:
             self.err_message = "Could not find path within 100m of your start location."
             return
@@ -51,6 +51,7 @@ class Algo1(SearchAlgorithm):
             count += 1
 
             # no more paths
+            # TOURLOOP FR5 : No Route error
             if len(self.frontier) == 0:
                 #print("didn't find solution")
                 self.err_message("could not find route given input paramaters")
@@ -58,7 +59,6 @@ class Algo1(SearchAlgorithm):
 
             curr = heappop(self.frontier) # let curr: Path, ignore weight
 
-            # TODO: modernize this
             # popuntil we're starting from somewhere new
             while curr.node_list[-1].node_id in already_searched_from:
                 # no more paths
@@ -73,6 +73,7 @@ class Algo1(SearchAlgorithm):
             if curr.isInvalid():
                 continue
 
+            # TOURLOOP FR5 : No Route error
             if curr.total_d > 2 * self.options.getTargetDistance():
                 self.err_message = "Could not find a solution within the given paramaters"
                 return
@@ -85,7 +86,7 @@ class Algo1(SearchAlgorithm):
 
             # insert neighbours into frontier
             #print("iter: {}, row_#: {}, front: {}, w: {}, id: {}".format(count, len(rows), len(self.frontier), curr.getWeight(), curr.node_list[-1].node_id ))
-            # TODO: don't add all paths to frontier
+            # Could not add all paths to frontier
             for row in rows:
                 new_path = Path(
                     curr,
@@ -98,7 +99,6 @@ class Algo1(SearchAlgorithm):
 
                 # found sol
                 if new_path.isGoal():
-                    # TODO: reconstruct route from linked list
                     self.extract_route(new_path)
                     #print("found a solution")
                     return
@@ -180,7 +180,7 @@ class Path:
             if self.isGoal():
                 # goal found within n-hops neighbours!
                 break
-        self.pref_path_count += row[1] # TODO: could overestimate path count if goal in middle of path
+        self.pref_path_count += row[1]
         self.backtrackSafeCheck()
 
 
@@ -196,9 +196,9 @@ class Path:
         return self.total_d > (self.target_d / 2)
 
     def isInvalid(self):
-        # TODO: missing what else?
         return not self.backtrack_valid
 
+    # TOURLOOP FR7 : backtracking prevention
     def backtrackSafeCheck(self):
         if len(self.node_list) < 3:
             self.backtrac_valid = True
@@ -213,10 +213,9 @@ class Path:
     def getDistanceDiff(self):
         return abs(self.target_d - self.total_d - self.node_list[-1].getD(self.goal_node))
 
+    # TOURLOOP FR6 : Route length targeting
+    # TOURLOOP FR10 : path preference
     def getWeight(self):
-        # TODO: what else goes in the tuple
-        # TODO: add random variable
-        # TODO: 1 - pref_path_count
         return (round(self.getDistanceDiff(), 2), self.pref_path_count)
 
     def __eq__(self, other):
