@@ -159,40 +159,6 @@ class DBWrapper:
         # returns: [([Node], int)]
         return rows
 
-    def getPinsExampleRoutes(self):
-        pins_query = """
-        match (start:Node {id: "2815578994"}) // pick a point on keilor
-        match p = (start)-[:Way*15]-(:Node) // get a path
-        CALL { // calculate distnace of p
-            with p
-            UNWIND relationships(p) as w
-            with sum(w.dist) as d
-            return d
-        }
-        CALL { // calculate # of bike segments in path
-            with p
-            UNWIND relationships(p) as w
-            with w as W
-            where W.pathType = "bike"
-            with count(W) as c
-            return c
-        }
-        with *, nodes(p) AS nodes
-        with *, relationships(p) as ways
-        return c, d, nodes, ways
-        order by d
-        """
-        routes = []
-        with self.driver.session() as session:
-            res = session.run(pins_query)
-            # res has many rows
-            # res.data() returns a list of these rows
-            # each row has keys : ['c', 'd', 'nodes', 'ways']
-
-            # one route is a list of node json objects
-            routes = [row['nodes'] for row in res]
-        return routes
-
 
 # for testing purposes
 def record_to_lat_lon_dict(record):
