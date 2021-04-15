@@ -12,7 +12,6 @@ from algo_test_suite import *
 class Algo3(SearchAlgorithm):
     def generateRoutes(self):
         self.start_time = time()
-        print(self.options.__dict__)
 
         Node.target = self.options.getEnd()
         Node.target_distance = self.options.getTargetDistance()
@@ -59,7 +58,7 @@ class Algo3(SearchAlgorithm):
             n = n.prev_node
         self.route.append((n.lat, n.lon))
 
-        print("Elapsed time: ", self.getElapsedTime())
+        # print("Elapsed time: ", self.getElapsedTime())
 
 
 def smoke_tests():

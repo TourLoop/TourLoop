@@ -12,7 +12,6 @@ class Algo2(SearchAlgorithm):
 
     def generateRoutes(self):
         self.start_time = time()
-        print(self.options.__dict__)
 
         Node.target = self.options.getEnd()
         Node.target_distance = self.options.getTargetDistance()
@@ -36,8 +35,6 @@ class Algo2(SearchAlgorithm):
                 return
 
             n = frontier.pop(0)
-
-            print("Huer: ", n.huer, "ID: ", n.node_id, "Dist: ", n.path_dist, "Remaining Dist: ", n.target_dist_est, "Front: ", len(frontier))
 
             for c in self.db_wrapper.getNeighbours(n):
                 if n.prev_node == None or c.node_id != n.prev_node.node_id:
