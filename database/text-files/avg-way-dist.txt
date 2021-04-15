@@ -1,7 +1,0 @@
-match ()-[w:Way]-()
-return avg(w.dist)
-
-// result =  0.01486451696968213
-
-// thats 14.8 m
-// distnace is in km
