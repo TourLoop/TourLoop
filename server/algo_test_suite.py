@@ -27,10 +27,20 @@ def search_test(algo_class, ops):
     return search
 
 def bel_to_k_test(algo_class):
+    """ Tests FR1, FR2, and FR3
+    >>> bel_to_k_test(Algo1)
+    >>> bel_to_k_test(Algo2)
+    >>> bel_to_k_test(Algo3)
+    """
     ops = PathOptions(fav_belgravia_point, k_point, "paved", 2.0, "algo_x") # loop example
     search_test(algo_class, ops)
 
 def bel_loop_test(algo_class):
+    """ Tests FR1, FR2, and FR3
+    >>> bel_loop_test(Algo3)
+    >>> bel_loop_test(Algo1)
+    >>> bel_loop_test(Algo1)
+    """
     ops = PathOptions(fav_belgravia_point, fav_belgravia_point, "paved", 4.5, "algo_x") # loop example
     search_test(algo_class, ops)
 
@@ -49,17 +59,6 @@ def paths_are_random_test():
 
     # assert at least 2 differnt routes generated
     assert 1 < len({ s.getRoutesJson()['path'] for s in searches})
-
-def loop_and_p2p_all_test():
-    """ Tests FR1, FR2, and FR3
-    >>> loop_and_p2p_all_test()
-    """
-    bel_to_k_test(Algo1)
-    bel_loop_test(Algo1)
-    bel_to_k_test(Algo2)
-    bel_loop_test(Algo3)
-    bel_to_k_test(Algo3)
-    bel_loop_test(Algo1)
 
 def path_pref_has_impact_test(algo_class):
     """ test FR10
