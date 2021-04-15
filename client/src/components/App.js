@@ -84,12 +84,14 @@ function App() {
     setEndLocation(defaultPosition);
   };
 
+  // TOURLOOP FR21 : Location Tracking
   // Update the location periodically
   const locationUpdateFrequency = 1; // seconds
   useEffect(() => {
     const updateLocation = setInterval(() => {
       // console.log("Trying to update current position...")
       // form https://developers.google.com/maps/documentation/javascript/geolocation
+      // TOURLOOP FR22 : Toggle Location tracking
       if (useLocation) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(

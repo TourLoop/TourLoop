@@ -344,6 +344,7 @@ const Sidebar = props => {
               checked={pavedPathsChecked}
               label='Display All Paved Paths'
             />
+            // TOURLOOP FR22 : Toggle Location tracking
             <Checkbox
               id='locationToggle'
               onChange={() => {

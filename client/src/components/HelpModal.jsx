@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom';
 
+// TOURLOOP FR24 : Open Basic Instructions
+// TOURLOOP FR25 : Close basic instructions
 const HelpModal = props => {
   const { isShowing, hide } = props;
 

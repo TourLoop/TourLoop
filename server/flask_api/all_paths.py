@@ -33,6 +33,8 @@ def generate_route():
 
         n = get_db().getClosestPoint(
             path_options.getStart()[0], path_options.getStart()[1])
+
+        # TOURLOOP FR5 : no route error
         if n == None:
             return {"errMessage": "Could not find path within 100m of your start location."}
         n_closest_end = get_db().getClosestPoint(

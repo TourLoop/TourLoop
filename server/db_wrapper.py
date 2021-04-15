@@ -24,6 +24,7 @@ class DBWrapper:
             return session.read_transaction(self._getClosestPoint,
                                             lat_string, lon_string)
 
+    # TOURLOOP FR3 : closest node point
     @staticmethod
     def _getClosestPoint(tx, lat_string, lon_string):
         closest_point_query = """
@@ -35,7 +36,7 @@ class DBWrapper:
         """
         res = tx.run(closest_point_query, lat=lat_string, lon=lon_string)
         r = res.single()
-        if r == None: 
+        if r == None:
             return None
         return Node(None, r.data()['n']['nodeId'], r.data()['n']['lat'], r.data()['n']['lon'])
 
@@ -53,6 +54,7 @@ class DBWrapper:
             return session.read_transaction(
                 self._getClosestPointToPathtype, path_string, lat_string, lon_string)
 
+    # TOURLOOP FR3 : closest node point
     @staticmethod
     def _getClosestPointToPathtype(tx, path_string, lat_string, lon_string):
         closest_point_to_pathtype_query = """
@@ -67,6 +69,8 @@ class DBWrapper:
         r = res.single()
         return Node(None, r.data()['n']['nodeId'], r.data()['n']['lat'], r.data()['n']['lon'])
 
+    # TOURLOOP FR1 : generate loops
+    # TOURLOOP FR2 : generate point to point routes
     def getNeighbours(self, prev_node):
         """returns the node_id of the neighbouring nodes connected by a way
 
@@ -81,6 +85,8 @@ class DBWrapper:
             return session.read_transaction(
                 self._getNeighbours, prev_node)
 
+    # TOURLOOP FR1 : generate loops
+    # TOURLOOP FR2 : generate point to point routes
     def getNHopNeighbours(self, prev_node, path_type, hops=10):
         # TODO: finish doc test
         """gets the n-hop neighbours for the prev_node:Node
@@ -99,6 +105,8 @@ class DBWrapper:
             return session.read_transaction(
                 self._getNHopNeighbours, prev_node, path_type, hops)
 
+    # TOURLOOP FR1 : generate loops
+    # TOURLOOP FR2 : generate point to point routes
     @staticmethod
     def _getNeighbours(tx, prev_node):
         closest_point_to_pathtype_query = """
@@ -114,7 +122,8 @@ class DBWrapper:
 
         return nodes
 
-
+    # TOURLOOP FR1 : generate loops
+    # TOURLOOP FR2 : generate point to point routes
     @staticmethod
     def _getNHopNeighbours(tx, prev_node, path_type, hops=10):
         n_hop_q = """
@@ -150,41 +159,7 @@ class DBWrapper:
         # returns: [([Node], int)]
         return rows
 
-    def getPinsExampleRoutes(self):
-        pins_query = """
-        match (start:Node {id: "2815578994"}) // pick a point on keilor
-        match p = (start)-[:Way*15]-(:Node) // get a path
-        CALL { // calculate distnace of p
-            with p
-            UNWIND relationships(p) as w
-            with sum(w.dist) as d
-            return d
-        }
-        CALL { // calculate # of bike segments in path
-            with p
-            UNWIND relationships(p) as w
-            with w as W
-            where W.pathType = "bike"
-            with count(W) as c
-            return c
-        }
-        with *, nodes(p) AS nodes
-        with *, relationships(p) as ways
-        return c, d, nodes, ways
-        order by d
-        """
-        routes = []
-        with self.driver.session() as session:
-            res = session.run(pins_query)
-            # res has many rows
-            # res.data() returns a list of these rows
-            # each row has keys : ['c', 'd', 'nodes', 'ways']
 
-            # one route is a list of node json objects
-            routes = [row['nodes'] for row in res]
-        return routes
-
-
+# for testing purposes
 def record_to_lat_lon_dict(record):
-    # TODO: handle record keys len!=1 and name != 'n'
     return {'lat': record.data()['n']['lat'], 'lon': record.data()['n']['lon']}

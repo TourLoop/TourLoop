@@ -6,7 +6,9 @@ import math
 from random import randint
 from algo_test_suite import *
 
-
+# TOURLOOP FR1 : generate loops
+# TOURLOOP FR2 : generate point to point
+# TOURLOOP FR8 : 1/3 route generation algorithms
 class Algo3(SearchAlgorithm):
     def generateRoutes(self):
         self.start_time = time()
@@ -19,16 +21,23 @@ class Algo3(SearchAlgorithm):
         n = self.db_wrapper.getClosestPoint(
             self.options.getStart()[0], self.options.getStart()[1])
 
+        # TOURLOOP FR7 : backtracking prevention
         visited = set(n.node_id)
         frontier = [n]
         heapq.heapify(frontier)
         while n.target_dist_est > 0.1 or n.path_dist < (Node.target_distance / 2):
+            # TOURLOOP FR5 : no route error
+            if n.path_dist > 2* Node.target_distance:
+                self.err_message = "Could not find a route given the input paramaters"
+                return
+            # TOURLOOP FR5 : no route error
             if len(frontier) == 0:
-                break
+                self.err_message = "Could not find a route given the input paramaters"
+                return
             n = heapq.heappop(frontier)
-            # print("Distance: ", n.path_dist, n.target_dist_est)
 
             for c in self.db_wrapper.getNeighbours(n):
+                # TOURLOOP FR7 : backtracking prevention
                 if c.node_id not in visited:
                     # modify hueristic
                     #print("h1: ", c.huer)
@@ -36,6 +45,8 @@ class Algo3(SearchAlgorithm):
                     factor = 10 ** decimals
                     # round for more matching
                     percent_good_paths = math.floor(100 - 100 * (c.pref_count / c.count))
+                    # TOURLOOP FR9 : route generation randomess
+                    # TOURLOOP FR10 : path preference
                     c.huer = (math.floor(c.huer * factor) / factor, percent_good_paths, randint(0,9))
                     #print("h2: ", c.huer)
                     visited.add(c.node_id)
