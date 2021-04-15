@@ -1,7 +1,7 @@
 from search_algos import *
 from time import time
 from node import Node
-from vincenty import vincenty
+import math
 
 MAX_FRONTIER = 20
 MAX_DIST_FROM_START_END = 0.1
@@ -24,7 +24,13 @@ class Algo2(SearchAlgorithm):
         frontier = [n]
         # TOURLOOP FR7 : backtracking prevention
         visited = set([n.node_id])
-        while n.path_dist < Node.target_distance * 2 and (n.target_dist_est > MAX_DIST_FROM_START_END or n.path_dist < (Node.target_distance / 2)):
+        while n.target_dist_est > MAX_DIST_FROM_START_END or n.path_dist < (Node.target_distance / 2):
+            # TOURLOOP FR5 : no route error
+            if n.path_dist > 2 * Node.target_distance:
+                self.err_message = "Could not find a route given the input parameters."
+                return
+
+            # TOURLOOP FR5 : no route error
             if not frontier:
                 self.err_message = "Could not find a path between start and end location."
                 return
@@ -36,6 +42,10 @@ class Algo2(SearchAlgorithm):
             for c in self.db_wrapper.getNeighbours(n):
                 if n.prev_node == None or c.node_id != n.prev_node.node_id:
                     if c.node_id not in visited:
+
+                        percent_good_paths = max(math.floor(1 - (c.pref_count / c.count)), 0.5)
+                        c.huer *= percent_good_paths
+
                         frontier.append(c)
                         visited.add(c.node_id)
 
