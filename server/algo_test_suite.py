@@ -37,6 +37,7 @@ def bel_loop_test(algo_class):
 
 def paths_are_random_test():
     """ test FR9
+    >>> paths_are_random_test()
     """
     ops = PathOptions(fav_belgravia_point, fav_belgravia_point, "paved", 4.5, "algo_3") # loop example
     searches = [Algo3(ops, get_db()), Algo3(ops, get_db()),Algo3(ops, get_db()),Algo3(ops, get_db()),Algo3(ops, get_db())]
@@ -51,6 +52,7 @@ def paths_are_random_test():
 
 def loop_and_p2p_all_test():
     """ Tests FR1, FR2, and FR3
+    >>> loop_and_p2p_all_test()
     """
     bel_to_k_test(Algo1)
     bel_loop_test(Algo1)
@@ -61,6 +63,9 @@ def loop_and_p2p_all_test():
 
 def path_pref_has_impact_test(algo_class):
     """ test FR10
+    >>> path_pref_has_impact_test(Algo3)
+    >>> path_pref_has_impact_test(Algo1)
+    >>> path_pref_has_impact_test(Algo2)
     """
     ops = [PathOptions(fav_belgravia_point, fav_belgravia_point, p_type, 4.5, "algo_x")  for p_type in ["bike", "paved", "dirt"]]
     searches = [search_test(algo_class, op) for op in ops]
@@ -101,23 +106,13 @@ def random_params():
 
 
 def random_param_test(algo_class, n=1):
+    """
+    >>> random_param_test(Algo1, 5)
+    >>> random_param_test(Algo2, 5)
+    >>> random_param_test(Algo3, 5)
+    """
     for i in range(n):
-        print("Random test #" + str(i+1) + "/" + str(n))
+        #print("Random test #" + str(i+1) + "/" + str(n))
         search_test(algo_class, random_params())
-        print("passed")
+        #print("passed")
 
-def all_tests():
-    paths_are_random_test()
-    loop_and_p2p_all_test()
-    path_pref_has_impact_test(Algo3)
-    path_pref_has_impact_test(Algo1)
-    #path_pref_has_impact_test(Algo2) # TODO: pass this test
-    random_param_test(Algo1, 5)
-    random_param_test(Algo2, 5)
-    random_param_test(Algo3, 5)
-
-
-# Algo 3 test suite
-if __name__ == "__main__":
-    # if this runs without crashing then all tests passed
-    all_tests()
