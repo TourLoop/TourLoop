@@ -23,10 +23,6 @@ class Algo1(SearchAlgorithm):
             str(self.options.getEnd()[0]),
             str(self.options.getEnd()[1]))
 
-        if goal_node == None or start_node == None:
-            self.err_message = "Could not find path within 100m of your start location."
-            return
-
         # add start point to frontiner
         start_path = Path(None,
                 0,

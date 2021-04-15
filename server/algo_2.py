@@ -19,17 +19,6 @@ class Algo2(SearchAlgorithm):
         n = self.db_wrapper.getClosestPoint(
             self.options.getStart()[0], self.options.getStart()[1])
 
-        if n == None:
-            self.err_message = "Could not find path within 100m of your start location."
-            return
-
-        n_closest_end = self.db_wrapper.getClosestPoint(
-            self.options.getEnd()[0], self.options.getEnd()[1])
-
-        if n_closest_end == None:
-            self.err_message = "Could not find path within 100m of your end location."
-            return
-
         frontier = [n]
         visited = set([n.node_id])
         while n.path_dist < Node.target_distance * 2 and (n.target_dist_est > MAX_DIST_FROM_START_END or n.path_dist < (Node.target_distance / 2)):
