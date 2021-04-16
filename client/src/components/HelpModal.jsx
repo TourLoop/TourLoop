@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import { ReactComponent as Cancel } from '../assets/images/cancel.svg';
 
 // TOURLOOP FR24 : Open Basic Instructions
 // TOURLOOP FR25 : Close basic instructions
@@ -17,7 +18,26 @@ const HelpModal = props => {
               transform: 'translate(-50%, -50%)',
             }}
           >
-            <h1 className='help-modal-header'>Help</h1>
+            <div className='flex justify-between items-center'>
+              <h1 className='help-modal-header'>Help</h1>
+              <Cancel className='help-modal-icon' onClick={hide} />
+            </div>
+            <div className='help-modal-section'>
+              <h2 className='help-modal-section-header'>User Guide</h2>
+              <p className='help-modal-text'>
+                To generate a route, you can start by clicking on the map to set
+                the latitude and longitude coordinate. In the generate routes
+                form, type in a target route distance, select a path preference,
+                select an algorithm, then click "Generate Route." Click on a
+                different point on the map to change the latitude and longitude
+                coordinate. Right-click to clear point.
+              </p>
+              <p className='help-modal-text'>
+                If point-to-point is selected, you can click up to two points.
+                One for start location and one for end location. Right-click to
+                clear points and create two new points.
+              </p>
+            </div>
             <div className='help-modal-section'>
               <h2 className='help-modal-section-header'>
                 Generate Routes Info

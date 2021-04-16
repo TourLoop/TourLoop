@@ -111,6 +111,14 @@
   @apply text-center text-4xl font-medium text-indigo-500;
 }
 
+.help-modal-icon {
+  @apply w-6 h-6 fill-current;
+}
+
+.help-modal-icon:hover {
+  @apply cursor-pointer;
+}
+
 .help-modal-section-header {
   @apply text-2xl font-medium my-2;
 }
@@ -124,19 +132,19 @@
 }
 
 .help-wrapper {
-  @apply flex items-center bg-indigo-100 px-3 rounded-full;
+  @apply flex items-center bg-indigo-100 text-indigo-500 px-3 rounded-full;
 }
 
 .help-wrapper:hover {
-  @apply bg-indigo-200;
+  @apply bg-indigo-200 text-indigo-700;
 }
 
 .help-label {
-  @apply mr-2 text-lg text-indigo-500;
+  @apply mr-2 text-lg;
 }
 
 .help-icon {
-  @apply w-6 h-6 text-indigo-500;
+  @apply w-6 h-6;
 }
 
 .checkbox {

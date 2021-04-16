@@ -7,6 +7,7 @@ import HelpModal from './HelpModal';
 import RouteStatistic from './RouteStatistic';
 import useModal from '../hooks/useModal';
 import { ReactComponent as HelpIcon } from '../assets/images/help_icon.svg';
+import { ReactComponent as HelpIconDarker } from '../assets/images/help_icon_darker.svg';
 import Checkbox from './input/Checkbox';
 import Header from './Header';
 
@@ -40,6 +41,7 @@ const Sidebar = props => {
   const [locationChecked, setLocationChecked] = useState(false);
   const [routeStatistics, setRouteStatistics] = useState([]);
   const [errMessage, setErrMessage] = useState('');
+  const [hovering, setHovering] = useState(false);
 
   const { isShowing, toggle } = useModal();
 
@@ -49,6 +51,8 @@ const Sidebar = props => {
     formState: { errors },
     setValue,
   } = useForm();
+
+  const toggleHover = () => setHovering(!hovering);
 
   useEffect(() => {
     if (startLocation.lat && startLocation.lng) {
@@ -185,9 +189,18 @@ const Sidebar = props => {
       <div className='flex-initial'>
         <div className='flex m-4 mr-4 h-8 justify-between'>
           <h1 className='navigation-header'>Navigation</h1>
-          <div className='help-wrapper' onClick={toggle}>
+          <div
+            className='help-wrapper'
+            onClick={toggle}
+            onMouseEnter={toggleHover}
+            onMouseLeave={toggleHover}
+          >
             <span className='help-label'>Help</span>
-            <HelpIcon className='help-icon' />
+            {hovering ? (
+              <HelpIconDarker className='help-icon' />
+            ) : (
+              <HelpIcon className='help-icon' />
+            )}
           </div>
         </div>
         <HelpModal isShowing={isShowing} hide={toggle} />
@@ -246,7 +259,9 @@ const Sidebar = props => {
               </>
             )}
 
-            <label htmlFor='targetRouteDistance'>Target Route Distance</label>
+            <label htmlFor='targetRouteDistance'>
+              Target Route Distance (km)
+            </label>
             <input
               {...register('targetRouteDistance', {
                 required: true,
