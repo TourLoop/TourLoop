@@ -10,13 +10,13 @@ const RouteStatistic = props => {
         Algorithm: <span>{algorithm}</span>
       </h2>
       <h2 className='route-statistic-header'>
-        Distance: <span>{distance.toFixed(3)} km</span>
+        Distance: <span>{distance ? distance.toFixed(3) : ''} km</span>
       </h2>
       {/* <h2 className='route-statistic-header'>
         Percent Path Type: <span>{percentPathType}%</span>
       </h2> */}
       <h2 className='route-statistic-header'>
-        Time: <span>{time.toFixed(3)} seconds</span>
+        Time: <span>{time ? time.toFixed(3) : ''} seconds</span>
       </h2>
     </div>
   );
