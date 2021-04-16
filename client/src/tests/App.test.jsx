@@ -35,27 +35,42 @@ describe('<App />', () => {
     // fireEvent.click(generateRoutesButton);
   });
 
-  it('clicks on "Display All Dirt Paths" checkbox', () => {
+  it('clicks on "Display All Dirt Paths" checkbox', async () => {
     render(<App />);
-    const extra = screen.getByText('Extra');
 
-    fireEvent.click(extra);
+    fireEvent.click(screen.getByText('Extra'));
 
     expect(screen.getByText('Additional Functionality')).toBeTruthy();
 
     const allDirtPaths = screen.getByLabelText('Display All Dirt Paths');
     fireEvent.click(allDirtPaths);
+
+    expect(allDirtPaths.checked).toBeTruthy();
   });
 
   it('clicks on "Display All Bike Paths" checkbox', () => {
     render(<App />);
-    const extra = screen.getByText('Extra');
 
-    fireEvent.click(extra);
+    fireEvent.click(screen.getByText('Extra'));
 
     expect(screen.getByText('Additional Functionality')).toBeTruthy();
 
     const allBikePaths = screen.getByLabelText('Display All Bike Paths');
     fireEvent.click(allBikePaths);
+
+    expect(allBikePaths.checked).toBeTruthy();
+  });
+
+  it('clicks on "Track Current Location" checkbox', () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByText('Extra'));
+
+    expect(screen.getByText('Additional Functionality')).toBeTruthy();
+
+    const currentLocation = screen.getByLabelText('Track Current Location');
+    fireEvent.click(currentLocation);
+
+    expect(currentLocation.checked).toBeTruthy();
   });
 });
