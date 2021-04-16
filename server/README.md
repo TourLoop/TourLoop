@@ -1,4 +1,4 @@
-# Run Instructions
+# Instructions to Run Flask Backend Outside Docker Container
 
 In the client folder:
 
