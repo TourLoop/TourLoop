@@ -33,9 +33,11 @@ Note you may need to create the instance folder as well.
 
 In the config.py file add the following lines:
 
+```python
 DATABASE_SECRET_KEY = "test"
 DATABASE_USERNAME = "neo4j"
 DATABASE_URL = "bolt://localhost:7687"
+```
 
 Save the config.py file.
 
