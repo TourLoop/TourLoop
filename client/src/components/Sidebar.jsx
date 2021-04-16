@@ -278,7 +278,7 @@ const Sidebar = props => {
               disabled={loading}
               style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
             >
-              Generate Routes
+              Generate Route
             </button>
             {loading && <h2 className='form-submit-header'>Generating...</h2>}
           </form>

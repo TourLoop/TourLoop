@@ -35,7 +35,40 @@ describe('<App />', () => {
     // fireEvent.click(generateRoutesButton);
   });
 
-  it('clicks on "Display All Dirt Paths" checkbox', async () => {
+  it('clicks on "Generate" navigation button', () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByText('Generate'));
+
+    expect(screen.getByText('Generate Routes')).toBeTruthy();
+  });
+
+  it('clicks on "Legend" navigation button', () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByText('Legend'));
+
+    expect(screen.getByText('Route Legend')).toBeTruthy();
+  });
+
+  it('clicks on "Extra" navigation button', () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByText('Extra'));
+
+    expect(screen.getByText('Additional Functionality')).toBeTruthy();
+  });
+
+  it('clicks on "Point-to-Point" checkbox', () => {
+    render(<App />);
+
+    const pointToPoint = screen.getByLabelText('Point-to-Point');
+    fireEvent.click(pointToPoint);
+
+    expect(pointToPoint.checked).toBeTruthy();
+  });
+
+  it('clicks on "Display All Dirt Paths" checkbox', () => {
     render(<App />);
 
     fireEvent.click(screen.getByText('Extra'));
