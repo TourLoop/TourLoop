@@ -231,7 +231,6 @@ const Sidebar = props => {
               type='text'
               className='input'
               onBlur={handleStartLocation}
-              aria-label='startLocation'
             />
 
             {pointToPointChecked && (
