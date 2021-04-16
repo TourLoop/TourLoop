@@ -73,4 +73,15 @@ describe('<App />', () => {
 
     expect(currentLocation.checked).toBeTruthy();
   });
+
+  it('clicks on "Download Database" button', () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByText('Extra'));
+
+    expect(screen.getByText('Additional Functionality')).toBeTruthy();
+
+    const downloadDatabase = screen.getByLabelText('downloadDatabase');
+    fireEvent.click(downloadDatabase);
+  });
 });

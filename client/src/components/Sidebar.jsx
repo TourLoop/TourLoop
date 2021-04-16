@@ -355,7 +355,11 @@ const Sidebar = props => {
               checked={locationChecked}
               label='Track Current Location'
             />
-            <button className='button' onClick={downloadDatabaseFiles}>
+            <button
+              aria-label='downloadDatabase'
+              className='button'
+              onClick={downloadDatabaseFiles}
+            >
               Download Database
             </button>
           </div>
