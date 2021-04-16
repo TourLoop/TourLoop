@@ -36,10 +36,11 @@ In the config.py file add the following lines:
 ```python
 DATABASE_SECRET_KEY = "test"
 DATABASE_USERNAME = "neo4j"
-DATABASE_URL = "bolt://localhost:7687"
+DATABASE_URL = "bolt://neo4jdb:7687"
 ```
 
-Save the config.py file.
+Save the config.py file. neo4jdb is the name of the database service container that docker-compose creates.
+If you are running the backend manually outside of a docker container change neo4jdb to localhost.
 
 ### system requirements
 
