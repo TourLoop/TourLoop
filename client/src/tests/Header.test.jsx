@@ -8,7 +8,7 @@ describe('<Header />', () => {
     expect(wrapper.find('h1')).toHaveLength(1);
   });
 
-  it('renders', () => {
+  it('renders with label prop', () => {
     render(<Header label='testLabel' />);
     expect(screen.getByText('testLabel')).toBeTruthy();
   });
