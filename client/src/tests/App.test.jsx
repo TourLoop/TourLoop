@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import App from '../components/App';
-import Map from '../components/Map.jsx';
-import Sidebar from '../components/Sidebar.jsx';
+import Map from '../components/Map';
+import Sidebar from '../components/Sidebar';
 import { render, screen, fireEvent } from '@testing-library/react';
 
 describe('<App />', () => {
