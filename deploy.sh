@@ -28,7 +28,7 @@ echo "Starting db and backend containers"
 docker-compose up -d --build
 
 # auto-add the neo4j indexes
-echo "Adding neo4j indexes for imporoved performance"
+echo "Adding neo4j indexes for improved performance"
 sleep 30s
 cd database
 python3 index_creator.py
