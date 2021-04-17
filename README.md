@@ -159,3 +159,27 @@ docker-compose up -d --build
 ### Uploading cleaned data to a database
 
 See the dockerfile for details. Data uploading is done through a neo4j admin import of the cleaned csv files.
+
+# Technologies and Packages Used
+
+Below are some of the external technologies and packages that TourLoop uses.
+
+[Python](https://www.python.org/) </br>
+[Node](https://nodejs.org/en/) </br>
+[React](https://reactjs.org/) </br>
+[Neo4j Database](https://neo4j.com/) </br>
+[Docker](https://www.docker.com/) </br>
+[Flask](https://github.com/pallets/flask) </br>
+[Create React App](https://github.com/facebook/create-react-app) </br>
+
+[Python Package Polyline](https://github.com/mapbox/polyline) </br>
+[Python Package Coverage](https://github.com/nedbat/coveragepy) </br>
+[Python Package Vincenty](https://github.com/maurycyp/vincenty) </br>
+Note we directly imported the Vincenty code into our database folder instead of installing the python package. This package is not well supported and only one file so we decided to directly add the code instead.
+
+[NPM Package React Google Maps API](https://github.com/JustFly1984/react-google-maps-api) </br>
+[NPM Package polyline-codec](https://github.com/googlemaps/js-polyline-codec) </br>
+[NPM Package TailwindCSS](https://github.com/tailwindlabs/tailwindcss) </br>
+[NPM Package Enzyme](https://github.com/enzymejs/enzyme) </br>
+[NPM Package react-hook-form](https://github.com/react-hook-form/react-hook-form) </br>
+[NPM Package craco](https://github.com/gsoft-inc/craco) </br>
